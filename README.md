@@ -1,4 +1,4 @@
-Odoo-comm
+Odoo-common
 =================
 
 Hello World !
