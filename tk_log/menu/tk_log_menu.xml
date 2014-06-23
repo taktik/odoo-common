@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+
+        <act_window name="Logs"
+                    res_model="tk_log.log"
+                    view_mode="tree,form"
+                    multi="False"
+                    id="action_open_logs"/>
+
+		<menuitem name="Logs"
+                  id="tk_log_menu"
+                  parent="base.menu_custom"
+                  groups="base.group_system"
+                  action="action_open_logs" />
+	</data>
+</openerp>

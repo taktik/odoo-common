@@ -1,0 +1,13 @@
+<openerp>
+	<data noupdate="1">
+		<record id="log_level" model="ir.config_parameter">
+			<field name="key">Log Level</field>
+			<field name="value">info</field>
+		</record>
+        <record id="tk_log_deletion_in_days" model="ir.config_parameter">
+            <field name="key">tk_log_deletion_in_days</field>
+            <field name="value">7</field>
+        </record>
+	</data>
+</openerp>
+        

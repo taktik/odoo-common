@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <!--  Jira Sync Process -->
+        <record model="ir.actions.act_window" id="jira_sync_process_action">
+            <field name="name">Jira Sync Process</field>
+            <field name="res_model">tk.jira.sync.process</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="jira_sync_process_action_tree" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="tk_background_process.process_view_tree"/>
+            <field name="act_window_id" ref="jira_sync_process_action"/>
+        </record>
+
+        <record id="jira_sync_process_action_form" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="tk_background_process.process_view_form"/>
+            <field name="act_window_id" ref="jira_sync_process_action"/>
+        </record>
+
+        <menuitem name="Jira Sync Process"
+                  id="tk_jira_sync_process_menu"
+                  parent="base.menu_custom"
+                  groups="base.group_system"
+                  action="jira_sync_process_action" />
+    </data>
+</openerp>

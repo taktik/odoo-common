@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="tk_background_process.jira_sync_process_view_form">
+            <field name="name">tk_background_process.jira_sync_process_view_form</field>
+            <field name="model">tk.jira.sync.process</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Background Process" version="7.0">
+                    <sheet>
+                        <h1><field name="name" /></h1>
+                        <group>
+                            <field name="state"/>
+                        </group>
+                        <button icon="gtk-redo" name="jira_launch_process" string="Launch Process" type="object"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_background_process.jira_sync_process_view_tree">
+            <field name="name">tk_background_process.jira_sync_process_view_tree</field>
+            <field name="model">tk.jira.sync.process</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Background Process">
+                    <field name="name"  />
+                    <field name="state"  />
+                </tree>
+            </field>
+        </record>
+    </data>
+</openerp>

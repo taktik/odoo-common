@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="tk_background_process.process_view_form">
+            <field name="name">tk_background_process.process_view_form</field>
+            <field name="model">tk.background.process</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Background Process" version="7.0">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="failed,done,waiting,in_progress" statusbar_colors='{"failed":"red","waiting":"blue", "done":"green"}'/>
+                    </header>
+                    <sheet>
+                        <h1><field name="name" /></h1>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="lags_ids" nolabel="1">
+                                <tree colors="blue:level=='debug';green:level=='info';red:level=='error';orange:level=='warn';darkred:level=='fatal'">
+                                    <field name="label"/>
+                                    <field name="date"/>
+                                    <field name="level"/>
+                                    <field name="user"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_background_process.process_view_tree">
+            <field name="name">tk_background_process.process_view_tree</field>
+            <field name="model">tk.background.process</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Background Process" colors="blue:state=='waiting';green:state=='done';red:state=='failed';orange:state=='in_progress'">
+                    <field name="name"  />
+                    <field name="state"  />
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</openerp>
