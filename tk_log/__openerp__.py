@@ -12,7 +12,7 @@
     "init_xml": [],
     "demo_xml": [],
     "data": [
-        "menu/tk_log_menu.xml",
+        "menuitem/tk_log_menuitem.xml",
         "view/tk_log_view.xml",
         "data/config_parameter.xml",
         "data/tk_log_cron.xml",

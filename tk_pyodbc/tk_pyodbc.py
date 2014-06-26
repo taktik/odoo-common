@@ -2,7 +2,7 @@ from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp import netsvc
 import openerp.pooler
-import openerp.tools
+from openerp import tools
 import logging
 # # Little hack to force decimal_point to be "." and not dependent of locale (see pyodbc pyodbcmodule.cpp)
 import locale
@@ -42,19 +42,14 @@ class tk_pyodbc(orm.Model):
             logger.debug("Connection acquired")
             return conn
         except Exception, e:
-            raise ConnectionError(_('Error'), _('Could not get a valid connection. %s') % e)
+            raise orm.except_orm(_('Error !'), _('Could not get a valid connection. %s') % e)
 
-    def check_download_connection(self, cursor, user, ids, context=None):
+    def check_download_connection(self, cr, uid, ids, context=None):
         """
         checks the connection to the sql server
         """
-        try:
-            raise orm.except_orm(_("SMTP Test Connection Was Successful"), '')
-        except Exception, error:
-            raise orm.except_orm(
-                _("Connection test failed"),
-                _("Reason: %s") % tools.ustr(error)
-            )
+        conn = self.get_connection(cr, uid, ids, context)
+        conn.close()
 
     _columns = {
         'name': fields.char('Name', size=64, required=True),

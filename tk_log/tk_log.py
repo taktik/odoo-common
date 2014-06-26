@@ -22,61 +22,89 @@
 from openerp.osv import orm, fields
 import openerp.pooler as pooler
 from openerp.addons.tk_tools.tk_date_tools import tk_date_tools as tkdt
-import datetime
+from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
+from datetime import datetime
 import logging
 
 
 logger = logging.getLogger(__name__)
 
+
 class tk_log(orm.Model):
-    _name = 'tk_log.log'
+    _name = 'tk.log'
+    _rec_name = 'name'
+    _order = 'date desc'
 
-    _rec_name = 'label'
+    def log(self, cr, uid, message, model_name=False, object_id=None, level='info'):
+        # If no object we create a new cursor
+        log_id = False
+        try:
+            db, pool = pooler.get_db_and_pool(cr.dbname)
+            new_cr = db.cursor()
 
-    _order = "date desc"
+            values = {
+                'message': message,
+                'level': level,
+                'object_id': object_id or False,
+                'uid': uid
+            }
 
-    levels_order = {
-        'debug': 0,
-        'info': 1,
-        'warn': 2,
-        'error': 3,
-        'fatal': 4,
-    }
+            if model_name:
+                model_ids = self.pool.get('ir.model').search(new_cr, uid, [('name', '=', model_name)])
+                if model_ids:
+                    values.update({'model_id': model_ids[0]})
 
-    @staticmethod
-    def create_log(self, cr, uid, message, log_erp=False, model=False, name=False, log_level_console='debug', log_level_erp='info'):
-        if log_erp and model and name:
-            self.log(cr, uid, 0, message, model=model, name=name, level=log_level_erp)
-        if log_level_console == 'debug':
-            logger.debug(message)
-        elif log_level_console == 'info':
-            logger.info(message)
-        elif log_level_console == 'warning':
-            logger.warning(message)
-        elif log_level_console == 'error':
-            logger.error(message)
+            log_id = self.create(new_cr, uid, values)
+
+        finally:
+            new_cr.commit()
+
+        return log_id
 
 
 
-    def _get_source_model(self, cr, uid, context=None):
-        return None
-
-    def get_trimmed_message(self, cr, uid, ids, field_name, arg, context=None):
+    def _get_trimmed_message(self, cr, uid, ids, field_name, arg, context=None):
+        """
+        Return message trimmed to max 100 characters
+        """
         res = {}
-
-        logs = self.browse(cr, uid, ids, context)
-
-        for log in logs:
-            if len(log.message) > 100:
-                res[log.id] = log.message[0:100] + '...'
+        log_records = self.read(cr, uid, ids, ['message'], context)
+        for log_record in log_records:
+            message = log_record.get('message', '')
+            log_id = log_record.get('id')
+            if len(message) > 97:
+                res[log_id] = message[:97] + '...'
             else:
-                res[log.id] = log.message[0:len(log.message)]
+                res[log_id] = message
 
         return res
 
+
+    def _get_model(self, cr, uid, ids, field_name, arg=None, context=None):
+        res = {}
+        for log_record in self.read(cr, uid, ids, ['model_name']):
+            model_name = log_record.get('model_name')
+            log_id = log_record.get('id')
+            model_ids = self.pool.get('ir.model').search(cr, uid, [('name', '=', model_name)])
+            if model_ids:
+                res[log_id] = model_ids[0]
+            else:
+                res[log_id] = False
+
+    def _get_current_user(self, cr, uid, ids, field_name, arg=None, context=None):
+        res = {}
+        for log_id in ids:
+            res[log_id] = uid
+        return res
+
+    def _get_default_date(self, cr, uid, context=None):
+        current_date = datetime.utcnow()
+        return current_date.strftime('%Y-%m-%d %H:%M:%S.%f')
+
+
     _columns = {
-        'message': fields.text('Message'),
-        'date': fields.datetime('Date'),
+        'name': fields.function(_get_trimmed_message, method=True, type='char', size=100, store=True, string='Label'),
+        'message': fields.text('Message', required=True),
         'level': fields.selection([
                                       ('debug', 'Debug'),
                                       ('info', 'Information'),
@@ -84,48 +112,19 @@ class tk_log(orm.Model):
                                       ('error', 'Error'),
                                       ('fatal', 'Fatal'),
                                   ], 'Level'),
-        'model': fields.char('Model', size=64, required=True, select=1),
+
         'model_name': fields.char('Model Name', size=64),
-        'model_id': fields.integer('Record ID', select=1, help="ID of the target record in the database"),
-        'source': fields.function(_get_source_model, string="Entity concern", type='many2one', relation='ir.model'),
-        'label': fields.function(get_trimmed_message, method=True, type='char', size=100, string='Label'),
-        'user': fields.many2one('res.users', 'User'),
+        'uid': fields.many2one('res.users', 'User'),
+        'model_id': fields.many2one('ir.model', 'Model'),
+        'object_id': fields.integer('ID'),
+        'date': fields.datetime('Date')
     }
 
     _defaults = {
-        'date': lambda *a: fields.datetime.now()
+        'date': _get_default_date,
+        'uid': lambda self, cr, uid, context: uid,
+        'level': 'info'
     }
-
-    def create(self, cr, uid, value, context=None):
-        db, pool = pooler.get_db_and_pool(cr.dbname)
-        cursor = db.cursor(serialized=False)
-        cursor.autocommit(True)
-
-        log_level = self.pool.get('ir.model.data').get_object(cr, uid, 'tk_log', 'log_level')
-        if self.levels_order.get((value.get('level', 'info'))) >= self.levels_order.get(log_level.value, 1):
-            id = super(tk_log, self).create(cursor, uid, value, context)
-        else:
-            id = False
-
-        cursor.commit()
-        cursor.close()
-        return id
-
-    def remove_old_logs(self, cr, uid):
-        config_parameter_obj = self.pool.get('ir.config_parameter')
-        param = config_parameter_obj.get_param(cr, uid, 'tk_log_deletion_in_days')
-        if not param:
-            return True
-        try:
-            nb_days = int(param)
-            now = datetime.datetime.now()
-            past = now - datetime.timedelta(days=nb_days)
-            old_log_ids = self.search(cr, uid, [('date', '<', tkdt.datetime_to_string(past, '%Y-%m-%d %H:%M:%S'))])
-            if old_log_ids:
-                self.unlink(cr, uid, old_log_ids)
-        except Exception, e:
-            print e
-            return True
 
     def see_entity(self, cr, uid, ids, context):
         log = self.browse(cr, uid, ids)[0]
