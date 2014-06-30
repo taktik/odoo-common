@@ -108,7 +108,7 @@ class tk_log(orm.Model):
         'level': fields.selection([
                                       ('debug', 'Debug'),
                                       ('info', 'Information'),
-                                      ('warn', 'Warning'),
+                                      ('warning', 'Warning'),
                                       ('error', 'Error'),
                                       ('fatal', 'Fatal'),
                                   ], 'Level'),

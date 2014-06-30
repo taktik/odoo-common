@@ -50,6 +50,7 @@ class tk_pyodbc(orm.Model):
         """
         conn = self.get_connection(cr, uid, ids, context)
         conn.close()
+        raise orm.except_orm(_('Success'), _('Connection to Oscar was successful!'))
 
     _columns = {
         'name': fields.char('Name', size=64, required=True),
