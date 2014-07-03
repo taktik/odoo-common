@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="tk_import_export_sample_with_data_form_view_base" >
+			<field name="name">export.sample.with.data.view.form.base</field>
+			<field name="model">tk_import.export_sample_with_data</field>
+			<field name="type">form</field>
+			<field name="priority" eval="1" />
+			<field name="arch" type="xml">
+				<form string="Export Sample" col="8" >
+					<label string="This wizard will help you to export a sample file with all the columns you need to import data into OpenERP." colspan="8" />
+					<label string="Press &quot;Next&quot; to continue or &quot;Cancel&quot; to exit this wizard." colspan="8" />
+					<field name="separator" required="True" colspan="4"/>
+					<newline/>
+					<field name="quote_delimiter" required="True" colspan="4"/>
+					<newline/>
+					<field name="import_lang" colspan="4"/>
+					<newline />
+					<button string="Cancel" colspan="2" icon="gtk-cancel" special="cancel" />
+					<label string=" " colspan="4" />
+					<button string="Next" type="object" name="prepare_wizard" colspan="2" icon="gtk-ok" />
+				</form>
+			</field>
+		</record>
+	
+		<record model="ir.ui.view" id="tk_import_export_sample_with_data_form_view" >
+			<field name="name">export.sample.with.data.view.form</field>
+			<field name="model">tk_import.export_sample_with_data</field>
+			<field name="type">form</field>
+			<field name="priority" eval="16" />
+			<field name="arch" type="xml">
+				<form string="Export Sample" col="8" >
+					<field name="model_id" invisible="1" />
+					<field name="import_model_id" invisible="1" />
+					<label string="Select the fields you want to import." colspan="8" />
+					<field name="name" required="1" />
+					<field name="from_other_export" invisible="1" />
+					<field name="column_ids" nolabel="1" colspan="8" context="{'search_view_ref':'tk_import_export_sample_columns_search_view'}"
+						domain="[('model_id','=',model_id),('column','=',''),('wizard_id','=',active_id)]" 
+						attrs="{'invisible':[('from_other_export','=',True)]}"/>
+					<field name="use_id" attrs="{'invisible':[('from_other_export','=',True)]}"/>
+					<newline />
+					<group attrs="{'invisible':['|',('use_id','=',True),('from_other_export','=',True)]}" colspan="8" col="8" >
+						<field name="key_ids" nolabel="1" colspan="8"
+						domain="[('id','in',[id for id in column_ids[0][2]]),('type','not in',['many2one','related','one2many','many2many'])]" >
+							<tree string="Keys">
+								<field name="name" />
+								<field name="label" />
+							</tree>
+						</field>
+					</group>
+					<button string="Cancel" colspan="2" icon="gtk-cancel" special="cancel"/>
+					<label string=" " colspan="4" />
+					<button string="Next" type="object" name="prepare_values" colspan="2" icon="gtk-ok"/>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="tk_import_export_sample_with_data_form_view_step2" >
+			<field name="name">export.sample.with.data.view.form.step2</field>
+			<field name="model">tk_import.export_sample_with_data</field>
+			<field name="type">form</field>
+			<field name="priority" eval="16" />
+			<field name="arch" type="xml">
+				<form string="Export Sample" col="8" >
+					<label string="You have choosen a field that is a relation, please choose the fields you wan to import in the list below." colspan="8" />
+					<field name="current_model" />
+					<field name="column" />
+					<field name="column_ids" nolabel="1" colspan="8" 
+						domain="[('model_id','=',current_model),('column','=',column),('wizard_id','=',active_id)]"/>
+					<field name="use_id" />
+					<newline />
+					<group attrs="{'invisible':[('use_id','=',True)]}" colspan="8" col="8" >
+						<field name="key_ids" nolabel="1" colspan="8" widget="many2many_list" 
+						domain="[('id','in',[id for id in column_ids[0][2]]),('type','not in',['many2one','related','one2many','many2many'])]" >
+							<tree string="Keys">
+								<field name="name" />
+								<field name="label" />
+							</tree>
+						</field>
+					</group>
+					<button string="Cancel" colspan="2" icon="gtk-cancel" special="cancel"/>
+					<label string=" " colspan="4" />
+					<button string="Next" type="object" name="iterate" colspan="2" icon="gtk-ok"/>
+				</form>
+			</field>
+		</record>
+		
+		<record model="ir.ui.view" id="tk_import_export_sample_with_data_form_view_success" >
+			<field name="name">export.sample.with.data.view.form.success</field>
+			<field name="model">tk_import.export_sample_with_data</field>
+			<field name="type">form</field>
+			<field name="priority" eval="16" />
+			<field name="arch" type="xml">
+				<form string="Export Sample" col="8" >
+					<button string="Finish" type="object" name="finish" colspan="2" icon="gtk-ok"/>
+				</form>
+			</field>
+		</record>
+	</data>
+</openerp>
+
