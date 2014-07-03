@@ -25,7 +25,8 @@ from openerp.addons.tk_tools.tk_date_tools import tk_date_tools as tkdt
 from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime
 import logging
-
+import threading
+from openerp.modules.registry import RegistryManager
 
 logger = logging.getLogger(__name__)
 
@@ -38,10 +39,12 @@ class tk_log(orm.Model):
     def log(self, cr, uid, message, model_name=False, object_id=None, level='info'):
         # If no object we create a new cursor
         log_id = False
-        try:
-            db, pool = pooler.get_db_and_pool(cr.dbname)
-            new_cr = db.cursor()
 
+        db_name = threading.current_thread().dbname
+
+        new_cr = RegistryManager.get(db_name).cursor()
+
+        try:
             values = {
                 'message': message,
                 'level': level,
