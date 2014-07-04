@@ -58,9 +58,10 @@ class tk_log(orm.Model):
                     values.update({'model_id': model_ids[0]})
 
             log_id = self.create(new_cr, uid, values)
+            new_cr.commit()
 
         finally:
-            new_cr.commit()
+            new_cr.close()
 
         return log_id
 
