@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="tk_import_file_importer_form_view">
+            <field name="name">file.importer.view</field>
+            <field name="model">tk_import.import_file</field>
+            <field name="type">form</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="Import File" col="8">
+                    <field name="model_id" colspan="8" invisible="1"/>
+                    <field name="import_model_id" colspan="8" invisible="1"/>
+                    <field name="file" colspan="8" on_change="on_change_file(file)"/>
+                    <field name="template_id" domain="[('model_id','=',model_id)]" attrs="{'invisible':[('import_from_file','=',True)]}"/>
+                    <field name="import_name" colspan="8" attrs="{'invisible':[('import_from_file','=',True)]}"/>
+                    <group string="Options" colspan="8" col="4">
+                        <field name="import_lang" colspan="4"/>
+                        <newline/>
+                        <field name="separator" required="True" colspan="4"/>
+                        <field name="quote_delimiter" required="True" colspan="4"/>
+                        <newline/>
+                        <field name="update" colspan="2"/>
+                        <newline/>
+                        <field name="update_strict" colspan="2"/>
+                        <newline/>
+                        <field name="ignore_errors"/>
+                    </group>
+                    <button string="Cancel" special="cancel" colspan="2"/>
+                    <field name="type" readonly="1"/>
+                    <button string="Import" type="object" name="import_file" colspan="2"/>
+                    <field name="name" invisible="1"/>
+                    <field name="import_from_file" invisible="1"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_import_file_importer_form_view_step_2">
+            <field name="name">file.importer.view_step2</field>
+            <field name="model">tk_import.import_file</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Import File" col="8">
+                    <label string="Please choose the column witch will be used to identify formally a record" colspan="4"/>
+                    <newline/>
+                    <field name="current_model" readonly="1"/>
+                    <newline/>
+                    <field name="current_column" readonly="1" colspan="8"/>
+                    <newline/>
+                    <field name="available_keys" colspan="8" nolabel="1" domain="[('model_id','=', current_model),('column','=',current_column)]"/>
+                    <button string="Cancel" special="cancel" colspan="2"/>
+                    <field name="progress" widget="progressbar" colspan="2" nolabel="1"/>
+                    <button string="Previous" type="object" name="previous" colspan="2"/>
+                    <button string="Next" type="object" name="next" colspan="2"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_import_file_importer_form_view_success">
+            <field name="name">file.importer.view_success</field>
+            <field name="model">tk_import.import_file</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Import File" col="4">
+                    <label string="Your file was successfully uploaded. You can check the progress with the 'View Progress' Wizard." colspan="4"/>
+                    <button string="Finish" type="object" name="finish" colspan="2"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_import_file_importer_form_view_resume">
+            <field name="name">file.importer.view_resume</field>
+            <field name="model">tk_import.import_file</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Import File" col="8">
+                    <label string="Here is the resume of your import. You can save the configuration as a &quot;template&quot; and reuse later." colspan="8"/>
+                    <newline/>
+                    <label string="The created template will automatically be linked to your import. You can find it in the &quot;Template&quot; tab." colspan="8"/>
+                    <newline/>
+                    <field name="selected_keys" colspan="8" readonly="1" nolabel="1"/>
+                    <field name="name" invisible="1"/>
+                    <newline/>
+                    <field name="save_template" string="Save"/>
+                    <newline/>
+                    <group string="Save options" attrs="{'invisible': [('save_template','=',False)]}" colspan="8 ">
+                        <field name="template_name" string="New template name" attrs="{'required': [('save_template','=',True)]}"/>
+                    </group>
+                    <newline/>
+                    <field name="template_id" invisible="1"/>
+                    <button string="Cancel" special="cancel" colspan="2"/>
+                    <field name="progress" widget="progressbar" colspan="2" nolabel="1"/>
+                    <button string="Previous" type="object" name="previous_step" colspan="2"/>
+                    <button string="Start" type="object" name="next_step" colspan="2"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_import_file_importer_form_view_failure">
+            <field name="name">file.importer.view_failure</field>
+            <field name="model">tk_import.import_file</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Import File" col="4">
+                    <label string="There is an error with the file you uploaded." colspan="4"/>
+                    <label string="You can download the error report below." colspan="4"/>
+                    <field name="error_report"/>
+                    <field name="name" invisible="1"/>
+                    <button string="Finish" type="object" name="finish" colspan="2"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tk_import_file_importer_field_view_tree">
+            <field name="name">file.importer.field</field>
+            <field name="model">tk_import.field</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <field name="column"/>
+                <field name="name"/>
+                <field name="model_id"/>
+            </field>
+        </record>
+    </data>
+</openerp>
+

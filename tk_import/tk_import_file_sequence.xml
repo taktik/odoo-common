@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="seq_type_file_import" model="ir.sequence.type">
+            <field name="name">File Import</field>
+            <field name="code">file.import</field>
+        </record>
+
+        <record id="seq_file_import" model="ir.sequence">
+            <field name="name">File Import</field>
+            <field name="code">file.import</field>
+            <field name="prefix">import_</field>
+            <field name="suffix">.csv</field>
+            <field name="padding">5</field>
+        </record>
+        
+        <record id="seq_type_file_export" model="ir.sequence.type">
+            <field name="name">File Export</field>
+            <field name="code">file.export</field>
+        </record>
+
+        <record id="seq_file_export" model="ir.sequence">
+            <field name="name">File Export</field>
+            <field name="code">file.export</field>
+            <field name="prefix">export_</field>
+            <field name="suffix">.csv</field>
+            <field name="padding">5</field>
+        </record>
+
+    </data>
+</openerp>
