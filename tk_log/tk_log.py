@@ -158,5 +158,6 @@ class mail_thread(orm.TransientModel):
             'user': user or uid,
             'model_name': name,
         }
-        self.pool.get('tk_log.log').create(cr, uid, data, context)
+        #TODO
+        self.pool.get('tk.log').create(cr, uid, data, context)
 

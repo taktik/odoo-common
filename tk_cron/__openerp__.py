@@ -14,7 +14,7 @@
 	"depends" : ["base"],
 	"init_xml" : [],
 	"demo_xml" : [],
-	"update_xml" : [
+	"data" : [
         "view/tk_cron_view.xml",
 				],
 	"active": False,

@@ -11,7 +11,7 @@
     "depends": ["base", "tk_tools"],
     "init_xml": [],
     "demo_xml": [],
-    "update_xml": [
+    "data": [
         "tk_pyodbc_view.xml",
         "menuitem/tk_pyodbc_menuitem.xml",
     ],
