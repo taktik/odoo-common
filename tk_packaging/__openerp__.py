@@ -14,7 +14,7 @@
 	"depends" : ["base", "purchase", "stock"],
 	"init_xml" : [],
 	"demo_xml" : [],
-	"update_xml" : [
+	"data" : [
         "view/tk_purchase_view.xml",
         "view/tk_product_view.xml",
         "view/tk_stock_view.xml",
