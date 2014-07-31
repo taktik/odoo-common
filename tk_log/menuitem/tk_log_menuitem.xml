@@ -1,13 +1,13 @@
 <openerp>
     <data>
 
-        <!-- EXKi Assortment -->
+        <!-- EXKi log -->
  		<record id="tk_log_tree_form_action" model="ir.actions.act_window">
 			<field name="name">Logs</field>
 			<field name="res_model">tk.log</field>
 			<field name="view_mode">tree,form</field>
 			<field name="domain">[]</field>
-			<field name="context">{'search_default_level':'info'}</field>
+			<field name="context">{'search_default_filter_info':1}</field>
 		</record>
 
 		<menuitem name="Logging" id="tk_log_root_menuitem" sequence="3" parent="base.menu_custom"/>

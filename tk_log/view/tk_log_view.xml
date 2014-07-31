@@ -57,7 +57,7 @@
                     <filter string="Error" icon="terp-accessories-archiver" domain="[('level','=','error')]"/>
                     <filter string="Warn" icon="terp-accessories-archiver" domain="[('level','=','warn')]"/>
                     <filter string="Fatal" icon="terp-accessories-archiver" domain="[('level','=','fatal')]"/>
-                    <filter string="Info" icon="terp-accessories-archiver" domain="[('level','=','info')]"/>
+                    <filter string="Info" name="filter_info" icon="terp-accessories-archiver" domain="[('level','=','info')]"/>
                     <filter string="Debug" icon="terp-accessories-archiver" domain="[('level','=','debug')]"/>
                     <separator/>
                     <group expand='0' string='Group by...'>
