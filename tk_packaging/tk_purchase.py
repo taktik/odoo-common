@@ -105,8 +105,8 @@ class tk_purchase_order_line(orm.Model):
 
 
     _columns = {
-        'qty_packaging': fields.integer('Quantity Packaging', required=True),
-        'packaging_id': fields.many2one('product.packaging', 'Packaging', required=True),
+        'qty_packaging': fields.integer('Quantity Packaging', required=False),
+        'packaging_id': fields.many2one('product.packaging', 'Packaging', required=False),
     }
 
 tk_purchase_order_line()

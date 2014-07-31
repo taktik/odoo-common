@@ -11,7 +11,7 @@
 	"""
 	Allows you to launch a cron manually.
 	""",
-	"depends" : ["base"],
+	"depends" : ["base", "tk_log"],
 	"init_xml" : [],
 	"demo_xml" : [],
 	"data" : [

@@ -38,8 +38,6 @@ class tk_log(orm.Model):
 
     def log(self, cr, uid, message, model_name=False, object_id=None, level='info'):
         # If no object we create a new cursor
-        log_id = False
-
         db_name = threading.current_thread().dbname
 
         new_cr = RegistryManager.get(db_name).cursor()
@@ -49,14 +47,9 @@ class tk_log(orm.Model):
                 'message': message,
                 'level': level,
                 'object_id': object_id or False,
-                'uid': uid
+                'uid': uid,
+                'model_name': model_name
             }
-
-            if model_name:
-                model_ids = self.pool.get('ir.model').search(new_cr, uid, [('name', '=', model_name)])
-                if model_ids:
-                    values.update({'model_id': model_ids[0]})
-
             log_id = self.create(new_cr, uid, values)
             new_cr.commit()
 
@@ -83,28 +76,9 @@ class tk_log(orm.Model):
 
         return res
 
-
-    def _get_model(self, cr, uid, ids, field_name, arg=None, context=None):
-        res = {}
-        for log_record in self.read(cr, uid, ids, ['model_name']):
-            model_name = log_record.get('model_name')
-            log_id = log_record.get('id')
-            model_ids = self.pool.get('ir.model').search(cr, uid, [('name', '=', model_name)])
-            if model_ids:
-                res[log_id] = model_ids[0]
-            else:
-                res[log_id] = False
-
-    def _get_current_user(self, cr, uid, ids, field_name, arg=None, context=None):
-        res = {}
-        for log_id in ids:
-            res[log_id] = uid
-        return res
-
     def _get_default_date(self, cr, uid, context=None):
         current_date = datetime.utcnow()
         return current_date.strftime('%Y-%m-%d %H:%M:%S.%f')
-
 
     _columns = {
         'name': fields.function(_get_trimmed_message, method=True, type='char', size=100, store=True, string='Label'),
@@ -119,7 +93,6 @@ class tk_log(orm.Model):
 
         'model_name': fields.char('Model Name', size=64),
         'uid': fields.many2one('res.users', 'User'),
-        'model_id': fields.many2one('ir.model', 'Model'),
         'object_id': fields.integer('ID'),
         'date': fields.datetime('Date')
     }
@@ -136,28 +109,11 @@ class tk_log(orm.Model):
         return {'type': 'ir.actions.act_window',
                 'view_type': 'form',
                 'view_mode': 'form',
-                'res_model': log.model,
+                'res_model': log.model_name,
                 'context': {'init': True},
-                'res_id': log.model_id,
+                'res_id': log.object_id,
+                'target': 'current',
         }
 
 
 tk_log()
-
-
-class mail_thread(orm.TransientModel):
-    _name = 'mail.thread'
-    _inherit = 'mail.thread'
-
-    def log(self, cr, uid, id, message, level='debug', name='', model=None, user=None, context=None):
-        data = {
-            'message': message,
-            'model_id': id,
-            'model': model or self._name,
-            'level': level,
-            'user': user or uid,
-            'model_name': name,
-        }
-        #TODO
-        self.pool.get('tk.log').create(cr, uid, data, context)
-

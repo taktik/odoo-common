@@ -7,7 +7,7 @@
 			<field name="res_model">tk.log</field>
 			<field name="view_mode">tree,form</field>
 			<field name="domain">[]</field>
-			<field name="context">{}</field>
+			<field name="context">{'search_default_level':'info'}</field>
 		</record>
 
 		<menuitem name="Logging" id="tk_log_root_menuitem" sequence="3" parent="base.menu_custom"/>

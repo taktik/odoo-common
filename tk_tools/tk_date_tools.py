@@ -132,7 +132,7 @@ class tk_date_tools():
         Get hour and min from time_float used in float field with the widget float_time
         """
         if not value:
-            return False
+            return 0, 0
         min = float(value) - int(value)
         hour = str(int(value))
         min = str(int(round(min * 60)))
@@ -140,7 +140,7 @@ class tk_date_tools():
             hour = "0" + hour
         if len(min) < 2:
             min = "0" + min
-        return hour, min
+        return int(hour), int(min)
 
 
     @staticmethod
@@ -150,3 +150,9 @@ class tk_date_tools():
         """
         hour, min = tk_date_tools.get_string_from_float(value)
         return '%s:%s' % (hour, min)
+
+    @staticmethod
+    def hours_time_string(hours):
+        """ convert a number of hours (float) into a string with format '%H:%M' """
+        minutes = int(round(hours * 60))
+        return "%02d:%02d" % divmod(minutes, 60)
