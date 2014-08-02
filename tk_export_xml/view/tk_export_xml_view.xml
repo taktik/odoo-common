@@ -1,0 +1,53 @@
+<openerp>
+    <data>
+        <record id="tk_export_xml_form_view" model="ir.ui.view">
+            <field name="name">tk.export.xml.form.view</field>
+            <field name="model">tk.export.xml</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Export XML" version="7.0">
+                    <header>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-go-forward" name="export_xml" string="Export XML" type="object"/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                    </group>
+
+                    <group attrs="{'invisible':[('name', '=', False)]}">
+                        <field name="model_id" attrs="{'required':[('name', '!=', False)]}" on_change="onchange_model_id(name, model_id, context)"/>
+                        <field name="field_record_ids">
+                            <tree editable="top">
+                                <field name="field_id" readonly="1"/>
+                                <field name="field_name" readonly="1"/>
+                                <field name="field_type" readonly="1"/>
+                                <field name="field_relation" readonly="1"/>
+                                <field name="field_required" readonly="1"/>
+                                <field name="action" attrs="{'readonly':['|', ('field_required', '=', True), ('field_name', 'in', ('id', 'write_date', 'create_date'))]}"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <field name="filename" invisible="1"/>
+                        <field name="file" filename="filename" readonly="1"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="tk_export_xml_tree_view" model="ir.ui.view">
+            <field name="name">tk.export.xml.tree.view</field>
+            <field name="model">tk.export.xml</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Export XML">
+                    <field name="name"/>
+                    <field name="model_id"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="file" filename="filename" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>
