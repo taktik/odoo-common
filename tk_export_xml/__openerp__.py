@@ -8,7 +8,7 @@
     "category": "Generic Modules/Others",
     "website": "http://www.taktik.be",
     "description": "Taktik ",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "tk_tools"],
     "init_xml": [],
     "demo_xml": [],
     "data": [
