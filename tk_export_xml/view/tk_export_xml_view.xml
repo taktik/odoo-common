@@ -24,7 +24,8 @@
                                 <field name="field_type" readonly="1"/>
                                 <field name="field_relation" readonly="1"/>
                                 <field name="field_required" readonly="1"/>
-                                <field name="action"/>
+                                <field name="export_id" invisible="1"/>
+                                <field name="action" on_change="onchange_action(action, export_id)"/>
                             </tree>
                         </field>
                     </group>
