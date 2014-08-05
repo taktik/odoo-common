@@ -7,7 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Export XML" version="7.0">
                     <header>
-                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-go-forward" name="export_xml" string="Export XML" type="object"/>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-go-forward" name="export_xml" string="Export XML" type="object" class="oe_highlight"/>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="terp-gtk-stop" name="set_all_to_ignore" string="Ignore All" type="object"/>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-execute" name="set_all_to_run" string="Run All" type="object"/>
                     </header>
                     <group>
                         <field name="name"/>

@@ -93,7 +93,7 @@ class tk_export_xml(orm.Model):
         for key in dico.keys():
             record = etree.Element('record', id=key.split(',')[0], model=key.split(',')[1])
             for field_key in dico[key]:
-                value = str(dico[key][field_key])
+                value = str(dico[key][field_key]).encode('iso-8859-1')
                 if 'ref(\'__export__' in value:
                     field = etree.Element('field', name=field_key, eval=value)
                 elif '__export__' in value:
@@ -116,6 +116,22 @@ class tk_export_xml(orm.Model):
         import pprint; pp = pprint.PrettyPrinter(indent=4);pp.pprint(dico)
         print xml
         print '-----------------------------------------'
+        return True
+
+    def set_all_to_ignore(self, cr, uid, ids, context=None):
+        query = '''
+            UPDATE tk_field_record SET action = 'ignore' where export_id = any(%s)
+        '''
+        cr.execute(query, (ids, ))
+        cr.commit()
+        return True
+
+    def set_all_to_run(self, cr, uid, ids, context=None):
+        query = '''
+            UPDATE tk_field_record SET action = 'run_classic' where export_id = any(%s)
+        '''
+        cr.execute(query, (ids, ))
+        cr.commit()
         return True
 
     def onchange_model_id(self, cr, uid, ids, name, model_id, context=None):
