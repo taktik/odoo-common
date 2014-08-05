@@ -70,6 +70,8 @@ class tk_export_xml(orm.Model):
                         document[export_id][field_name] = FORMAT_ID % (field_relation.replace('.', '_'), value[0])
                     elif type(value).__name__ == 'list':
                         document[export_id][field_name] = '[' + ','.join(map(lambda x: '(4, ref(\'__export__%s_%s\'))' % (field_relation.replace('.', '_'), x), value)) + ']'
+                    elif type(value).__name__ == 'bool':
+                        document[export_id][field_name] = 'bool,%s' % value
                     else:
                         document[export_id][field_name] = value
 
@@ -95,11 +97,22 @@ class tk_export_xml(orm.Model):
             for field_key in dico[key]:
                 if not dico[key][field_key]:
                     continue
+                print '----------'
+                print key
+                print field_key
+                print dico[key][field_key]
+                print '----------'
                 value = u'' + dico[key][field_key]
                 if 'ref(\'__export__' in value:
                     field = etree.Element('field', name=field_key, eval=value)
                 elif '__export__' in value:
                     field = etree.Element('field', name=field_key, ref=value)
+                elif 'bool,' in value:
+                    value = value.split(',')[1]
+                    if value == 'True':
+                        field = etree.Element('field', name=field_key, eval=value)
+                    else:
+                        continue
                 else:
                     field = etree.Element('field', name=field_key)
                     field.text = value or ''
