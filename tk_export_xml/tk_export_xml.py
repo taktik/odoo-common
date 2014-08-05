@@ -93,6 +93,8 @@ class tk_export_xml(orm.Model):
         for key in dico.keys():
             record = etree.Element('record', id=key.split(',')[0], model=key.split(',')[1])
             for field_key in dico[key]:
+                if not dico[key][field_key]:
+                    continue
                 value = u'' + dico[key][field_key]
                 if 'ref(\'__export__' in value:
                     field = etree.Element('field', name=field_key, eval=value)
