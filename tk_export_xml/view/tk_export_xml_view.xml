@@ -18,6 +18,7 @@
                     <group attrs="{'invisible':[('name', '=', False)]}">
                         <field name="model_id" attrs="{'required':[('name', '!=', False)]}" on_change="onchange_model_id(name, model_id, context)"/>
                         <field name="domain_custom"/>
+                        <field name="fetch_existant"/>
                         <field name="field_record_ids">
                             <tree editable="top"  colors="grey:action=='ignore';green:action=='run_classic';blue:action=='run_children'">
                                 <field name="field_id" readonly="1"/>
@@ -26,7 +27,7 @@
                                 <field name="field_relation" readonly="1"/>
                                 <field name="field_required" readonly="1"/>
                                 <field name="export_id" invisible="1"/>
-                                <field name="action" on_change="onchange_action(action, export_id)"/>
+                                <field name="action"/>
                             </tree>
                         </field>
                     </group>

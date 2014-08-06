@@ -71,9 +71,14 @@ class tk_export_xml(orm.Model):
                 # Check if present in xml data
                 xml_ids = data_obj.search(cr, uid, [('model', '=', export.model_id.model), ('res_id', '=', data_record.get('id'))], limit=1)
                 if xml_ids:
-                    continue
+                    if export.fetch_existant:
+                        xml_data = data_obj.browse(cr, uid, xml_ids[0])
+                        export_id = '%s.%s,%s' % (xml_data.module, xml_data.name,export.model_id.model)
+                    else:
+                        continue
+                else:
+                    export_id = FORMAT_ID % (export.model_id.model.replace('.', '_'), '%s,%s' %(data_record.get('id'), export.model_id.model))
 
-                export_id = FORMAT_ID % (export.model_id.model.replace('.', '_'), '%s,%s' %(data_record.get('id'), export.model_id.model))
                 logger.debug('Try to export %s' % export_id)
                 if export_id in document.keys():
                     continue
@@ -302,8 +307,8 @@ class tk_export_xml(orm.Model):
         'field_record_ids': fields.one2many('tk.field.record', 'export_id', string='Records'),
         'file': fields.binary('File'),
         'filename': fields.char('Filename', size=128),
-        'refresh': fields.datetime('Refresh'),
         'domain_custom': fields.char('Domain', size=255),
+        'fetch_existant': fields.boolean('Fetch also in ir.model.data')
     }
 
     _defaults = {
@@ -361,15 +366,6 @@ class tk_field_record(orm.Model):
         else:
             return False
 
-    def onchange_action(self, cr, uid, ids, action, export_id, context=None):
-        self.pool.get('tk.export.xml').write(cr, uid, [export_id], {})
-
-    def write(self, cr, uid, ids, vals, context):
-        for record in self.browse(cr, uid, ids):
-            if record.export_id.id:
-                print 'refresh %s' % str(record.export_id.id)
-                self.pool.get('tk.export.xml').write(cr, uid, [record.export_id.id], {'refresh': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)})
-        return super(tk_field_record, self).write(cr, uid, ids, vals, context=context)
 
     _columns = {
         'export_id': fields.many2one('tk.export.xml', string='Export', required=False),
