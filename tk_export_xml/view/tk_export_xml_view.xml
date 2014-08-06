@@ -7,7 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Export XML" version="7.0">
                     <header>
-                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-go-forward" name="export_xml" string="Export XML" type="object"/>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-go-forward" name="export_xml" string="Export XML" type="object" class="oe_highlight"/>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="terp-gtk-stop" name="set_all_to_ignore" string="Ignore All" type="object"/>
+                        <button attrs="{'invisible': ['|',('name','=',False),('model_id','=',False)]}" icon="gtk-execute" name="set_all_to_run" string="Run All" type="object"/>
                     </header>
                     <group>
                         <field name="name"/>
@@ -16,13 +18,14 @@
                     <group attrs="{'invisible':[('name', '=', False)]}">
                         <field name="model_id" attrs="{'required':[('name', '!=', False)]}" on_change="onchange_model_id(name, model_id, context)"/>
                         <field name="field_record_ids">
-                            <tree editable="top">
+                            <tree editable="top"  colors="grey:action=='ignore';green:action=='run_classic';blue:action=='run_children'">
                                 <field name="field_id" readonly="1"/>
                                 <field name="field_name" readonly="1"/>
                                 <field name="field_type" readonly="1"/>
                                 <field name="field_relation" readonly="1"/>
                                 <field name="field_required" readonly="1"/>
-                                <field name="action" attrs="{'readonly':['|', ('field_required', '=', True), ('field_name', 'in', ('id', 'write_date', 'create_date'))]}"/>
+                                <field name="export_id" invisible="1"/>
+                                <field name="action" on_change="onchange_action(action, export_id)"/>
                             </tree>
                         </field>
                     </group>

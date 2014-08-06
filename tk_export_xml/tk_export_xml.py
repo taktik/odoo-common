@@ -39,23 +39,33 @@ FORMAT_ID = '__export__%s_%s'
 class tk_export_xml(orm.Model):
     _name = 'tk.export.xml'
 
-    def _generate_dico(self, cr, uid, ids, document={}, context=None):
+    def _generate_dico(self, cr, uid, ids, context=None):
         # Objects
         field_obj = self.pool.get('ir.model.fields')
-        record_obj = self.pool.get('tk.field.record')
+        data_obj = self.pool.get('ir.model.data')
+
+        document = {}
 
         for export in self.browse(cr, uid, ids, context=context):
             data_ids = self.pool.get(export.model_id.model).search(cr, uid, [], context=context)
 
-            field_names = []
-            for record in export.field_record_ids:
-                if record.action in ['run_classic', 'run_recursive']:
-                    field_names.append(record.field_id.name)
+
+            query = '''
+                select name from ir_model_fields f, tk_field_record r
+                where f.id = r.field_id
+                and r.action in ('run_classic', 'run_recursive')
+                and export_id = %s
+            '''
+            cr.execute(query, (export.id, ))
+            field_names = map(lambda x: x[0], cr.fetchall())
 
 
+
+            logger.debug(str(field_names))
 
             for data_record in self.pool.get(export.model_id.model).read(cr, uid, data_ids, field_names, context=context):
                 export_id = FORMAT_ID % (export.model_id.model.replace('.', '_'), '%s,%s' %(data_record.get('id'), export.model_id.model))
+                logger.debug('Try to export %s' % export_id)
                 if export_id in document.keys():
                     continue
                 document[export_id]= {}
@@ -67,37 +77,81 @@ class tk_export_xml(orm.Model):
                     field_relation = field_obj.read(cr, uid, field_id, ['relation']).get('relation')
 
                     if type(value).__name__ == 'tuple':
-                        document[export_id][field_name] = FORMAT_ID % (field_relation.replace('.', '_'), value[0])
+                        res_id = value[0]
+                        data_ids = data_obj.search(cr, uid, [('model', '=', field_relation), ('res_id', '=', res_id)], limit=1)
+                        if data_ids:
+                            data = data_obj.browse(cr, uid, data_ids[0])
+                            if data.module != '__export__':
+                                value = '__xml_data__%s.%s' % (data.module, data.name)
+                            else:
+                                value = FORMAT_ID % (field_relation.replace('.', '_'), value[0])
+                        else:
+                            value = FORMAT_ID % (field_relation.replace('.', '_'), value[0])
+                        document[export_id][field_name] = value
+
                     elif type(value).__name__ == 'list':
-                        document[export_id][field_name] = '[' + ','.join(map(lambda x: '(4, ref(\'__export__%s_%s\'))' % (field_relation.replace('.', '_'), x), value)) + ']'
+                        result = '['
+                        for res_id in value:
+                            data_ids = data_obj.search(cr, uid, [('model', '=', field_relation), ('res_id', '=', res_id)], limit=1)
+                            if data_ids:
+                                data = data_obj.browse(cr, uid, data_ids[0])
+                                if data.module != '__export__':
+                                    ref = 'ref(\'__xml_data__%s.%s\')' % (data.module, data.name)
+                                else:
+                                    ref = 'ref(\'__export__%s_%s\')' % (field_relation.replace('.', '_'), res_id)
+                            else:
+                                ref = 'ref(\'__export__%s_%s\')' % (field_relation.replace('.', '_'), res_id)
+
+                            result += '(4, %s)' % ref
+
+                        result += ']'
+                        document[export_id][field_name] = result
+                    elif type(value).__name__ == 'bool':
+                        document[export_id][field_name] = 'bool,%s' % value
+                    elif type(value).__name__ in ['int', 'float']:
+                        document[export_id][field_name] = str(value)
                     else:
                         document[export_id][field_name] = value
 
-                    if field_relation:
-                        record_ids = record_obj.search(cr, uid, [('export_id', '=', export.id), ('field_id', '=', field_id)])
-                        record = record_obj.browse(cr, uid, record_ids[0])
-                        if field_relation != export.model_id.model and record.action == 'run_recursive':
-                            other_export_ids = self.search(cr, uid, [('model_id', '=', record.field_id.model_id.id)])
-                            if other_export_ids:
-                                document.update(self._generate_dico(cr, uid, other_export_ids, document=document, context=context))
 
 
         return document
 
     def export_xml(self, cr, uid, ids, context=None):
+        dico = False
+        self.write(cr, uid, ids, {
+            'file': False,
+            'filename': '',
+        })
+
         dico = self._generate_dico(cr, uid, ids, context=context)
 
         openerp = etree.Element('openerp')
-        data = etree.Element('data', noupdate="0")
+        data = etree.Element('data', noupdate="1")
 
         for key in dico.keys():
             record = etree.Element('record', id=key.split(',')[0], model=key.split(',')[1])
             for field_key in dico[key]:
+                if not dico[key][field_key]:
+                    continue
+                print '----------'
+                print key
+                print field_key
+                print dico[key][field_key]
+                print '----------'
                 value = u'' + dico[key][field_key]
-                if 'ref(\'__export__' in value:
-                    field = etree.Element('field', name=field_key, eval=value)
+                if 'ref(\'__export__' in value or 'ref(\'__xml_data__' in value:
+                    field = etree.Element('field', name=field_key, eval=value.replace('__xml_data__',''))
                 elif '__export__' in value:
                     field = etree.Element('field', name=field_key, ref=value)
+                elif '__xml_data__' in value:
+                    field = etree.Element('field', name=field_key, ref=value.replace('__xml_data__',''))
+                elif 'bool,' in value:
+                    value = value.split(',')[1]
+                    if value == 'True':
+                        field = etree.Element('field', name=field_key, eval=value)
+                    else:
+                        continue
                 else:
                     field = etree.Element('field', name=field_key)
                     field.text = value or ''
@@ -116,6 +170,22 @@ class tk_export_xml(orm.Model):
         import pprint; pp = pprint.PrettyPrinter(indent=4);pp.pprint(dico)
         print xml
         print '-----------------------------------------'
+        return True
+
+    def set_all_to_ignore(self, cr, uid, ids, context=None):
+        query = '''
+            UPDATE tk_field_record SET action = 'ignore' where export_id = any(%s)
+        '''
+        cr.execute(query, (ids, ))
+        cr.commit()
+        return True
+
+    def set_all_to_run(self, cr, uid, ids, context=None):
+        query = '''
+            UPDATE tk_field_record SET action = 'run_classic' where export_id = any(%s)
+        '''
+        cr.execute(query, (ids, ))
+        cr.commit()
         return True
 
     def onchange_model_id(self, cr, uid, ids, name, model_id, context=None):
@@ -221,6 +291,7 @@ class tk_export_xml(orm.Model):
         'field_record_ids': fields.one2many('tk.field.record', 'export_id', string='Records'),
         'file': fields.binary('File'),
         'filename': fields.char('Filename', size=128),
+        'refresh': fields.datetime('Refresh')
     }
 
     _defaults = {
@@ -276,6 +347,16 @@ class tk_field_record(orm.Model):
             return True
         else:
             return False
+
+    def onchange_action(self, cr, uid, ids, action, export_id, context=None):
+        self.pool.get('tk.export.xml').write(cr, uid, [export_id], {})
+
+    def write(self, cr, uid, ids, vals, context):
+        for record in self.browse(cr, uid, ids):
+            if record.export_id.id:
+                print 'refresh %s' % str(record.export_id.id)
+                self.pool.get('tk.export.xml').write(cr, uid, [record.export_id.id], {'refresh': datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)})
+        return super(tk_field_record, self).write(cr, uid, ids, vals, context=context)
 
     _columns = {
         'export_id': fields.many2one('tk.export.xml', string='Export', required=False),
