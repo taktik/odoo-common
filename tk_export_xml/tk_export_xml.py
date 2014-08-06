@@ -44,11 +44,9 @@ class tk_export_xml(orm.Model):
         field_obj = self.pool.get('ir.model.fields')
         data_obj = self.pool.get('ir.model.data')
 
-        document = {}
+        document = OrderedDict()
 
         for export in self.browse(cr, uid, ids, context=context):
-            data_ids = self.pool.get(export.model_id.model).search(cr, uid, [], context=context)
-
 
             query = '''
                 select name from ir_model_fields f, tk_field_record r
@@ -58,6 +56,15 @@ class tk_export_xml(orm.Model):
             '''
             cr.execute(query, (export.id, ))
             field_names = map(lambda x: x[0], cr.fetchall())
+
+            if 'parent_id' in field_names:
+                print 'youhou'
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, [], context=context, order='parent_id DESC')
+            else:
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, [], context=context)
+
+
+
 
 
 
@@ -117,6 +124,10 @@ class tk_export_xml(orm.Model):
 
         return document
 
+    @staticmethod
+    def getItemLevel(item):
+            return item.getElementsByTagName("parent_id")[0].data
+
     def export_xml(self, cr, uid, ids, context=None):
         dico = False
         self.write(cr, uid, ids, {
@@ -128,6 +139,7 @@ class tk_export_xml(orm.Model):
 
         openerp = etree.Element('openerp')
         data = etree.Element('data', noupdate="1")
+        data_keys = []
 
         for key in dico.keys():
             record = etree.Element('record', id=key.split(',')[0], model=key.split(',')[1])
@@ -144,6 +156,7 @@ class tk_export_xml(orm.Model):
                     field = etree.Element('field', name=field_key, eval=value.replace('__xml_data__',''))
                 elif '__export__' in value:
                     field = etree.Element('field', name=field_key, ref=value)
+                    data_keys.append((value, field))
                 elif '__xml_data__' in value:
                     field = etree.Element('field', name=field_key, ref=value.replace('__xml_data__',''))
                 elif 'bool,' in value:
@@ -158,6 +171,8 @@ class tk_export_xml(orm.Model):
                 record.append(field)
             data.append(record)
         openerp.append(data)
+
+
         xml = etree.tostring(openerp, encoding='UTF-8', xml_declaration=True, pretty_print=True)
         data = base64.encodestring(xml)
         self.write(cr, uid, ids, {
@@ -165,13 +180,7 @@ class tk_export_xml(orm.Model):
             'filename': 'last_export.xml',
         })
 
-
-        print '-----------------------------------------'
-        import pprint; pp = pprint.PrettyPrinter(indent=4);pp.pprint(dico)
-        print xml
-        print '-----------------------------------------'
         return True
-
     def set_all_to_ignore(self, cr, uid, ids, context=None):
         query = '''
             UPDATE tk_field_record SET action = 'ignore' where export_id = any(%s)
