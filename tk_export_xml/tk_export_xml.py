@@ -68,6 +68,11 @@ class tk_export_xml(orm.Model):
             logger.debug(str(field_names))
 
             for data_record in self.pool.get(export.model_id.model).read(cr, uid, data_ids, field_names, context=context):
+                # Check if present in xml data
+                xml_ids = data_obj.search(cr, uid, [('model', '=', export.model_id.model), ('res_id', '=', data_record.get('id'))], limit=1)
+                if xml_ids:
+                    continue
+
                 export_id = FORMAT_ID % (export.model_id.model.replace('.', '_'), '%s,%s' %(data_record.get('id'), export.model_id.model))
                 logger.debug('Try to export %s' % export_id)
                 if export_id in document.keys():
