@@ -31,6 +31,7 @@ from lxml import etree
 from operator import itemgetter
 from collections import OrderedDict
 import base64
+from ast import literal_eval
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,7 @@ class tk_export_xml(orm.Model):
         document = OrderedDict()
 
         for export in self.browse(cr, uid, ids, context=context):
+            domain = literal_eval(export.domain_custom) or []
 
             query = '''
                 select name from ir_model_fields f, tk_field_record r
@@ -58,14 +60,9 @@ class tk_export_xml(orm.Model):
             field_names = map(lambda x: x[0], cr.fetchall())
 
             if 'parent_id' in field_names:
-                print 'youhou'
-                data_ids = self.pool.get(export.model_id.model).search(cr, uid, [], context=context, order='parent_id DESC')
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, order='parent_id DESC')
             else:
-                data_ids = self.pool.get(export.model_id.model).search(cr, uid, [], context=context)
-
-
-
-
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context)
 
 
             logger.debug(str(field_names))
@@ -300,10 +297,12 @@ class tk_export_xml(orm.Model):
         'field_record_ids': fields.one2many('tk.field.record', 'export_id', string='Records'),
         'file': fields.binary('File'),
         'filename': fields.char('Filename', size=128),
-        'refresh': fields.datetime('Refresh')
+        'refresh': fields.datetime('Refresh'),
+        'domain_custom': fields.char('Domain', size=255),
     }
 
     _defaults = {
+        'domain_custom': "['|', ('active', '=','False'), ('active', '=','True')]"
     }
 
 
