@@ -17,6 +17,15 @@ class taktik_importer_backend(orm.Model):
         """
         return [('1.0.0', '1.0.0')]
 
+
+    def _delimiter(self, cr, uid, context=None):
+        return [(',', 'Comma'),
+                (';', 'Semicolon'),
+                ('\t', 'Tab'),
+                (' ', 'Space'),
+        ]
+
+
     _defaults = {
         'version': '1.0.0',
         'quoting': '"',
@@ -30,7 +39,7 @@ class taktik_importer_backend(orm.Model):
         'key': fields.many2many('ir.model.fields', 'model_fields_backend_importer_rel', 'importer_backend_id', 'ir_model_fields_id', 'Key'),
         'file': fields.binary('File'),
         'quoting': fields.char('Quoting', size=1, required=True),
-        'delimiter': fields.char('Delimiter', size=1, required=True),
+        'delimiter': fields.selection(_delimiter, string='Delimiter', required=True),
         'encoding': fields.char('Encoding', size=10, required=True),
     }
 

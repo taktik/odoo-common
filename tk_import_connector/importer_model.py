@@ -52,7 +52,7 @@ class taktik_importer_model(orm.Model):
         'res_model': fields.many2one('ir.model', string='Model'),
     }
 
-    def __get_fields(self, cr, uid, model, context=None, depth=FIELDS_RECURSION_LIMIT):
+    def get_fields(self, cr, uid, model, context=None, depth=FIELDS_RECURSION_LIMIT):
 
         model_obj = self.pool[model]
         fields = {}
@@ -88,6 +88,7 @@ class taktik_importer_model(orm.Model):
                 'string': field['string'],
                 'required': bool(field.get('required')),
                 'fields': [],
+                'type': field['type']
             }
 
             if field.get('relation', False):
@@ -99,41 +100,82 @@ class taktik_importer_model(orm.Model):
                     dict(f, name='.id', string="Database ID"),
                 ]
             elif field['type'] == 'one2many' and depth:
-                f['fields'] = self.__get_fields(cr, uid, field['relation'], context=context, depth=depth - 1)
+                f['fields'] = self.get_fields(cr, uid, field['relation'], context=context, depth=depth - 1)
 
             fields[f.get('id')] = f
 
         return fields
 
-    def __get_data(self, cr, uid, fields, columns, row, context=None):
+    def __get_data(self, cr, uid, header, columns, row):
         to_save = {}
-        for index, _r in enumerate(fields):
-            if '/' in _r:
-                col = _r.split('/')
-                ids = self.pool.get(columns.get(col[0]).get('relation')).search(cr, uid, [(col[1], '=', row[index])])
+        for index, header_item in enumerate(header):
+            if '/' in header_item:
+
+                col = header_item.split('/', 1)
+                entity = columns.get(col[0]).get('relation')
+
+                domain_search = []
+                if '[' in col[1] and ']' in col[1]:
+                    key_composite = col[1]
+                    key_composite = key_composite[key_composite.index('[') + 1:len(key_composite) - 1]
+                    key_composite = key_composite.split('|')
+                    value_composite = row[index].split('|')
+                    for _i, _k in enumerate(key_composite):
+                        if '/' in _k:
+                            _k_composite = _k.split('/')
+                            _k_fields = self.pool.get('taktik.importer.model').get_fields(cr, uid, entity)
+                            _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [(_k_composite[1], '=', value_composite[_i])])[0]
+                            domain_search.append((_k_composite[0], '=', _id))
+                        else:
+                            domain_search.append((_k, '=', value_composite[_i]))
+                    if len(domain_search) > 1:
+                        _found = self.pool.get(entity).search(cr, uid, domain_search)
+                        the_id = False
+                        if len(_found):
+                            the_id = _found[0]
+                        domain_search = [(col[0], 'in', [the_id])]
+                else:
+                    domain_search = [(col[1], '=', row[index])]
+
+                ids = self.pool.get(entity).search(cr, uid, domain_search)
                 if len(ids):
-                    to_save[col[0]] = ids[0]
+                    if columns.get(col[0]).get('type') in ('many2many', 'one2many'):
+                        to_save[col[0]] = [(4, ids[0])]
+                    else:
+                        to_save[col[0]] = ids[0]
                 else:
                     to_save[col[0]] = False
             else:
-                to_save[_r] = row[index]
+                to_save[header_item] = row[index]
         return to_save
+
+    def __check_key(self, keys, columns, values):
+        key_domain = []
+        for key in keys:
+            if columns.get(key).get('type') in ('many2many', 'one2many'):
+                key_domain.append((key, 'in', [values.get(key)[0][1]]))
+            else:
+                key_domain.append((key, '=', values.get(key)))
+        return key_domain
 
     def import_data(self, cr, uid, data):
         model = data[0]
-        # TODO Check key composite
-        keys = data[1][0]
-        fields = data[2]
+        header = data[2]
         row = data[3]
-        columns = self.__get_fields(cr, uid, model)
+        keys = data[1]
 
-        to_save = self.__get_data(cr, uid, fields, columns, row)
+        columns = self.get_fields(cr, uid, model)
+        to_save = self.__get_data(cr, uid, header, columns, row)
+        domain = self.__check_key(keys, columns, to_save)
 
-        ids = self.pool.get(model).search(cr, uid, [(keys, '=', to_save.get(keys, False))])
-        if len(ids):
-            return self.pool.get(model).write(cr, uid, ids[0], to_save)
-        else:
+        if len(domain) == 0:
             return self.pool.get(model).create(cr, uid, to_save)
+        else:
+            ids = self.pool.get(model).search(cr, uid, domain)
+            if len(ids):
+                return self.pool.get(model).write(cr, uid, ids[0], to_save)
+            else:
+                return self.pool.get(model).create(cr, uid, to_save)
 
 
 @taktik_importer_backend
@@ -148,39 +190,26 @@ class TomraBatchImport(DelayedBatchImport):
         encoding = record.encoding
         return itertools.imap(lambda row: [item.decode(encoding) for item in row], csv_nonempty)
 
-    def __check_key(self):
-        key_domain = []
-        keys = self.environment.backend_record.key
-        for key in keys:
-            key_domain.append(key.name)
-        return key_domain
-
-
     def _run(self, data=None):
         """ Run the synchronization """
 
-        # cr = self.session.cr
-        # uid = self.session.uid
-        # model = self.environment.backend_record.model_id.model
-
         self.rows = self.__parse_file()
-        self.keys = self.__check_key()
-        # self.columns = self.__get_fields(cr, uid, model)
 
-        fields = []
+        header = []
         _list = []
         for index, row in enumerate(self.rows):
             if index == 0:
-                fields = row
+                header = row
             else:
                 # model
                 _list.append(self.environment.backend_record.model_id.model)
 
                 # keys
-                _list.append(self.keys)
+                keys = [x.name for x in self.environment.backend_record.key]
+                _list.append(keys)
 
-                # fields
-                _list.append(fields)
+                # header
+                _list.append(header)
 
                 # row
                 _list.append(row)
