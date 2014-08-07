@@ -72,15 +72,6 @@ class taktik_importer_model(orm.Model):
             # be absent or False to mean not-deprecated
             if field.get('deprecated', False) is not False:
                 continue
-            if field.get('readonly'):
-                states = field.get('states')
-                if not states:
-                    continue
-                # states = {state: [(attr, value), (attr2, value2)], state2:...}
-                if not any(attr == 'readonly' and value is False
-                           for attr, value in itertools.chain.from_iterable(
-                        states.itervalues())):
-                    continue
 
             f = {
                 'id': name,
@@ -124,20 +115,14 @@ class taktik_importer_model(orm.Model):
                         if '/' in _k:
                             _k_composite = _k.split('/')
                             _k_fields = self.pool.get('taktik.importer.model').get_fields(cr, uid, entity)
-                            _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [(_k_composite[1], '=', value_composite[_i])])[0]
+                            _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [(_k_composite[1], '=', value_composite[_i])], context={'active_test': False})[0]
                             domain_search.append((_k_composite[0], '=', _id))
                         else:
                             domain_search.append((_k, '=', value_composite[_i]))
-                    if len(domain_search) > 1:
-                        _found = self.pool.get(entity).search(cr, uid, domain_search)
-                        the_id = False
-                        if len(_found):
-                            the_id = _found[0]
-                        domain_search = [(col[0], 'in', [the_id])]
                 else:
                     domain_search = [(col[1], '=', row[index])]
 
-                ids = self.pool.get(entity).search(cr, uid, domain_search)
+                ids = self.pool.get(entity).search(cr, uid, domain_search, context={'active_test': False})
                 if len(ids):
                     if columns.get(col[0]).get('type') in ('many2many', 'one2many'):
                         to_save[col[0]] = [(4, ids[0])]
@@ -171,7 +156,7 @@ class taktik_importer_model(orm.Model):
         if len(domain) == 0:
             return self.pool.get(model).create(cr, uid, to_save)
         else:
-            ids = self.pool.get(model).search(cr, uid, domain)
+            ids = self.pool.get(model).search(cr, uid, domain, context={'active_test': False})
             if len(ids):
                 return self.pool.get(model).write(cr, uid, ids[0], to_save)
             else:
