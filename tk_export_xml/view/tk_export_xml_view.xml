@@ -45,10 +45,10 @@
 
 
 
-                    <footer>
+                    <group string="Reporting" colspan="4">
                         <field name="filename" invisible="1"/>
                         <field name="file" filename="filename" readonly="1"/>
-                    </footer>
+                    </group>
                 </form>
             </field>
         </record>

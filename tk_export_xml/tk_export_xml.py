@@ -49,88 +49,90 @@ class tk_export_xml(orm.Model):
 
         document = OrderedDict()
 
-        for export in self.browse(cr, uid, ids, context=context):
-            domain = literal_eval(export.domain_custom) or []
+        export = self.browse(cr, uid, ids[0], context=context)
 
-            query = '''
-                select name from ir_model_fields f, tk_field_record r
-                where f.id = r.field_id
-                and r.action = 'enabled'
-                and export_id = %s
-            '''
-            cr.execute(query, (export.id, ))
-            field_names = map(lambda x: x[0], cr.fetchall())
 
-            if 'parent_id' in field_names:
-                if export.limit > 0:
-                    data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, order='parent_id DESC', limit=export.limit)
-                else:
-                    data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, order='parent_id DESC')
+
+        domain = literal_eval(export.domain_custom) or []
+
+        query = '''
+            select name from ir_model_fields f, tk_field_record r
+            where f.id = r.field_id
+            and r.action = 'enabled'
+            and export_id = %s
+        '''
+        cr.execute(query, (export.id, ))
+        field_names = map(lambda x: x[0], cr.fetchall())
+
+        if 'parent_id' in field_names:
+            if export.limit > 0:
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, order='parent_id DESC', limit=export.limit)
             else:
-                if export.limit > 0:
-                    data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, limit=export.limit)
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, order='parent_id DESC')
+        else:
+            if export.limit > 0:
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context, limit=export.limit)
+            else:
+                data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context)
+
+        logger.debug(str(field_names))
+
+        for data_record in self.pool.get(export.model_id.model).read(cr, uid, data_ids, field_names, context=context):
+            # Check if present in xml data
+            xml_ids = data_obj.search(cr, uid, [('model', '=', export.model_id.model), ('res_id', '=', data_record.get('id'))], limit=1)
+            if xml_ids:
+                if export.fetch_existant:
+                    xml_data = data_obj.browse(cr, uid, xml_ids[0])
+                    export_id = '%s.%s,%s' % (xml_data.module, xml_data.name, export.model_id.model)
                 else:
-                    data_ids = self.pool.get(export.model_id.model).search(cr, uid, domain, context=context)
-
-            logger.debug(str(field_names))
-
-            for data_record in self.pool.get(export.model_id.model).read(cr, uid, data_ids, field_names, context=context):
-                # Check if present in xml data
-                xml_ids = data_obj.search(cr, uid, [('model', '=', export.model_id.model), ('res_id', '=', data_record.get('id'))], limit=1)
-                if xml_ids:
-                    if export.fetch_existant:
-                        xml_data = data_obj.browse(cr, uid, xml_ids[0])
-                        export_id = '%s.%s,%s' % (xml_data.module, xml_data.name, export.model_id.model)
-                    else:
-                        continue
-                else:
-                    export_id = FORMAT_ID % (export.model_id.model.replace('.', '_'), '%s,%s' % (data_record.get('id'), export.model_id.model))
-
-                logger.debug('Try to export %s' % export_id)
-                if export_id in document.keys():
                     continue
-                document[export_id] = {}
-                for field_name in field_names:
-                    value = data_record.get(field_name)
+            else:
+                export_id = FORMAT_ID % (export.model_id.model.replace('.', '_'), '%s,%s' % (data_record.get('id'), export.model_id.model))
 
-                    # Get info on relation
-                    if export.model_id.model == 'product.product':
-                        field_id = field_obj.search(cr, uid, [('name', '=', field_name), ('model_id', 'in', [export.model_id.id, model_obj.search(cr, uid, [('model', '=', 'product.template')])[0]])], limit=1)[0]
+            logger.debug('Try to export %s' % export_id)
+            if export_id in document.keys():
+                continue
+            document[export_id] = {}
+            for field_name in field_names:
+                value = data_record.get(field_name)
+
+                # Get info on relation
+                if export.model_id.model == 'product.product':
+                    field_id = field_obj.search(cr, uid, [('name', '=', field_name), ('model_id', 'in', [export.model_id.id, model_obj.search(cr, uid, [('model', '=', 'product.template')])[0]])], limit=1)[0]
+                else:
+                    field_id = field_obj.search(cr, uid, [('name', '=', field_name), ('model_id', '=', export.model_id.id)], limit=1)[0]
+                field_relation = field_obj.read(cr, uid, field_id, ['relation']).get('relation')
+
+                if type(value).__name__ == 'tuple':
+                    res_id = value[0]
+                    data_ids = data_obj.search(cr, uid, [('model', '=', field_relation), ('res_id', '=', res_id)], limit=1)
+                    if data_ids:
+                        data = data_obj.browse(cr, uid, data_ids[0])
+                        value = '__xml_data__%s.%s' % (data.module, data.name)
                     else:
-                        field_id = field_obj.search(cr, uid, [('name', '=', field_name), ('model_id', '=', export.model_id.id)], limit=1)[0]
-                    field_relation = field_obj.read(cr, uid, field_id, ['relation']).get('relation')
+                        value = FORMAT_ID % (field_relation.replace('.', '_'), value[0])
+                    document[export_id][field_name] = value
 
-                    if type(value).__name__ == 'tuple':
-                        res_id = value[0]
+                elif type(value).__name__ == 'list':
+                    result = '['
+                    for res_id in value:
                         data_ids = data_obj.search(cr, uid, [('model', '=', field_relation), ('res_id', '=', res_id)], limit=1)
                         if data_ids:
                             data = data_obj.browse(cr, uid, data_ids[0])
-                            value = '__xml_data__%s.%s' % (data.module, data.name)
+                            ref = 'ref(\'__xml_data__%s.%s\')' % (data.module, data.name)
                         else:
-                            value = FORMAT_ID % (field_relation.replace('.', '_'), value[0])
-                        document[export_id][field_name] = value
+                            ref = 'ref(\'__export__%s_%s\')' % (field_relation.replace('.', '_'), res_id)
 
-                    elif type(value).__name__ == 'list':
-                        result = '['
-                        for res_id in value:
-                            data_ids = data_obj.search(cr, uid, [('model', '=', field_relation), ('res_id', '=', res_id)], limit=1)
-                            if data_ids:
-                                data = data_obj.browse(cr, uid, data_ids[0])
-                                ref = 'ref(\'__xml_data__%s.%s\')' % (data.module, data.name)
-                            else:
-                                ref = 'ref(\'__export__%s_%s\')' % (field_relation.replace('.', '_'), res_id)
+                        result += '(4, %s)' % ref
 
-                            result += '(4, %s)' % ref
-
-                        result += ']'
-                        document[export_id][field_name] = result
-                    elif type(value).__name__ == 'bool':
-                        document[export_id][field_name] = 'bool,%s' % value
-                    elif type(value).__name__ in ['int', 'float']:
-                        document[export_id][field_name] = str(value)
-                    else:
-                        document[export_id][field_name] = value
-
+                    result += ']'
+                    document[export_id][field_name] = result
+                elif type(value).__name__ == 'bool':
+                    document[export_id][field_name] = 'bool,%s' % value
+                elif type(value).__name__ in ['int', 'float']:
+                    document[export_id][field_name] = str(value)
+                else:
+                    document[export_id][field_name] = value
         return document
 
     @staticmethod
@@ -138,12 +140,6 @@ class tk_export_xml(orm.Model):
         return item.getElementsByTagName("parent_id")[0].data
 
     def export_xml(self, cr, uid, ids, context=None):
-        dico = False
-        self.write(cr, uid, ids, {
-            'file': False,
-            'filename': '',
-        })
-
         dico = self._generate_dico(cr, uid, ids, context=context)
 
         openerp = etree.Element('openerp')
@@ -155,11 +151,6 @@ class tk_export_xml(orm.Model):
             for field_key in dico[key]:
                 if not dico[key][field_key]:
                     continue
-                print '----------'
-                print key
-                print field_key
-                print dico[key][field_key]
-                print '----------'
                 value = u'' + dico[key][field_key]
                 if 'ref(\'__export__' in value or 'ref(\'__xml_data__' in value:
                     field = etree.Element('field', name=field_key, eval=value.replace('__xml_data__', ''))
@@ -185,10 +176,17 @@ class tk_export_xml(orm.Model):
         data = base64.encodestring(xml)
         self.write(cr, uid, ids, {
             'file': data,
-            'filename': 'last_export.xml',
+            'filename': '%s_%s_(%s record(s)).xml' % (self.browse(cr, uid, ids[0]).model_id.model.replace('.', '_'), datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT), len(dico.keys()))
         })
 
-        return True
+        return {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'tk.export.xml',
+            'res_id': ids[0],
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+        }
 
     def set_all_to_disabled(self, cr, uid, ids, context=None):
         query = '''
@@ -259,7 +257,7 @@ class tk_export_xml(orm.Model):
         'model_id': fields.many2one('ir.model', string='Model'),
         'field_record_ids': fields.one2many('tk.field.record', 'export_id', string='Records'),
         'file': fields.binary('File'),
-        'filename': fields.char('Filename', size=128),
+        'filename': fields.char('Filename', size=255),
         'domain_custom': fields.char('Domain', size=255, required=True),
         'fetch_existant': fields.boolean('Get ID from database'),
         'limit': fields.integer('Limit'),
