@@ -131,7 +131,7 @@ class taktik_importer_model(orm.Model):
                 else:
                     to_save[col[0]] = False
             else:
-                to_save[header_item] = row[index]
+                to_save[header_item] = row[index] or False
         return to_save
 
     def __check_key(self, keys, columns, values):
