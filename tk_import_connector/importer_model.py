@@ -5,23 +5,17 @@ import base64
 import itertools
 import re
 
-
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
 
-from openerp.osv import fields, orm
-
-
 _logger = logging.getLogger(__name__)
 
+from openerp.osv import fields, orm
 from openerp.exceptions import except_orm
 from .backend import taktik_importer_backend
 from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
-
-FIELDS_RECURSION_LIMIT = 2
-
 
 class taktik_queue_job(orm.Model):
     _inherit = 'queue.job'
