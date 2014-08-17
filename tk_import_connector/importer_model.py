@@ -13,7 +13,6 @@ except ImportError:
 _logger = logging.getLogger(__name__)
 
 from openerp.osv import fields, orm
-from openerp.exceptions import except_orm
 from .backend import taktik_importer_backend
 from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
 
@@ -23,7 +22,7 @@ class taktik_queue_job(orm.Model):
     def __get_error_report(self, cr, uid, ids, field_name, args=None, context={}):
         res = {}
         list_error = [
-            re.compile("except_orm: (.*?)'\)"),
+            re.compile("Exception: (.*?)'\)"),
         ]
         for job in self.browse(cr, uid, ids, context):
             res[job.id] = ''
@@ -52,7 +51,7 @@ class taktik_importer_model(orm.Model):
 
         res = self.pool.get(model).import_data(cr, uid, header, row, mode=mode, context={'lang': lang})
         if res[0] == -1:
-            raise except_orm('ValidateError', "%s" % res[2])
+            raise Exception('ValidateError', "%s" % res[2])
         return res
 
 
