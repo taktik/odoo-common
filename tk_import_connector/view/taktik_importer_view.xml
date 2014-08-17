@@ -28,9 +28,10 @@
                             <group colspan="4" col="4">
                                 <field name="file" colspan="4"/>
                                 <field name="model_id" colspan="4" on_change="onchange_model_id(model_id)"/>
-                                <field name="key" colspan="4" widget='many2many'/>
                                 <field name="version" colspan="4"/>
                                 <field name="delimiter" colspan="4"/>
+                                <field name="mode" colspan="4"/>
+                                <field name="language" colspan="4"/>
                             </group>
                         </group>
                         <notebook>

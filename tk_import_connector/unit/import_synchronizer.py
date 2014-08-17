@@ -37,8 +37,8 @@ class DelayedBatchImport(TaktikImportSynchronizer):
 
     def _import_row(self, data):
         """ Delay import """
-        description = "Taktik Importer: import row"
-        import_row.delay(self.session, self.backend_record.id, data, max_retries=2, description=description)
+        description = "Taktik Importer: import row %s" % data[0]
+        import_row.delay(self.session, self.backend_record.id, data, max_retries=2, priority=0, description=description)
 
 
 class TaktikImport(TaktikImportSynchronizer):
