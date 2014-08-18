@@ -265,7 +265,7 @@ class tk_export_xml(orm.Model):
     }
 
     _defaults = {
-        'domain_custom': "['|', ('active', '=','False'), ('active', '=','True')]"
+        'domain_custom': "['|', ('active', '=', False), ('active', '=', True)]"
     }
 
 
