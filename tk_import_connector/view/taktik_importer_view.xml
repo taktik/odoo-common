@@ -18,7 +18,7 @@
             <field name="name">Taktik Importer Connector form</field>
             <field name="model">taktik.importer.backend</field>
             <field name="arch" type="xml">
-                <form string="Taktik Importer Backend">
+                <form string="Taktik Importer Backend" version="7.0">
                     <sheet>
                         <label for="name" class="oe_edit_only"/>
                         <h1>
@@ -28,9 +28,10 @@
                             <group colspan="4" col="4">
                                 <field name="file" colspan="4"/>
                                 <field name="model_id" colspan="4" on_change="onchange_model_id(model_id)"/>
-                                <field name="key" colspan="4" widget='many2many'/>
                                 <field name="version" colspan="4"/>
                                 <field name="delimiter" colspan="4"/>
+                                <field name="mode" colspan="4"/>
+                                <field name="language" colspan="4"/>
                             </group>
                         </group>
                         <notebook>
@@ -54,7 +55,7 @@
             <field name="name">Taktik Importer Backend tree</field>
             <field name="model">taktik.importer.backend</field>
             <field name="arch" type="xml">
-                <tree string="Taktik Importer Backend">
+                <tree string="Taktik Importer Backend" version="7.0">
                     <field name="name" colspan="4"/>
                     <field name="version" colspan="4"/>
                 </tree>

@@ -25,22 +25,35 @@ class taktik_importer_backend(orm.Model):
                 (' ', 'Space'),
         ]
 
+    def _mode(self, cr, uid, context=None):
+        return [('init', 'Create'),
+                ('update', 'Update'),
+        ]
+
+    def __get_available_languages(self, cr, uid, context=None):
+        res_lang_obj = self.pool.get('res.lang')
+        lang_ids = res_lang_obj.search(cr, uid, [])
+        lang_data = res_lang_obj.read(cr, uid, lang_ids, ['name','code'], context)
+        return [(lang_info['code'], lang_info['name']) for lang_info in lang_data]
 
     _defaults = {
         'version': '1.0.0',
         'quoting': '"',
         'delimiter': ',',
         'encoding': 'utf-8',
+        'language': 'en_US',
+        'mode': 'init'
     }
 
     _columns = {
         'version': fields.selection(_select_versions, string='Version', required=True),
         'model_id': fields.many2one('ir.model', 'Model', required=True),
-        'key': fields.many2many('ir.model.fields', 'model_fields_backend_importer_rel', 'importer_backend_id', 'ir_model_fields_id', 'Key'),
         'file': fields.binary('File'),
         'quoting': fields.char('Quoting', size=1, required=True),
         'delimiter': fields.selection(_delimiter, string='Delimiter', required=True),
         'encoding': fields.char('Encoding', size=10, required=True),
+        'language': fields.selection(__get_available_languages, 'Language', required=True),
+        'mode': fields.selection(_mode, string='Mode', required=True),
     }
 
     def onchange_model_id(self, cr, uid, ids, model_id, context=None):
@@ -61,12 +74,4 @@ class taktik_importer_backend(orm.Model):
         session = ConnectorSession(cr, uid, context=context)
         for backend in self.browse(cr, uid, ids, context=context):
             import_batch.delay(session, backend.id)
-        return True
-
-    def _scheduler_import_rows(self, cr, uid, domain=None, context=None):
-        if domain is None:
-            domain = []
-        ids = self.search(cr, uid, domain, context=context)
-        if ids:
-            self.import_rows(cr, uid, ids, context=context)
         return True
