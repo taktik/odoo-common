@@ -51,6 +51,18 @@ class tk_log(orm.Model):
                 'model_name': model_name
             }
             log_id = self.create(new_cr, uid, values)
+
+            if level == 'info':
+                logger.info(message)
+            elif level == 'debug':
+                logger.debug(message)
+            elif level == 'warning':
+                logger.warn(message)
+            elif level == 'error':
+                logger.error(message)
+            else:
+                logger.fatal(message)
+
             new_cr.commit()
 
         finally:

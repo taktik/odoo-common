@@ -49,7 +49,7 @@ class taktik_importer_model(orm.Model):
         lang = data[3]
         mode = data[4]
 
-        res = self.pool.get(model).import_data(cr, uid, header, row, mode=mode, context={'lang': lang})
+        res = self.pool.get(model).import_data(cr, uid, header, row, mode=mode, context={'lang': lang, 'active_test': False})
         if res[0] == -1:
             raise Exception('ValidateError', "%s" % res[2])
         return res
