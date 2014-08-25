@@ -10,16 +10,11 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-from openerp.osv import fields, orm
-
-
 _logger = logging.getLogger(__name__)
 
+from openerp.osv import fields, orm
 from .backend import taktik_importer_backend
 from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
-
-FIELDS_RECURSION_LIMIT = 2
-
 
 class taktik_queue_job(orm.Model):
     _inherit = 'queue.job'
@@ -27,8 +22,7 @@ class taktik_queue_job(orm.Model):
     def __get_error_report(self, cr, uid, ids, field_name, args=None, context={}):
         res = {}
         list_error = [
-            re.compile("except_orm: (.*?)'\)"),
-            re.compile("IntegrityError: (.*?)\)")
+            re.compile("Exception: (.*?)'\)"),
         ]
         for job in self.browse(cr, uid, ids, context):
             res[job.id] = ''
@@ -48,123 +42,21 @@ class taktik_importer_model(orm.Model):
     _name = 'taktik.importer.model'
     _description = 'Taktik Importer model'
 
-    _columns = {
-        'res_model': fields.many2one('ir.model', string='Model'),
-    }
-
-    def get_fields(self, cr, uid, model, context=None, depth=FIELDS_RECURSION_LIMIT):
-
-        model_obj = self.pool[model]
-        fields = {}
-        fields['id'] = {
-            'id': 'id',
-            'name': 'id',
-            'string': "External ID",
-            'required': False,
-            'fields': [],
-        }
-        fields_got = model_obj.fields_get(cr, uid, context=context)
-        blacklist = orm.MAGIC_COLUMNS + [model_obj.CONCURRENCY_CHECK_FIELD]
-        for name, field in fields_got.iteritems():
-            if name in blacklist:
-                continue
-            # an empty string means the field is deprecated, @deprecated must
-            # be absent or False to mean not-deprecated
-            if field.get('deprecated', False) is not False:
-                continue
-
-            f = {
-                'id': name,
-                'name': name,
-                'string': field['string'],
-                'required': bool(field.get('required')),
-                'fields': [],
-                'type': field['type']
-            }
-
-            if field.get('relation', False):
-                f['relation'] = field['relation']
-
-            if field['type'] in ('many2many', 'many2one'):
-                f['fields'] = [
-                    dict(f, name='id', string="External ID"),
-                    dict(f, name='.id', string="Database ID"),
-                ]
-            elif field['type'] == 'one2many' and depth:
-                f['fields'] = self.get_fields(cr, uid, field['relation'], context=context, depth=depth - 1)
-
-            fields[f.get('id')] = f
-
-        return fields
-
-    def __get_data(self, cr, uid, header, columns, row):
-        to_save = {}
-        for index, header_item in enumerate(header):
-            if '/' in header_item:
-
-                col = header_item.split('/', 1)
-                entity = columns.get(col[0]).get('relation')
-
-                domain_search = []
-                if '[' in col[1] and ']' in col[1]:
-                    key_composite = col[1]
-                    key_composite = key_composite[key_composite.index('[') + 1:len(key_composite) - 1]
-                    key_composite = key_composite.split('|')
-                    value_composite = row[index].split('|')
-                    for _i, _k in enumerate(key_composite):
-                        if '/' in _k:
-                            _k_composite = _k.split('/')
-                            _k_fields = self.pool.get('taktik.importer.model').get_fields(cr, uid, entity)
-                            _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [(_k_composite[1], '=', value_composite[_i])], context={'active_test': False})[0]
-                            domain_search.append((_k_composite[0], '=', _id))
-                        else:
-                            domain_search.append((_k, '=', value_composite[_i]))
-                else:
-                    domain_search = [(col[1], '=', row[index])]
-
-                ids = self.pool.get(entity).search(cr, uid, domain_search, context={'active_test': False})
-                if len(ids):
-                    if columns.get(col[0]).get('type') in ('many2many', 'one2many'):
-                        to_save[col[0]] = [(4, ids[0])]
-                    else:
-                        to_save[col[0]] = ids[0]
-                else:
-                    to_save[col[0]] = False
-            else:
-                to_save[header_item] = row[index] or False
-        return to_save
-
-    def __check_key(self, keys, columns, values):
-        key_domain = []
-        for key in keys:
-            if columns.get(key).get('type') in ('many2many', 'one2many'):
-                key_domain.append((key, 'in', [values.get(key)[0][1]]))
-            else:
-                key_domain.append((key, '=', values.get(key)))
-        return key_domain
-
     def import_data(self, cr, uid, data):
         model = data[0]
-        header = data[2]
-        row = data[3]
-        keys = data[1]
+        header = data[1]
+        row = [data[2]]
+        lang = data[3]
+        mode = data[4]
 
-        columns = self.get_fields(cr, uid, model)
-        to_save = self.__get_data(cr, uid, header, columns, row)
-        domain = self.__check_key(keys, columns, to_save)
-
-        if len(domain) == 0:
-            return self.pool.get(model).create(cr, uid, to_save)
-        else:
-            ids = self.pool.get(model).search(cr, uid, domain, context={'active_test': False})
-            if len(ids):
-                return self.pool.get(model).write(cr, uid, ids[0], to_save)
-            else:
-                return self.pool.get(model).create(cr, uid, to_save)
+        res = self.pool.get(model).import_data(cr, uid, header, row, mode=mode, context={'lang': lang})
+        if res[0] == -1:
+            raise Exception('ValidateError', "%s" % res[2])
+        return res
 
 
 @taktik_importer_backend
-class TomraBatchImport(DelayedBatchImport):
+class TaktikBatchImport(DelayedBatchImport):
     _model_name = ['taktik.importer.model']
 
     def __parse_file(self):
@@ -189,15 +81,17 @@ class TomraBatchImport(DelayedBatchImport):
                 # model
                 _list.append(self.environment.backend_record.model_id.model)
 
-                # keys
-                keys = [x.name for x in self.environment.backend_record.key]
-                _list.append(keys)
-
                 # header
                 _list.append(header)
 
                 # row
                 _list.append(row)
+
+                # language for the context
+                _list.append(self.environment.backend_record.language)
+
+                # mode create or update
+                _list.append(self.environment.backend_record.mode)
 
                 self._import_row(_list)
 
@@ -205,7 +99,7 @@ class TomraBatchImport(DelayedBatchImport):
 
 
 @taktik_importer_backend
-class TomraFileImport(TaktikImport):
+class TaktikFileImport(TaktikImport):
     _model_name = ['taktik.importer.model']
 
     def _run(self, data):
