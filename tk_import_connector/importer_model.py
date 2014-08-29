@@ -56,7 +56,7 @@ class taktik_importer_model(orm.Model):
 
 
 @taktik_importer_backend
-class TomraBatchImport(DelayedBatchImport):
+class TaktikBatchImport(DelayedBatchImport):
     _model_name = ['taktik.importer.model']
 
     def __parse_file(self):
@@ -99,7 +99,7 @@ class TomraBatchImport(DelayedBatchImport):
 
 
 @taktik_importer_backend
-class TomraFileImport(TaktikImport):
+class TaktikFileImport(TaktikImport):
     _model_name = ['taktik.importer.model']
 
     def _run(self, data):
