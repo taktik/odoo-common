@@ -147,6 +147,7 @@ class taktik_importer_model(orm.Model):
         model = data[0]
         header = data[2]
         row = data[3]
+        lang = data[4]
         keys = data[1]
 
         columns = self.get_fields(cr, uid, model)
@@ -154,13 +155,13 @@ class taktik_importer_model(orm.Model):
         domain = self.__check_key(keys, columns, to_save)
 
         if len(domain) == 0:
-            return self.pool.get(model).create(cr, uid, to_save)
+            return self.pool.get(model).create(cr, uid, to_save, context={'lang': lang})
         else:
             ids = self.pool.get(model).search(cr, uid, domain, context={'active_test': False})
             if len(ids):
-                return self.pool.get(model).write(cr, uid, ids[0], to_save)
+                return self.pool.get(model).write(cr, uid, ids[0], to_save, context={'lang': lang})
             else:
-                return self.pool.get(model).create(cr, uid, to_save)
+                return self.pool.get(model).create(cr, uid, to_save, context={'lang': lang})
 
 
 @taktik_importer_backend
@@ -198,6 +199,9 @@ class TomraBatchImport(DelayedBatchImport):
 
                 # row
                 _list.append(row)
+
+                # language for the context
+                _list.append(self.environment.backend_record.language)
 
                 self._import_row(_list)
 

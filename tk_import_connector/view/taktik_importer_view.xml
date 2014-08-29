@@ -31,6 +31,7 @@
                                 <field name="key" colspan="4" widget='many2many'/>
                                 <field name="version" colspan="4"/>
                                 <field name="delimiter" colspan="4"/>
+                                <field name="language" colspan="4"/>
                             </group>
                         </group>
                         <notebook>

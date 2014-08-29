@@ -17,6 +17,12 @@ class taktik_importer_backend(orm.Model):
         """
         return [('1.0.0', '1.0.0')]
 
+    def __get_available_languages(self, cr, uid, context=None):
+        res_lang_obj = self.pool.get('res.lang')
+        lang_ids = res_lang_obj.search(cr, uid, [])
+        lang_data = res_lang_obj.read(cr, uid, lang_ids, ['name','code'], context)
+        return [(lang_info['code'], lang_info['name']) for lang_info in lang_data]
+
 
     def _delimiter(self, cr, uid, context=None):
         return [(',', 'Comma'),
@@ -31,6 +37,7 @@ class taktik_importer_backend(orm.Model):
         'quoting': '"',
         'delimiter': ',',
         'encoding': 'utf-8',
+        'language': 'en_US',
     }
 
     _columns = {
@@ -41,6 +48,7 @@ class taktik_importer_backend(orm.Model):
         'quoting': fields.char('Quoting', size=1, required=True),
         'delimiter': fields.selection(_delimiter, string='Delimiter', required=True),
         'encoding': fields.char('Encoding', size=10, required=True),
+        'language': fields.selection(__get_available_languages, 'Language', required=True),
     }
 
     def onchange_model_id(self, cr, uid, ids, model_id, context=None):
