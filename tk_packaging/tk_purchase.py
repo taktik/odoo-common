@@ -97,6 +97,7 @@ class tk_purchase_order_line(orm.Model):
 
 
                     super(tk_purchase_order_line, self).write(cr, uid, [line_record.get('id')], vals, context)
+        return super(tk_purchase_order_line, self).write(cr, uid, ids, vals, context)
 
     def create(self, cr, uid, vals, context=None):
         if 'qty_packaging' in vals and 'packaging_id' in vals:
