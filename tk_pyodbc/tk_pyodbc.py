@@ -9,11 +9,15 @@ import locale
 
 locale._override_localeconv.update({'decimal_point': '.'})
 ## End hack
-import pyodbc
 
 locale._override_localeconv = {}
 
 logger = logging.getLogger(__name__)
+
+try:
+    import pyodbc
+except ImportError, e:
+    logger.warning("Cannot import pyodbc")
 
 
 class ConnectionError(Exception):
