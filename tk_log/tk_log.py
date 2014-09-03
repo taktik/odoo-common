@@ -42,6 +42,18 @@ class tk_log(orm.Model):
 
         new_cr = RegistryManager.get(db_name).cursor()
 
+
+        if level == 'info':
+            logger.info(message)
+        elif level == 'debug':
+            logger.debug(message)
+        elif level == 'warning':
+            logger.warn(message)
+        elif level == 'error':
+            logger.error(message)
+        else:
+            logger.fatal(message)
+
         try:
             values = {
                 'message': message,
