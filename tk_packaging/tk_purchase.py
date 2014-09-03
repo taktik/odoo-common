@@ -44,7 +44,7 @@ class tk_purchase_order_line(orm.Model):
             product_record = product_product_obj.read(cr, uid, product_id, ['product_tmpl_id'])
             product_tmpl_id = product_record.get('product_tmpl_id', False)
             if product_tmpl_id:
-                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0])])
+                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0]), ('delivery', '=', True)])
                 if packaging_ids and len(packaging_ids) == 1:
                     res['value'].update({'packaging_id': packaging_ids[0]})
                     res['domain'].update({'packaging_id': [('product_tmpl_id', '=', product_tmpl_id[0])]})
@@ -105,9 +105,29 @@ class tk_purchase_order_line(orm.Model):
         return super(tk_purchase_order_line, self).create(cr, uid, vals, context)
 
 
+    def _get_packaging_domain(self, cr, uid, ids, name, args, context=None):
+        # Objects
+        packaging_obj = self.pool.get('product.packaging')
+
+        res = {}
+        for po_line in self.browse(cr, uid, ids, context=context):
+            product_tmpl_id = po_line.product_id and po_line.product_id.product_tmpl_id.id or False
+            if not product_tmpl_id:
+                res[po_line.id] = False
+            else:
+                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id), ('delivery', '=', True)])
+                if not packaging_ids:
+                    res[po_line.id] = False
+                else:
+                    res[po_line.id] = packaging_ids
+
+        return res
+
     _columns = {
         'qty_packaging': fields.integer('Quantity Packaging', required=False),
         'packaging_id': fields.many2one('product.packaging', 'Packaging', required=False),
+        'packaging_domain_ids': fields.function(_get_packaging_domain, type='many2many', obj='product.packaging', store=False),
+
     }
 
 tk_purchase_order_line()

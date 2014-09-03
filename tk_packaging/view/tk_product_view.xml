@@ -1,5 +1,20 @@
 <openerp>
     <data>
+         <!--Product Packaging-->
+        <record id="tk_product_packaging_tree_view" model="ir.ui.view">
+            <field name="name">tk.product.packaging.tree.view</field>
+            <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+            <field name="model">product.packaging</field>
+            <field name="arch" type="xml">
+                <field name="ul_container" position="after">
+                    <field name="base"/>
+                    <field name="intermediate"/>
+                    <field name="delivery"/>
+                </field>
+            </field>
+        </record>
+
+
         <record id="tk_product_product_form_view" model="ir.ui.view">
             <field name="name">tk.product.product.form.view</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
@@ -16,6 +31,9 @@
                                     <newline/>
                                     <field name="qty"/>
                                     <field name="ul"/>
+                                    <field name="base"/>
+                                    <field name="intermediate"/>
+                                    <field name="delivery"/>
                                     <separator colspan="4" string="Palletization"/>
                                     <field name="ul_qty"/>
                                     <field name="ul_container" domain="[('type', '=', 'pallet')]" context="{'default_type': 'pallet'}"/>
