@@ -9,7 +9,7 @@
                 <xpath expr="//field[@name='price_unit']" position="after">
                     <field name="qty_packaging" on_change="onchange_qty_packaging(qty_packaging, packaging_id, context)"/>
 
-                    <field name="packaging_domain_ids"/>
+                    <field name="packaging_domain_ids" invisible="1"/>
                     <field name="packaging_id" domain="[('id','in', packaging_domain_ids[0][2])]"/>
                 </xpath>
 
