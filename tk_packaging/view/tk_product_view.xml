@@ -21,7 +21,7 @@
             <field name="model">product.product</field>
             <field name="arch" type="xml">
                 <!--Packaging-->
-                <xpath expr="//field[@name='warranty']/.." position="after">
+                <xpath expr="//field[@name='route_ids']/.." position="after">
                     <group string="Packaging" colspan="4">
                         <field name="packaging_ids" groups="product.group_stock_packaging" nolabel="1">
                             <form string="Packaging" version="7.0">
