@@ -89,7 +89,7 @@ class tk_procurement_order(orm.Model):
         parent_company_id = res_company_obj.get_parent_company_id(cr, uid, context.get('force_company', False) if context.get('force_company', False) else user.company_id.id)
         context['force_company'] = parent_company_id
 
-        partner = res_partner_obj.browse(cr, uid, context['force_company'], context=context)
+        partner = res_partner_obj.browse(cr, uid, partner.id, context=context)
 
         seller_qty = procurement.product_id.seller_qty
         pricelist_id = partner.property_product_pricelist_purchase.id
