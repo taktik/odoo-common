@@ -19,8 +19,7 @@ class tk_purchase_order(orm.Model):
         user = res_users_obj.browse(cr, uid, uid)
         parent_company_id = res_company_obj.get_parent_company_id(cr, uid, context.get('force_company', False) if context.get('force_company', False) else user.company_id.id)
         context['force_company'] = parent_company_id
-        po_line = po_line_obj.browse(cr, uid, po_line.id, context=context)
-
+        po_line = po_line_obj.browse(cr, SUPERUSER_ID, po_line.id, context=context)
         if po_line.product_id:
             acc_id = po_line.product_id.property_account_expense.id
             if not acc_id:
@@ -98,7 +97,6 @@ class tk_procurement_order(orm.Model):
         if seller_qty:
             qty = max(qty, seller_qty)
         price = pricelist_obj.price_get(cr, uid, [pricelist_id], procurement.product_id.id, qty, partner.id, {'uom': uom_id})[pricelist_id]
-
         #Passing partner_id to context for purchase order line integrity of Line name
         new_context = context.copy()
         new_context.update({'lang': partner.lang, 'partner_id': partner.id})
