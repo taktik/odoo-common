@@ -1,4 +1,5 @@
 from openerp.osv import orm, fields
+from openerp import SUPERUSER_ID
 
 class tk_purchase_order(orm.Model):
     _inherit = 'purchase.order' \
@@ -92,11 +93,8 @@ class tk_purchase_order_line(orm.Model):
 
                 if qty_packaging and packaging_id:
                     packaging_id = packaging_id[0]
-
                     vals['product_qty'] = self._get_product_qty(cr, uid, packaging_id, qty_packaging, context)
-
-
-                    super(tk_purchase_order_line, self).write(cr, uid, [line_record.get('id')], vals, context)
+                    super(tk_purchase_order_line, self).write(cr, SUPERUSER_ID, [line_record.get('id')], vals, context)
         return super(tk_purchase_order_line, self).write(cr, uid, ids, vals, context)
 
     def create(self, cr, uid, vals, context=None):
