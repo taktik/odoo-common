@@ -64,7 +64,7 @@ class tk_sale_order_line(orm.Model):
         return res
 
     def create(self, cr, uid, vals, context=None):
-        if 'qty_packaging' in vals and 'packaging_id' in vals:
+        if vals.get('qty_packaging', False) and vals.get('packaging_id', False):
             vals['product_uom_qty'] = self._get_product_qty(cr, uid, vals['packaging_id'], vals['qty_packaging'], context)
         return super(tk_sale_order_line, self).create(cr, uid, vals, context)
 

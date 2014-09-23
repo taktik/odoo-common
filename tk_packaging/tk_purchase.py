@@ -71,7 +71,9 @@ class tk_purchase_order_line(orm.Model):
         packaging_obj = self.pool.get('product.packaging')
 
         packaging_record = packaging_obj.read(cr, uid, packaging_id, ['qty'], context=context)
-        return packaging_record.get('qty', 0) * qty_packaging
+        if packaging_record:
+            return packaging_record.get('qty', 0) * qty_packaging
+        return 0
 
     def onchange_qty_packaging(self, cr, uid, ids, qty_packaging, packaging_id, context=None):
         """
@@ -83,7 +85,7 @@ class tk_purchase_order_line(orm.Model):
         return res
 
     def create(self, cr, uid, vals, context=None):
-        if 'qty_packaging' in vals and 'packaging_id' in vals:
+        if vals.get('qty_packaging', False) and vals.get('packaging_id', False):
             vals['product_qty'] = self._get_product_qty(cr, uid, vals['packaging_id'], vals['qty_packaging'], context)
         return super(tk_purchase_order_line, self).create(cr, uid, vals, context)
 
