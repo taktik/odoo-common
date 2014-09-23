@@ -54,7 +54,7 @@ class tk_purchase_order_line(orm.Model):
             product_record = product_product_obj.read(cr, uid, product_id, ['product_tmpl_id'])
             product_tmpl_id = product_record.get('product_tmpl_id', False)
             if product_tmpl_id:
-                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0]), ('delivery', '=', True)])
+                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0]), ('purchase', '=', True)])
                 res['value'].update({'packaging_domain_ids': packaging_ids}) # Update packaging_domain_ids values
                 if packaging_ids and len(packaging_ids) == 1:
                     # If only one packaging, put it directly in packaging_id

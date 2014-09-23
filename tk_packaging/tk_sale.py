@@ -33,8 +33,7 @@ class tk_sale_order_line(orm.Model):
             product_record = product_product_obj.read(cr, uid, product, ['product_tmpl_id'])
             product_tmpl_id = product_record.get('product_tmpl_id', False)
             if product_tmpl_id:
-                # TODO: check if we take only base, intermediate or delivery or add another (sale)?
-                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0])])
+                packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0]), ('sale', '=', True)])
                 res['value'].update({'packaging_domain_ids': packaging_ids}) # Update packaging_domain_ids values
                 if packaging_ids and len(packaging_ids) == 1:
                     # If only one packaging, put it directly in packaging_id
