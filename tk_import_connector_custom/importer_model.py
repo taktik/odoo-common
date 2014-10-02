@@ -144,6 +144,7 @@ class taktik_importer_model(orm.Model):
         return key_domain
 
     def import_data(self, cr, uid, data):
+        _logger.debug("Importing data %s" % data)
         model = data[0]
         header = data[2]
         row = data[3]
