@@ -15,7 +15,7 @@ from openerp.osv import fields, orm
 
 _logger = logging.getLogger(__name__)
 
-from .backend import taktik_importer_backend
+from .backend import taktik_importer_backend_custom
 from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
 
 FIELDS_RECURSION_LIMIT = 2
@@ -45,8 +45,8 @@ class taktik_queue_job(orm.Model):
 
 
 class taktik_importer_model(orm.Model):
-    _name = 'taktik.importer.model'
-    _description = 'Taktik Importer model'
+    _name = 'taktik.importer.model.custom'
+    _description = 'Taktik Custom Importer model'
 
     _columns = {
         'res_model': fields.many2one('ir.model', string='Model'),
@@ -114,7 +114,7 @@ class taktik_importer_model(orm.Model):
                     for _i, _k in enumerate(key_composite):
                         if '/' in _k:
                             _k_composite = _k.split('/')
-                            _k_fields = self.pool.get('taktik.importer.model').get_fields(cr, uid, entity)
+                            _k_fields = self.pool.get('taktik.importer.model.custom').get_fields(cr, uid, entity)
                             _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [(_k_composite[1], '=', value_composite[_i])], context={'active_test': False})[0]
                             domain_search.append((_k_composite[0], '=', _id))
                         else:
@@ -165,9 +165,9 @@ class taktik_importer_model(orm.Model):
                 return self.pool.get(model).create(cr, uid, to_save, context={'lang': lang})
 
 
-@taktik_importer_backend
+@taktik_importer_backend_custom
 class TomraBatchImport(DelayedBatchImport):
-    _model_name = ['taktik.importer.model']
+    _model_name = ['taktik.importer.model.custom']
 
     def __parse_file(self):
         record = self.environment.backend_record
@@ -209,9 +209,9 @@ class TomraBatchImport(DelayedBatchImport):
                 _list = []
 
 
-@taktik_importer_backend
+@taktik_importer_backend_custom
 class TomraFileImport(TaktikImport):
-    _model_name = ['taktik.importer.model']
+    _model_name = ['taktik.importer.model.custom']
 
     def _run(self, data):
-        self.session.pool.get('taktik.importer.model').import_data(self.session.cr, self.session.uid, data)
+        self.session.pool.get('taktik.importer.model.custom').import_data(self.session.cr, self.session.uid, data)

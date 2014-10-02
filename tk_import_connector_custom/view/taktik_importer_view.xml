@@ -27,7 +27,7 @@
 
         <record id="view_taktik_importer_backend_form" model="ir.ui.view">
             <field name="name">Taktik Importer Connector form</field>
-            <field name="model">taktik.importer.backend</field>
+            <field name="model">taktik.importer.backend.custom</field>
             <field name="arch" type="xml">
                 <form string="Taktik Importer Backend">
                     <sheet>
@@ -64,7 +64,7 @@
 
         <record id="view_taktik_importer_backend_tree" model="ir.ui.view">
             <field name="name">Taktik Importer Backend tree</field>
-            <field name="model">taktik.importer.backend</field>
+            <field name="model">taktik.importer.backend.custom</field>
             <field name="arch" type="xml">
                 <tree string="Taktik Importer Backend">
                     <field name="name" colspan="4"/>
@@ -74,8 +74,8 @@
         </record>
 
         <record id="action_taktik_importer_backend" model="ir.actions.act_window">
-            <field name="name">Taktik Importer</field>
-            <field name="res_model">taktik.importer.backend</field>
+            <field name="name">Taktik Importer (Custom)</field>
+            <field name="res_model">taktik.importer.backend.custom</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="view_taktik_importer_backend_tree"/>
@@ -83,7 +83,7 @@
 
         <menuitem id="menu_taktik_importer_root"
                   parent="connector.menu_connector_root"
-                  name="Taktik Importer"
+                  name="Taktik Importer (Custom)"
                   sequence="1"/>
 
         <menuitem id="menu__backend"

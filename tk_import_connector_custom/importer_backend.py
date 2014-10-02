@@ -5,11 +5,11 @@ from .unit.import_synchronizer import import_batch
 
 
 class taktik_importer_backend(orm.Model):
-    _name = 'taktik.importer.backend'
-    _description = 'Taktik Importer Backend'
+    _name = 'taktik.importer.backend.custom'
+    _description = 'Taktik Custom Importer Backend'
     _inherit = 'connector.backend'
 
-    _backend_type = 'taktik_importer'
+    _backend_type = 'taktik_importer_custom'
 
     def _select_versions(self, cr, uid, context=None):
         """ Available versions
