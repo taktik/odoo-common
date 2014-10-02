@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_taktik_queue_job_form_inherit" model="ir.ui.view">
+            <field name="name">taktik.queue.job.tree</field>
+            <field name="inherit_id" ref="connector.view_queue_job_form"/>
+            <field name="model">queue.job</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='worker_id']" position="after">
+                    <field name="error_report"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_taktik_importer_backend_form" model="ir.ui.view">
+            <field name="name">Taktik Importer Connector form</field>
+            <field name="model">taktik.importer.backend</field>
+            <field name="arch" type="xml">
+                <form string="Taktik Importer Backend">
+                    <sheet>
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" class="oe_inline"/>
+                        </h1>
+                        <group name="importer" string="Taktik Importer Configuration">
+                            <group colspan="4" col="4">
+                                <field name="file" colspan="4"/>
+                                <field name="model_id" colspan="4" on_change="onchange_model_id(model_id)"/>
+                                <field name="key" colspan="4" widget='many2many'/>
+                                <field name="version" colspan="4"/>
+                                <field name="delimiter" colspan="4"/>
+                                <field name="language" colspan="4"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="import" string="Imports">
+                                <p class="oe_grey oe_inline">
+                                    By clicking on the button, you will trigger the importer
+                                </p>
+                                <group>
+                                    <label string="Import" class="oe_inline"/>
+                                    <button name="import_rows" type="object" class="oe_highlight"
+                                            string="Import in background"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_taktik_importer_backend_tree" model="ir.ui.view">
+            <field name="name">Taktik Importer Backend tree</field>
+            <field name="model">taktik.importer.backend</field>
+            <field name="arch" type="xml">
+                <tree string="Taktik Importer Backend">
+                    <field name="name" colspan="4"/>
+                    <field name="version" colspan="4"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_taktik_importer_backend" model="ir.actions.act_window">
+            <field name="name">Taktik Importer</field>
+            <field name="res_model">taktik.importer.backend</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_taktik_importer_backend_tree"/>
+        </record>
+
+        <menuitem id="menu_taktik_importer_root"
+                  parent="connector.menu_connector_root"
+                  name="Taktik Importer"
+                  sequence="1"/>
+
+        <menuitem id="menu__backend"
+                  name="Backends"
+                  parent="menu_taktik_importer_root"
+                  action="action_taktik_importer_backend"/>
+    </data>
+</openerp>
