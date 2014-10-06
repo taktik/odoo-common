@@ -5,7 +5,7 @@
     'category': 'Connector',
     'depends': ['connector',
     ],
-    'author': 'Myself',
+    'author': 'Taktik S.A.',
     'license': 'AGPL-3',
     'description': """ Taktik Custom Import Connector """,
     'data': [
