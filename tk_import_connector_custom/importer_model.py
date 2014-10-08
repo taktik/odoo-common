@@ -68,7 +68,7 @@ class taktik_importer_model(orm.Model):
         for name, field in fields_got.iteritems():
             if name in blacklist:
                 continue
-            # an empty string means the field is deprecated, @deprecated must
+                # an empty string means the field is deprecated, @deprecated must
             # be absent or False to mean not-deprecated
             if field.get('deprecated', False) is not False:
                 continue
@@ -97,7 +97,7 @@ class taktik_importer_model(orm.Model):
 
         return fields
 
-    def __get_data(self, cr, uid, header, columns, row):
+    def __get_data(self, cr, uid, model, header, columns, row):
         to_save = {}
         for index, header_item in enumerate(header):
             if '/' in header_item:
@@ -105,24 +105,33 @@ class taktik_importer_model(orm.Model):
                 col = header_item.split('/', 1)
                 entity = columns.get(col[0]).get('relation')
 
-                domain_search = []
-                if '[' in col[1] and ']' in col[1]:
-                    key_composite = col[1]
-                    key_composite = key_composite[key_composite.index('[') + 1:len(key_composite) - 1]
-                    key_composite = key_composite.split('|')
-                    value_composite = row[index].split('|')
-                    for _i, _k in enumerate(key_composite):
-                        if '/' in _k:
-                            _k_composite = _k.split('/')
-                            _k_fields = self.pool.get('taktik.importer.model.custom').get_fields(cr, uid, entity)
-                            _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [(_k_composite[1], '=', value_composite[_i])], context={'active_test': False})[0]
-                            domain_search.append((_k_composite[0], '=', _id))
-                        else:
-                            domain_search.append((_k, '=', value_composite[_i]))
-                else:
-                    domain_search = [(col[1], '=', row[index])]
+                if col[1] == 'id' or col[1] == '.id':
+                    # If external id or database id, get it
+                    mcol = self.pool.get(model)._all_columns.get(col[0]).column # Get the column
+                    ids, _, _ = self.pool.get('ir.fields.converter').db_id_for(cr, uid, entity, mcol, col[1], row[index])
+                    if not hasattr(ids, '__iter__'):
+                        ids = [ids]
 
-                ids = self.pool.get(entity).search(cr, uid, domain_search, context={'active_test': False})
+                else:
+                    domain_search = []
+                    if '[' in col[1] and ']' in col[1]:
+                        key_composite = col[1]
+                        key_composite = key_composite[key_composite.index('[') + 1:len(key_composite) - 1]
+                        key_composite = key_composite.split('|')
+                        value_composite = row[index].split('|')
+                        for _i, _k in enumerate(key_composite):
+                            if '/' in _k:
+                                _k_composite = _k.split('/')
+                                _k_fields = self.pool.get('taktik.importer.model.custom').get_fields(cr, uid, entity)
+                                _id = self.pool.get(_k_fields.get(_k_composite[0]).get('relation')).search(cr, uid, [
+                                    (_k_composite[1], '=', value_composite[_i])], context={'active_test': False})[0]
+                                domain_search.append((_k_composite[0], '=', _id))
+                            else:
+                                domain_search.append((_k, '=', value_composite[_i]))
+                    else:
+                        domain_search = [(col[1], '=', row[index])]
+
+                    ids = self.pool.get(entity).search(cr, uid, domain_search, context={'active_test': False})
                 if len(ids):
                     if columns.get(col[0]).get('type') in ('many2many', 'one2many'):
                         to_save[col[0]] = [(4, ids[0])]
@@ -134,8 +143,25 @@ class taktik_importer_model(orm.Model):
                 to_save[header_item] = row[index] or False
         return to_save
 
-    def __check_key(self, keys, columns, values):
+    def __check_key(self, cr, uid, model, keys, columns, values):
         key_domain = []
+        if 'id' in values:
+            # If id is in the values, search the res_id in ir_model_data (as if id was the xml_id)
+            # if not found, we will force the creation
+            try:
+                cr.execute("""
+                select res_id from ir_model_data where model=%s and name=%s
+                """, (model, values.get('id')))
+                res = cr.fetchone()
+                if res:
+                    res_id = res[0]
+                    key_domain.append(('id', '=', res_id))
+                else:
+                    key_domain.append(('id', '=', False)) # Will force creation
+            except Exception, e:
+                _logger.warning(e)
+                key_domain.append(('id', '=', False)) # Will force creation
+
         for key in keys:
             if columns.get(key).get('type') in ('many2many', 'one2many'):
                 key_domain.append((key, 'in', [values.get(key)[0][1]]))
@@ -152,17 +178,32 @@ class taktik_importer_model(orm.Model):
         keys = data[1]
 
         columns = self.get_fields(cr, uid, model)
-        to_save = self.__get_data(cr, uid, header, columns, row)
-        domain = self.__check_key(keys, columns, to_save)
+        to_save = self.__get_data(cr, uid, model, header, columns, row)
+        domain = self.__check_key(cr, uid, model, keys, columns, to_save)
+
+        ModelData = self.pool['ir.model.data'].clear_caches()
+        mode = 'init'
+        current_module = ''
+        noupdate = False
+
+        def _create():
+            # No keys defined, always create
+            if 'id' in to_save:
+                # External id was set, import through ModelData
+                xid = to_save.pop('id')
+                return ModelData._update(cr, uid, model,
+                                         current_module, to_save, mode=mode, xml_id=xid,
+                                         noupdate=noupdate, res_id=False, context={})
+            return self.pool.get(model).create(cr, uid, to_save, context={'lang': lang})
 
         if len(domain) == 0:
-            return self.pool.get(model).create(cr, uid, to_save, context={'lang': lang})
+            return _create()
         else:
             ids = self.pool.get(model).search(cr, uid, domain, context={'active_test': False})
             if len(ids):
                 return self.pool.get(model).write(cr, uid, ids[0], to_save, context={'lang': lang})
             else:
-                return self.pool.get(model).create(cr, uid, to_save, context={'lang': lang})
+                return _create()
 
 
 @taktik_importer_backend_custom
