@@ -1,0 +1,24 @@
+.oe_systray .oe_topbar_item.profiler_player img {
+    cursor: pointer;
+    padding: 8px;
+    padding-right: 0;
+    padding-left: 0;
+}
+.oe_systray .oe_topbar_item.profiler_player.profiler_player_enabled img.profiler_enable {
+    display: none;
+}
+.oe_systray .oe_topbar_item.profiler_player.profiler_player_enabled img.profiler_dump {
+    display: none;
+}
+.oe_systray .oe_topbar_item.profiler_player.profiler_player_disabled img.profiler_disable {
+    display: none;
+}
+.oe_systray .oe_topbar_item.profiler_player.profiler_player_clear img.profiler_disable {
+    display: none;
+}
+.oe_systray .oe_topbar_item.profiler_player.profiler_player_clear img.profiler_clear {
+    display: none;
+}
+.oe_systray .oe_topbar_item.profiler_player.profiler_player_clear img.profiler_dump {
+    display: none;
+}
