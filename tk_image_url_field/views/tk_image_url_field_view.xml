@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <template id="assets_backend" name="defiris_medias assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/tk_image_url_field/static/src/js/tk_image_url_field.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>
