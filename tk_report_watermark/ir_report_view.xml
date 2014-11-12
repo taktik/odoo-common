@@ -1,0 +1,29 @@
+<openerp>
+    <data>
+        <record id="act_report_xml_view_inherited" model="ir.ui.view">
+            <field name="name">ir.actions.report.xml.inherit_tk</field>
+            <field name="model">ir.actions.report.xml</field>
+            <field name="inherit_id" ref="report_webkit.act_report_xml_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='webkit_debug']" position="after">
+                    <newline/>
+                    <separator/>
+                    <group col="8">
+                        <field name="use_watermark" colspan="4"/>
+                        <newline/>
+                        <field name="watermark_pdf_inner" colspan="4"/>
+                        <newline/>
+                        <field name="use_same_watermark_on_first_page" colspan="4"/>
+                        <newline/>
+                        <field name="watermark_pdf_first" colspan="4"/>
+                        <newline/>
+                        <field name="use_same_watermark_on_last_page" colspan="4"/>
+                        <newline/>
+                        <field name="watermark_pdf_last" colspan="4"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

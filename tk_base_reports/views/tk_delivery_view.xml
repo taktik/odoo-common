@@ -1,0 +1,17 @@
+<openerp>
+    <data>
+        <!-- Override delivery view to change action of the buttons to print our report,
+        and because buttons cannot be uniquely replaced with xpath -->
+        <record id="delivery.view_delivery_order_inherit_stock" model="ir.ui.view">
+            <field name="name">stock.picking.out.form</field>
+            <field name="model">stock.picking.out</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/header//button[@name='action_process']" position="after">
+                    <button name="%(tk_stock_picking_report)d" string="Print Delivery Order" states="confirmed,assigned" type="action"/>
+                    <button name="%(tk_stock_picking_report)d" string="Print Delivery Order" states="done" type="action" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

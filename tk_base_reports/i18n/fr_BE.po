@@ -1,0 +1,291 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* tk_base_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 6.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-21 08:43+0000\n"
+"PO-Revision-Date: 2012-06-21 10:53+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:78
+msgid "Invoice address"
+msgstr "Adresse de livraison"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:121
+msgid "Disc<br/>%"
+msgstr "Remise<br/>%"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:44
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:112
+msgid "Our salesman"
+msgstr "Notre commercial"
+
+#. module: tk_base_reports
+#: constraint:res.company:0
+msgid "Error! You can not create recursive companies."
+msgstr "Erreur! Vous ne pouvez pas créer de sociétés récursives"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:71
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:120
+msgid "List price"
+msgstr "Prix liste"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:72
+msgid "Disc."
+msgstr "Disc."
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:62
+msgid "Label"
+msgstr "Libellé"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:41
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:110
+msgid "Your reference"
+msgstr "Votre référence"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:33
+msgid "E-mail"
+msgstr "E-mail"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:55
+msgid "Confirmed by"
+msgstr "Validé par"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:77
+msgid "Total<br/>quantity"
+msgstr "Quantité<br/>totale"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:43
+msgid "Order N°"
+msgstr "Commande N°"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:61
+msgid "Document"
+msgstr "Document"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:30
+msgid "Fax"
+msgstr "Fax"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:67
+msgid "Net price"
+msgstr "Prix net"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:70
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:52
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:119
+msgid "Description"
+msgstr "Description"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:73
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:66
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:122
+msgid "Price"
+msgstr "Prix"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:103
+msgid "Sale order"
+msgstr "Bon de commande"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:42
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:111
+msgid "Order date"
+msgstr "Date de commande"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:102
+msgid "Base"
+msgstr "Base"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:146
+msgid "Total ex VAT"
+msgstr "Total TVAC"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:34
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:36
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:63
+msgid "VAT"
+msgstr "TVA"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:90
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:52
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:64
+msgid "Date"
+msgstr "Date"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:44
+msgid "Draft invoice"
+msgstr "Facture brouillon"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:114
+msgid "TOTAL"
+msgstr "TOTAL"
+
+#. module: tk_base_reports
+#: field:res.company,bank_info:0
+msgid "Bank Info"
+msgstr "Information bancaire"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:106
+msgid "Net Total"
+msgstr "Total net"
+
+#. module: tk_base_reports
+#: sql_constraint:res.company:0
+msgid "The company name must be unique !"
+msgstr "Le nom de la société doit être unique"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:89
+msgid "Name"
+msgstr "Nom"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:22
+msgid "Shipping address"
+msgstr "Adresse de livraison"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:62
+msgid "Invoice date"
+msgstr "Date de facturation"
+
+#. module: tk_base_reports
+#: model:ir.model,name:tk_base_reports.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:53
+msgid "Gross weight kg"
+msgstr "Poids net kg"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:101
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:110
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:150
+msgid "Taxes"
+msgstr "Taxes"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:128
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:154
+msgid "To pay"
+msgstr "A payer"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:68
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:50
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:117
+msgid "Item"
+msgstr "Article"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:103
+msgid "Amount"
+msgstr "Montant"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:133
+msgid "To pay before"
+msgstr "A payer avant"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:63
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:49
+msgid "Client ref"
+msgstr "Référence client"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:91
+msgid "Signature"
+msgstr "Signature"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:53
+msgid "Supplier refund"
+msgstr "Note de crédit fournisseur"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:81
+msgid "Total weight"
+msgstr "Poids total"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:69
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:118
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:50
+msgid "Customer refund"
+msgstr "Note de crédit client"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:27
+msgid "Tel"
+msgstr "Tel"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:47
+msgid "Cancelled invoice"
+msgstr "Facture annulée"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/delivery_order.html.mako:51
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:65
+msgid "Qty"
+msgstr "Qté"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:56
+msgid "Supplier invoice"
+msgstr "Facture fournisseur"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/purchase_order.html.mako:41
+msgid "Quotation N°"
+msgstr "Devis N°"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/account_invoice.html.mako:39
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: tk_base_reports
+#: report:addons/tk_base_reports/reports/sale_order.html.mako:105
+msgid "Quotation"
+msgstr "Devis"
+

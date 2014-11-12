@@ -12,7 +12,6 @@
     'website': 'http://www.taktik.be',
     'depends': ['base', 'web'],
     'data': [
-        'views/tk_image_url_field_view.xml',
     ],
     'qweb': [
         'static/src/xml/tk_image_url_field.xml',

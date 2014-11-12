@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Delete base reports -->
+        <delete model="ir.actions.report.xml" search="[('report_name','=','account.invoice')]"/>
+        <delete model="ir.actions.report.xml" search="[('report_name','=','account.invoice.layout')]"/>
+        <delete model="ir.actions.report.xml" search="[('report_name','=','sale.order')]"/>
+        <delete model="ir.actions.report.xml" search="[('report_name','=','purchase.order')]"/>
+        <delete model="ir.actions.report.xml" search="[('report_name','=','purchase.quotation')]"/>
+        <delete model="ir.actions.report.xml" search="[('report_name','=','stock.picking')]"/>
+
+        <!-- Sale Order -->
+        <report auto="False" id="tk_sale_order_report" model="sale.order"
+                name="tk.sale.order" file="tk_base_reports/reports/templates/sale_order.html.mako"
+                rml="tk_base_reports/reports/templates/sale_order.html.mako" report_type="webkit"
+                string="Quotation - Order" multi="False"/>
+
+        <record id="tk_sale_order_report" model="ir.actions.report.xml">
+            <field name="webkit_header" ref="header_base"/>
+        </record>
+
+        <!-- Purchase Order -->
+        <report auto="False" id="tk_purchase_order_report" model="purchase.order"
+                name="tk.purchase.order" file="tk_base_reports/reports/templates/purchase_order.html.mako"
+                rml="tk_base_reports/reports/templates/purchase_order.html.mako" report_type="webkit"
+                string="Purchase Order" multi="False"/>
+
+        <record id="tk_purchase_order_report" model="ir.actions.report.xml">
+            <field name="webkit_header" ref="header_base"/>
+        </record>
+
+        <!-- Purchase Quotation -->
+        <report auto="False" id="tk_purchase_quotation_report" model="purchase.order"
+                name="tk.purchase.quotation" file="tk_base_reports/reports/templates/purchase_order.html.mako"
+                rml="tk_base_reports/reports/templates/purchase_order.html.mako" report_type="webkit"
+                string="Request for quotation" multi="False"/>
+
+        <record id="tk_purchase_quotation_report" model="ir.actions.report.xml">
+            <field name="webkit_header" ref="header_base"/>
+            <field name="attachment" eval="False"/>
+            <field name="attachment_use" eval="False"/>
+        </record>
+
+        <!-- Delivery Order -->
+        <report auto="False" id="tk_stock_picking_report" model="stock.picking"
+                name="tk.stock.picking" file="tk_base_reports/reports/templates/delivery_order.html.mako"
+                rml="tk_base_reports/reports/templates/delivery_order.html.mako" report_type="webkit"
+                string="Delivery order" multi="False"/>
+
+        <record id="tk_stock_picking_report" model="ir.actions.report.xml">
+            <field name="webkit_header" ref="header_base"/>
+            <field name="attachment" eval="False"/>
+            <field name="attachment_use" eval="False"/>
+        </record>
+
+        <!-- Invoice -->
+        <report id="tk_account_invoice_report" model="account.invoice"
+                name="tk.account.invoice" file="tk_base_reports/reports/templates/account_invoice.html.mako"
+                rml="tk_base_reports/reports/templates/account_invoice.html.mako"
+                report_type="webkit"
+                auto="False"
+                multi="False" string="Invoices"/>
+
+        <record id="tk_account_invoice_report" model="ir.actions.report.xml">
+            <field name="webkit_header" ref="header_base"/>
+            <field name="attachment" eval="False"/>
+            <field name="attachment_use" eval="False"/>
+        </record>
+    </data>
+</openerp>

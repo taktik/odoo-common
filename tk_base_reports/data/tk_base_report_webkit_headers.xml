@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1">
+		<record id="logo_header" model="ir.header_img">
+			<field eval="&quot;&quot;&quot;png&quot;&quot;&quot;" name="type" />
+			<field
+				eval=""
+				name="img" />
+			<field eval="&quot;&quot;&quot;default_header_logo&quot;&quot;&quot;"
+				name="name" />
+		</record>
+
+		<record id="header_base" model="ir.header_webkit">
+			<field name="name">Base Header</field>
+			<field name="orientation">Portrait</field>
+			<field name="format">A4</field>
+			<field name="margin_top">45</field>
+			<field name="margin_bottom">25</field>
+			<field name="html">
+			<![CDATA[<html>
+			    <head>
+			        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+			        <script>
+			            function subst() {
+			            var vars={};
+			            var x=document.location.search.substring(1).split('&');
+			            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+			            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+			            for(var i in x) {
+			            var y = document.getElementsByClassName(x[i]);
+			            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+			                }
+			            }
+			        </script>
+			        <style type="text/css">
+			            ${css}
+			        </style>
+			    </head>
+			    <body style="border: 0; margin: 0;" onload="subst()">
+					<table class="header"
+						style="border-bottom: 0px solid black; width: 100%">
+						<tr>
+							<td valign="bottom" width="50%">${helper.embed_logo_by_name('default_header_logo')|n}</td>
+						</tr>
+					</table>
+					<br/>
+					<br/>
+				</body>
+			</html>]]>
+			</field>
+
+			<field name="footer_html">
+			<![CDATA[<html>
+		    <head>
+		        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+		        <script>
+		            function subst() {
+		            var vars={};
+		            var x=document.location.search.substring(1).split('&');
+		            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+		            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+		            for(var i in x) {
+		            var y = document.getElementsByClassName(x[i]);
+		            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+		                }
+		            }
+		        </script>
+		        <style type="text/css">
+		            ${css}
+		            table{
+		            	border: 1px solid white;
+		            }
+		         	td{
+		         		border: 1px solid white;
+		         	}
+		        </style>
+		    </head>
+		    <% pool = pageargs['pooler'].get_pool(pageargs['cr'].dbname) %>
+		    <% partner_obj = pool.get('res.partner') %>
+		    <% pipe_var = '&nbsp;|&nbsp;'; %>
+		     <body style="border:0; margin: 0;" onload="subst()">
+		     	<hr color="#1F1180" />
+				<table class="footer" cellspacing="0" cellpadding="0" style="text-align:center;">
+					<tr>
+						<td>
+						    ${company.partner_id.name or '/' |entity}<span class="footer_pipe">${pipe_var}</span>
+						    ${company and company.street or '/' |entity}<span class="footer_pipe">${pipe_var}</span>
+						    ${company and company.street2 or '' |entity}
+						    %if (company and company.street2) :
+                                <span class="footer_pipe">${pipe_var}</span>
+                            % endif
+						    ${company and company.zip or '/' |entity} ${company and company.city or '/' |entity}<span class="footer_pipe">${pipe_var}</span>
+						    ${company and (company.country_id and company.country_id.name) or '/' |entity}<span class="footer_pipe">${pipe_var}</span>
+						    ${_("Tel.")} : ${company and company.phone or '/'|entity}<span class="footer_pipe">${pipe_var}</span>
+						    ${_("Email")} : ${company and company.email or '/'|entity}
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+						    ${_("Website")} : ${company and company.website or '/'|entity}<span class="footer_pipe">${pipe_var}</span>
+						    ${_("VAT")} : ${company.partner_id.vat or '/'} <span class="footer_pipe">${pipe_var}</span>
+						    <% i=0 %>
+						    %for c_bank in company.bank_ids :
+						        <% i+=1 %>
+                                ${c_bank.bank.name}&nbsp;&nbsp;BIC : ${c_bank.bank.bic} IBAN : ${c_bank.iban}
+                                %if i != len(company.bank_ids) :
+                                    <span class="footer_pipe">${pipe_var}</span>
+                                % endif
+                            %endfor
+						</td>
+					</tr>
+				</table>
+		    </body>
+			</html>]]>
+			</field>
+
+			<field name="css">
+			<![CDATA[
+tr,td,th,span,strong,b,div {
+	page-break-inside: avoid;
+}
+.body{
+	font-size: 12px;
+}
+table {
+	border-collapse:collapse;
+	font-size: 12px;
+}
+th, td {
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	vertical-align: top;
+}
+.contact {
+	margin-left: 55%;
+	font-size: 14px;
+}
+.contact th, .contact td{
+	padding: 0px;
+}
+.title {
+	font-weight: bold;
+	font-size: 22px;
+}
+.doc_info {
+	font-size: 14px;
+	line-height: 140%;
+}
+.doc_content th{
+	font-size: 10px;
+	border: solid 1px;
+	border-color: black;
+	background-color: #EDEDED;
+}
+.note {
+	font-style: italic;
+}
+.number {
+	text-align:	right;
+}
+.bold {
+	font-weight: bold;
+}
+.container {
+	width: 100%;
+}
+.container .total{
+	width: 40%;
+}
+.container .total table{
+	width: 70%;
+	float: right;
+}
+.container .tax{
+	width: 50%;
+	padding-right: 10%;
+	background-color: #F2F2F2;
+}
+.left {
+	text-align: left;
+}
+.footer {
+	font-size: 13px;
+	width: 100%;
+	color: #1F1180;
+	border-spacing: 0;
+}
+.contact_footer{
+	text-align: right;
+}
+.footer th, .footer td{
+	padding: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	vertical-align: top;
+}
+hr {
+	color: #1F1180;
+	background-color: #1F1180; 
+}
+]]>
+			</field>
+		</record>
+	</data>
+</openerp>
+	
