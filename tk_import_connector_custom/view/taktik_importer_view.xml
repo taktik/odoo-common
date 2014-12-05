@@ -29,7 +29,7 @@
             <field name="name">Taktik Importer Connector form</field>
             <field name="model">taktik.importer.backend.custom</field>
             <field name="arch" type="xml">
-                <form string="Taktik Importer Backend">
+                <form string="Taktik Importer Backend" version="7.0">
                     <sheet>
                         <label for="name" class="oe_edit_only"/>
                         <h1>
