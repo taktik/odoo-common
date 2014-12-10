@@ -107,7 +107,8 @@ class taktik_importer_model(orm.Model):
 
                 if col[1] == 'id' or col[1] == '.id':
                     # If external id or database id, get it
-                    mcol = self.pool.get(model)._all_columns.get(col[0]).column # Get the column
+                    # mcol = self.pool.get(model)._all_columns.get(col[0]).column # Get the column
+                    mcol = self.pool.get(model)._fields.get(col[0])
                     ids, _, _ = self.pool.get('ir.fields.converter').db_id_for(cr, uid, entity, mcol, col[1], row[index])
                     if not hasattr(ids, '__iter__'):
                         ids = [ids]
