@@ -1,0 +1,46 @@
+<openerp>
+    <data>
+        <!-- Product Packaging tree -->
+        <record id="tk_product_packaging_tree_view" model="ir.ui.view">
+            <field name="name">tk.product.packaging.tree.view</field>
+            <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+            <field name="model">product.packaging</field>
+            <field name="arch" type="xml">
+                <field name="ul_container" position="after">
+                    <field name="sale"/>
+                    <field name="stock"/>
+                    <field name="purchase"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Product Packaging form -->
+        <record id="tk_product_packaging_form_view_inherited" model="ir.ui.view">
+            <field name="name">tk.product.packaging.form.view.inherited</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ul']" position="after">
+                    <field name="sale"/>
+                    <newline/>
+                    <field name="stock"/>
+                    <newline/>
+                    <field name="purchase"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="tk_product_template_form_view_inherited" model="ir.ui.view">
+            <field name="name">tk.product.template.form.view.inherited</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='packaging_ids']" position="replace">
+                    <field name="packaging_ids" string="Configurations" nolabel="1"
+                           context="{'tree_view_ref':'tk_product_packaging_tree_view', 'form_view_ref': 'tk_product_packaging_form_view_inherited'}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

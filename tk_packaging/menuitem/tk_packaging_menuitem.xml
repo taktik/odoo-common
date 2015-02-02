@@ -1,0 +1,5 @@
+<openerp>
+    <data>
+        <menuitem action="product.product_ul_form_action" groups="product.group_stock_packaging" id="tk_menu_product_ul_form_action" parent="purchase.menu_product_in_config_purchase" sequence="100"/>
+    </data>
+</openerp>

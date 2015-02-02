@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<menuitem name="Taktik ODBC" id="tk_pyodbc_menu_base" parent="tk_tools.tk_tools_menu_base" />
+
+		<act_window name="Taktik pyodbc" res_model="tk_pyodbc" view_mode="tree,form" id="action_open_pyodbc" />
+
+		<menuitem id="tk_pyodbc_menu" parent="tk_pyodbc_menu_base" action="action_open_pyodbc" />
+
+	</data>
+</openerp>

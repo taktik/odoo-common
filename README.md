@@ -1,4 +1,0 @@
-Odoo-common
-=================
-
-Hello World !

@@ -1,0 +1,47 @@
+<openerp>
+    <data>
+        <!-- PO form -->
+        <record id="tk_purchase_order_form_inherited" model="ir.ui.view">
+            <field name="name">tk.purchase.order.form.inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom']" position="after">
+                    <field name="qty_packaging"/>
+                    <field name="packaging_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- PO line form -->
+        <record id="tk_purchase_order_line_form_inherited" model="ir.ui.view">
+            <field name="name">tk.purchase.order.line.form.inherited</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='product_qty']" position="before">
+                    <label for="qty_packaging"/>
+                    <div>
+                        <field name="qty_packaging" on_change="onchange_qty_packaging(qty_packaging, packaging_id, context)"/>
+                        <field name="packaging_domain_ids" invisible="1"/>
+                        <field name="packaging_id" on_change="onchange_qty_packaging(qty_packaging, packaging_id, context)"
+                               domain="[('id','in', packaging_domain_ids[0][2])]"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- PO line tree -->
+        <record id="tk_purchase_order_line_tree_inherited" model="ir.ui.view">
+            <field name="name">tk.purchase.order.line.tree.inherited</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uom']" position="after">
+                    <field name="qty_packaging"/>
+                    <field name="packaging_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
