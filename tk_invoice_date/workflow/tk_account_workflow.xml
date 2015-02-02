@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<!-- Add check_date activity -->
+		<record id="act_check_date" model="workflow.activity">
+			<field name="wkf_id" ref="account.wkf" />
+			<field name="name">check_date</field>
+		</record>
+
+		<!-- Override draft to open transition (now draft to check_date) -->
+		<record id="account.t4" model="workflow.transition">
+			<field name="act_from" ref="account.act_draft" />
+			<field name="act_to" ref="act_check_date" />
+			<field name="signal">invoice_open</field>
+		</record>
+
+		<!-- Check_date to open transition -->
+		<record id="check_date_to_open_transition" model="workflow.transition">
+			<field name="act_from" ref="act_check_date" />
+			<field name="act_to" ref="account.act_open" />
+			<field name="condition">check_date()</field>
+		</record>
+
+		<!-- Check_date to draft if false -->
+		<record id="check_date_to_draft_transition" model="workflow.transition">
+			<field name="act_from" ref="act_check_date" />
+			<field name="act_to" ref="account.act_draft" />
+			<field name="condition">not check_date()</field>
+		</record>
+	</data>
+</openerp>

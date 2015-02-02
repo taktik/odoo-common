@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="tk_worklog_invoice_confirmed_view" model="ir.ui.view">
+            <field name="name">tk.worklog.invoice.confirm.view</field>
+            <field name="model">tk_worklog_invoice_confirmed</field>
+            <field name="type">form</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="Add Worklog to Invoice" version="7.0">
+                    <group colspan="4" col="4">
+                        <label string="Please select the worklog to flag as invoiced" colspan="4"/>
+                    </group>
+                    <separator orientation="horizontal" colspan="4"/>
+                    <group colspan="4" col="4">
+                        <field name="worklog_ids" colspan="4" nolabel="1"/>
+                        <field name="partner_id" invisible="1"/>
+                    </group>
+                    <group colspan="4" col="8">
+                        <field name="partner_domain" invisible="1"/>
+                        <field name="invoice_id"
+                               domain="[('partner_id','in',partner_domain[0][2]),('state','in',['open', 'paid'])]" required="1"/>
+                        <newline/>
+                        <button string="_Cancel" special="cancel" icon="gtk-cancel"/>
+                        <button string="_Next" name="next" type="object" colspan="2" icon="gtk-go-forward"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="tk_worklog_invoice_confirmed_view_success" model="ir.ui.view">
+            <field name="name">tk.worklog.invoice.confirm.view.success</field>
+            <field name="model">tk_worklog_invoice_confirmed</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Add Worklog to Invoice - Success" col="4">
+                    <group colspan="4" col="8">
+                        <label string="Your worklog(s) have been flagged as invoiced" colspan="4" width="220"/>
+                    </group>
+                    <separator orientation="horizontal" colspan="4"/>
+                    <button icon="gtk-close" name="act_destroy" special="cancel" string="_Close" type="object"
+                            colspan="4"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="Flag as invoiced"
+                    res_model="tk_worklog_invoice_confirmed"
+                    src_model="account.analytic.line"
+                    view_mode="form"
+                    key2="client_action_multi"
+                    target="new"
+                    id="action_tk_worklog_invoice_confirmed"/>
+
+    </data>
+</openerp>
