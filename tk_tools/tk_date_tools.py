@@ -45,7 +45,7 @@ class tk_date_tools():
             return ""
         if not format:
             format = "%d-%m-%Y %H:%M:%S"
-        return datetime.strftime(format)
+        return datetime_value.strftime(format)
 
 
     @staticmethod
