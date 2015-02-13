@@ -60,7 +60,7 @@ class tk_draft_invoice_merge(osv.osv_memory):
                 account_analytic_line_ids = self.pool.get('account.analytic.line').search(cr, uid,
                                                                                           [('invoice_id', '=', inv.id)])
                 if account_analytic_line_ids and len(account_analytic_line_ids) >= 1:
-                    self.pool.get('account.analytic.line').write(cr, uid, account_analytic_line_ids[0],
+                    self.pool.get('account.analytic.line').write(cr, uid, account_analytic_line_ids,
                                                                  {'invoice_id': invoice.id})
                 self.pool.get('account.invoice').unlink(cr, uid, [inv.id])
         self.pool.get('account.invoice').button_compute(cr, uid, [invoice.id])
