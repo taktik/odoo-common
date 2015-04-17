@@ -1,0 +1,37 @@
+<openerp>
+    <data>
+        <!-- Add internal in the analytic line tree -->
+        <record id="access_view_account_analytic_line_tree_inherit_inherited" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.to_invoice</field>
+            <field name="model">account.analytic.line</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="hr_timesheet_invoice.view_account_analytic_line_tree_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Analytic Entries']" position="attributes">
+                    <attribute name="editable">top</attribute>
+                </xpath>
+                <xpath expr="//field[@name='to_invoice']" position="after">
+                    <field name="internal"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Override to_invoice filter to avoid taking internal worklogs -->
+        <record id="tk_view_account_analytic_line_search_inherit_inherited" model="ir.ui.view">
+            <field name="name">tk.view.account.analytic.line.search.inherit.inherited</field>
+            <field name="model">account.analytic.line</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="hr_timesheet_invoice.view_account_analytic_line_search_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='to_invoice']" position="replace">
+                    <filter name="to_invoice" string="To Invoice" context="{'to_invoice': 1}"
+                            domain="[('invoice_id','=',False), ('to_invoice','&lt;&gt;',False), ('internal','=',False)]"
+                            icon="terp-dolar"/>
+                    <filter name="invoiced" string="Invoiced"
+                            domain="[('invoice_id','!=',False), ('to_invoice','&lt;&gt;',False)]" icon="terp-dolar"/>
+                    <filter name="internal" string="Internal" domain="[('internal','=',True)]" icon="terp-dolar"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
