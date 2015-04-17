@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="tk_sale_margin_sale_order">
+            <field name="model">sale.order</field>
+            <field name="name">tk.sale.margin.sale.order</field>
+            <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='margin']" position="after">
+                    <field name="margin_percent"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
