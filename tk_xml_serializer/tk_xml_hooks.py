@@ -19,9 +19,9 @@
 #
 ##############################################################################
 from openerp.osv import orm, fields
+from openerp.addons.tk_xml_serializer.tk_xml_serializer import serializer
 
-
-class TkXmlHooks(orm.BaseModel):
+class TkXmlHooks(orm.AbstractModel):
     _name = "tk.xml.hooks"
 
     def before_serialize(self, cr, uid, model_name, additional_values=None, context=None, **kwargs):
@@ -36,8 +36,8 @@ class TkXmlHooks(orm.BaseModel):
     def after_serialize(self, cr, uid, model_name, res_id=None, xml=None, pattern_id=None, context=None, **kwargs):
         return xml
 
-    def serialize(self, cr, uid, pattern_id, document_id, partner_id=None, preview=None, log_cr=None, log_id=None, add_tag_if_empty=True, context=None):
-        return serializer(cr, uid, self.pool, pattern_id=pattern_id, log_cr=log_cr, log_id=log_id, add_tag_if_empty=add_tag_if_empty).serialize_object(document_id)
+    def serialize(self, cr, uid, pattern_id, document_id, partner_id=None, preview=None, add_tag_if_empty=True, context=None):
+        return serializer(cr, uid, self.pool, pattern_id=pattern_id, add_tag_if_empty=add_tag_if_empty).serialize_object(document_id)
 
     def before_deserialize(self, cr, uid, model_name, xml=None, context=None, **kwargs):
         return {}
@@ -45,8 +45,8 @@ class TkXmlHooks(orm.BaseModel):
     def before_create_entity(self, cr, uid, model_name, entity=None, additional_values=None, **kwargs):
         return entity
 
-    def deserialize(self, cr, uid, pattern_id, xml, log_id=None, log_cr=None, strict=None, context=None):
-        return serializer(cr, uid, self.pool, pattern_id=pattern_id, log_cr=log_cr, log_id=log_id, xml=xml).deserialize_object()
+    def deserialize(self, cr, uid, pattern_id, xml, strict=None, context=None):
+        return serializer(cr, uid, self.pool, pattern_id=pattern_id, xml=xml).deserialize_object()
 
     def after_deserialize_model(self, cr, uid, model_name, entity=None, additional_values_for_model=None, additional_values=None, **kwargs):
         return entity
