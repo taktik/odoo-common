@@ -1,4 +1,4 @@
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 
 class tk_account_invoice(models.Model):
 
@@ -57,12 +57,24 @@ class tk_account_invoice(models.Model):
             emails += email
         return emails
 
+    def _get_invoice_partner_mail(self, partner):
+
+        emails = ''
+        if not partner.is_company:
+            return partner.email
+        for contact in partner.child_ids:
+            if contact.type == 'invoice':
+                emails += "%s," % contact.email
+        if not emails:
+            emails = partner.email
+        return emails
+
     @api.multi
     def get_email(self):
         """ Return a valid email for customer """
         self.ensure_one()
-        contact = self._get_contact_address(self.partner_id.id)
-        return contact.email
+        contact_emails = self._get_invoice_partner_mail(self.partner_id)
+        return contact_emails
 
 
     @api.model
