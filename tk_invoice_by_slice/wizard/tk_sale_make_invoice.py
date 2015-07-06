@@ -119,6 +119,7 @@ class tk_sale_advance_payment_inv(models.TransientModel):
                 'section_id': sale.section_id.id,
                 'slice_percent': percent_amount or wizard.amount,
                 'date_invoice': context.get('date_invoice', False),
+                'business_unit': sale.business_unit,
             }
             result.append((sale.id, inv_values))
         return result
