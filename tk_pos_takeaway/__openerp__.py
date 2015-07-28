@@ -38,8 +38,10 @@
     "description": """
 POS Module
 =======================
-This module is updating the POS module for restaurant to add two options
-(takeaway and eat-in)
+This module adds the ability to chose between eat-in or takeaway in the POS.
+Indeed, selecting eat-in or takeaway should modify the taxes of the products
+in the current pos order. This is done through the fiscal position of the
+partners linked to these buttons.
 
         """,
     "data": [
