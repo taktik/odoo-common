@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-extend="PosWidget">
+        <t t-jquery=".control-buttons" t-operation="after">
+            <div class="placeholder-ConsumerGoods"></div>
+        </t>
+    </t>
+
+    <t t-name="ConsumerGoodsWidget">
+        <div class="consumer-goods touch-scrollable">
+            <button class="consumer-good-button consumer-good-eat-in">
+                Eat-in
+            </button>
+
+            <button class="consumer-good-button consumer-good-takeaway">
+                Takeaway
+            </button>
+        </div>
+    </t>
+
+</templates>
