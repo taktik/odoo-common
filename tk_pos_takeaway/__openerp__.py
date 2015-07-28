@@ -38,7 +38,8 @@
     "description": """
 POS Module
 =======================
-This module is updating the POS module for to add the ability  to (takeaway and eat-in)
+This module is updating the POS module for restaurant to add two options
+(takeaway and eat-in)
 
         """,
     "data": [
