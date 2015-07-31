@@ -121,15 +121,19 @@ class tk_sale_advance_payment_inv(models.TransientModel):
                 'date_invoice': context.get('date_invoice', False),
                 'business_unit': sale.business_unit,
             }
+
             result.append((sale.id, inv_values))
         return result
 
     def create_invoices(self, cr, uid, ids, context=None):
         """ create invoices for the active sales orders """
         sale_obj = self.pool.get('sale.order')
+        sale_order_line_obj = self.pool.get('sale.order.line')
+        invoice_obj = self.pool.get('account.invoi')
         act_window = self.pool.get('ir.actions.act_window')
         wizard = self.browse(cr, uid, ids[0], context)
         sale_ids = context.get('active_ids', [])
+
         if wizard.advance_payment_method == 'all':
             # create the final invoices of the active sales orders
             res = sale_obj.manual_invoice(cr, uid, sale_ids, context)
@@ -158,9 +162,12 @@ class tk_sale_advance_payment_inv(models.TransientModel):
                 context['percent_amount'] = percent_amount
                 context['date_invoice'] = invoice_date
                 for sale_id, inv_values in self._prepare_advance_invoice_vals(cr, uid, ids, context=context):
-                    inv_ids.append(self._create_invoices(cr, uid, inv_values, sale_id, context=context))
+                    inv_id = self._create_invoices(cr, uid, inv_values, sale_id, context=context)
+                    inv_ids.append(inv_id)
                 context['name'] = False
                 context['percent_amount'] = False
+
+                sale_order_line_obj.write(cr, uid, )
         else:
             for sale_id, inv_values in self._prepare_advance_invoice_vals(cr, uid, ids, context=context):
                 inv_ids.append(self._create_invoices(cr, uid, inv_values, sale_id, context=context))
