@@ -1,7 +1,7 @@
 from openerp import models, fields, api, exceptions
 
 
-class TkSale(models.Model):
+class TkSaleOrder(models.Model):
     _inherit = 'sale.order'
 
     invoice_progress = fields.Float('Invoice Progress')
@@ -20,3 +20,10 @@ class TkSale(models.Model):
         if context.get('send_email'):
             self.force_quotation_send(cr, uid, ids, context=context)
         return True
+
+class TKSaleOrderLine(models.Model):
+
+    _inherit = 'sale.order.line'
+
+    recurring_product = fields.Boolean(related='product_id.recurrence')
+    subscription_id = fields.Many2one('subscription.subscription', string="Subscription")
