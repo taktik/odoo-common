@@ -70,7 +70,7 @@
                                    context="{'total_amount':total_amount}">
                                 <tree editable="bottom" version="7.0">
                                     <field name="name" />
-                                    <field name="invoicing_percent" context="{'total_amount':context['total_amount'], 'type': 'invoicing_percent'}"/>
+                                    <field name="invoicing_percent"/>
                                     <field name="invoicing_amount" />
                                     <field name="invoice_date"/>
                                 </tree>

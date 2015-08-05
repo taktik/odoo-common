@@ -12,19 +12,19 @@ class tk_sale_invoice_slice(models.Model):
     invoice_date = fields.Date('Invoice Date', default=fields.Date.context_today)
     total_amount = fields.Float('Total Amount')
 
-    # @api.onchange('invoicing_percent')
-    # def onchange_percent(self):
-    #
-    #     initial_invoicing_amount = self.env.context['total_amount'] or 1
-    #
-    #     self.invoicing_amount = initial_invoicing_amount * self.invoicing_percent
-    #
-    #
-    # @api.onchange('invoicing_amount')
-    # def onchange_amount(self):
-    #     initial_invoicing_amount = self.env.context['total_amount'] or 1
-    #
-    #     self.invoicing_percent = self.invoicing_amount / initial_invoicing_amount * 100
+    @api.onchange('invoicing_percent')
+    def onchange_percent(self):
+
+        initial_invoicing_amount = self.env.context['total_amount'] or 1
+
+        self.invoicing_amount = initial_invoicing_amount * self.invoicing_percent /100
+
+
+    @api.onchange('invoicing_amount')
+    def onchange_amount(self):
+        initial_invoicing_amount = self.env.context['total_amount'] or 1
+
+        self.invoicing_percent = self.invoicing_amount / initial_invoicing_amount * 100
 
 
 class TkAmountInvoiceSelector(models.TransientModel):
