@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record id="tk_account_invoice_tree" model="ir.ui.view">
+            <field name="name">tk.account.invoice.tree</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="sent" />
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>
