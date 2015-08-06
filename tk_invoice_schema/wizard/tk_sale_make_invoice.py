@@ -17,7 +17,7 @@ class tk_sale_invoice_slice(models.Model):
 
         initial_invoicing_amount = self.env.context['total_amount'] or 1
 
-        self.invoicing_amount = initial_invoicing_amount * self.invoicing_percent /100
+        self.invoicing_amount = initial_invoicing_amount * self.invoicing_percent / 100
 
 
     @api.onchange('invoicing_amount')
@@ -146,8 +146,11 @@ class TkAmountInvoiceSelector(models.TransientModel):
         for sol in so_lines:
             if sol.recurring_product and inv_ids:
                 sol.subscription_id.doc_source = 'account.invoice,%s' % inv_ids[0]
-
-        sale_order.state = 'progress'
+        total_invoice = 0
+        for invoice in sale_order.invoice_ids:
+            total_invoice += invoice.amount_untaxed
+        if total_invoice == sale_order.amount_untaxed:
+            sale_order.state = 'progress'
         return True
 
 
