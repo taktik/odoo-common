@@ -48,3 +48,17 @@ class TkPosTakeawayPosConfig(models.Model):
         required=False,
         domain="[('customer', '=', True)]"
     )
+
+    customer_consumer_goods_3 = fields.Many2one(
+        comodel_name="res.partner",
+        string="Direction",
+        required=False,
+        domain="[('customer', '=', True)]"
+    )
+
+    customer_consumer_goods_4 = fields.Many2one(
+        comodel_name="res.partner",
+        string="Representatives",
+        required=False,
+        domain="[('customer', '=', True)]"
+    )

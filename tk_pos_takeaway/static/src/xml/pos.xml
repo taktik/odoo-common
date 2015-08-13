@@ -8,14 +8,25 @@
     </t>
 
     <t t-name="ConsumerGoodsWidget">
-        <div class="consumer-goods touch-scrollable">
-            <button class="consumer-good-button consumer-good-eat-in">
-                Eat-in
-            </button>
+        <div>
+            <div class="consumer-goods touch-scrollable consumer-goods-top">
+                <button class="consumer-good-button consumer-good-eat-in">
+                    Eat-in
+                </button>
 
-            <button class="consumer-good-button consumer-good-takeaway">
-                Takeaway
-            </button>
+                <button class="consumer-good-button consumer-good-takeaway">
+                    Takeaway
+                </button>
+            </div>
+            <div class="consumer-goods touch-scrollable">
+              <button class="consumer-good-button consumer-good-direction">
+                    Direction
+                </button>
+
+                <button class="consumer-good-button consumer-good-representative">
+                    Representatives
+                </button>
+            </div>
         </div>
     </t>
 

@@ -14,6 +14,12 @@
                         <group>
                             <field name="customer_consumer_goods_2" />
                         </group>
+                        <group>
+                            <field name="customer_consumer_goods_3" />
+                        </group>
+                        <group>
+                            <field name="customer_consumer_goods_4" />
+                        </group>
                     </group>
                 </group>
             </field>
