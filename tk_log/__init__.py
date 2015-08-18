@@ -1,1 +1,2 @@
-import tk_log
+# coding=utf-8
+from . import tk_log

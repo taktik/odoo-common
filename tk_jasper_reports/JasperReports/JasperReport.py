@@ -1,3 +1,4 @@
+# coding=utf-8
 # #############################################################################
 #
 # Copyright (c) 2008-2012 NaN Projectes de Programari Lliure, S.L.
@@ -90,7 +91,7 @@ class JasperReport:
 
         # Not that if either queryString or language do not exist the default (from the constructor)
         # is SQL.
-        #langTags = xml.xpath.Evaluate( '/jasperReport/queryString', doc )
+        # langTags = xml.xpath.Evaluate( '/jasperReport/queryString', doc )
         queryStringFunc = etree.ETXPath("/{%s}jasperReport/{%s}queryString" % (XHTML_NAMESPACE, XHTML_NAMESPACE))
         langTags = queryStringFunc(docetree)
         if langTags:
@@ -98,7 +99,7 @@ class JasperReport:
                 self._language = langTags[0].attrib.get('language').lower()
 
         # Relations
-        #relationTags = xml.xpath.Evaluate( '/jasperReport/property[@name="OPENERP_RELATIONS"]', doc )
+        # relationTags = xml.xpath.Evaluate( '/jasperReport/property[@name="OPENERP_RELATIONS"]', doc )
         propertyFunc = etree.ETXPath(
             "/{%s}jasperReport/{%s}property[@name='OPENERP_RELATIONS']" % (XHTML_NAMESPACE, XHTML_NAMESPACE))
         relationTags = propertyFunc(docetree)
@@ -106,7 +107,7 @@ class JasperReport:
             self._relations = eval(relationTags[0].attrib.get('value', False))
 
         # Repeat field
-        #copiesFieldTags = xml.xpath.Evaluate( '/jasperReport/property[@name="OPENERP_COPIES_FIELD"]', doc )
+        # copiesFieldTags = xml.xpath.Evaluate( '/jasperReport/property[@name="OPENERP_COPIES_FIELD"]', doc )
         copiesFieldFunc = etree.ETXPath(
             "/{%s}jasperReport/{%s}property[@name='OPENERP_COPIES_FIELD']" % (XHTML_NAMESPACE, XHTML_NAMESPACE))
         copiesFieldTags = copiesFieldFunc(docetree)
@@ -115,15 +116,14 @@ class JasperReport:
 
         # fields and fieldNames
         fields = {}
-        #fieldTags = xml.xpath.Evaluate( '/jasperReport/field', doc )
+        # fieldTags = xml.xpath.Evaluate( '/jasperReport/field', doc )
         fieldFunc = etree.ETXPath("/{%s}jasperReport/{%s}field" % (XHTML_NAMESPACE, XHTML_NAMESPACE))
         fieldTags = fieldFunc(docetree)
         for etreeTag in fieldTags:
             name = etreeTag.attrib.get('name')
             type = etreeTag.attrib.get('class')
             tag = xml.dom.minidom.parseString(etree.tostring(etreeTag))
-            if tag.getElementsByTagName('fieldDescription') and tag.getElementsByTagName('fieldDescription')[
-                0].firstChild:
+            if tag.getElementsByTagName('fieldDescription') and tag.getElementsByTagName('fieldDescription')[0].firstChild:
                 path = tag.getElementsByTagName('fieldDescription')[0].firstChild.data
             else:
                 path = ''
@@ -139,18 +139,18 @@ class JasperReport:
                 newPath.append(x.split('-')[-1])
             path = '/'.join(newPath)
             self._fields[path] = {
-            'name': name,
-            'type': type,
+                'name': name,
+                'type': type,
             }
             self._fieldNames.append(name)
 
         # Subreports
         # Here we expect the following structure in the .jrxml file:
-        #<subreport>
+        # <subreport>
         #  <dataSourceExpression><![CDATA[$P{REPORT_DATA_SOURCE}]]></dataSourceExpression>
         #  <subreportExpression class="java.lang.String"><![CDATA[$P{STANDARD_DIR} + "report_header.jasper"]]></subreportExpression>
-        #</subreport>
-        #subreportTags = xml.xpath.Evaluate( '//subreport', doc )
+        # </subreport>
+        # subreportTags = xml.xpath.Evaluate( '//subreport', doc )
         subreportFunc = etree.ETXPath("//{%s}subreport" % XHTML_NAMESPACE)
         subreportTags = subreportFunc(docetree)
         for etreeTag in subreportTags:
@@ -183,6 +183,6 @@ class JasperReport:
             if subreportExpression.endswith('.jasper'):
                 subreportExpression = subreportExpression[:-6] + 'jrxml'
             self._subreports.append({
-            'parameter': dataSourceExpression,
-            'filename': subreportExpression
+                'parameter': dataSourceExpression,
+                'filename': subreportExpression
             })

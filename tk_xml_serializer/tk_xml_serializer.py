@@ -215,7 +215,7 @@ class serializer:
                 inherit_model_obj = self.pool.get(inherit_model_name)
                 model_columns.update(inherit_model_obj._columns)
             for field in model_columns.keys():
-                if model_columns[field].required and not field in fields_id:
+                if model_columns[field].required and field not in fields_id:
                     if field not in entity.keys():
                         if field in model_pool.default_get(self.cr, self.uid, [field]):
                             # There is a default value, ignore
@@ -389,7 +389,7 @@ class serializer:
 
             root_xpath = self.get_el_path(root)
             logger.debug("Current root xpath %s" % root_xpath)
-            if not root_xpath in xml_xpath:
+            if root_xpath not in xml_xpath:
                 # Add in absolute position
                 xml_xpath = self.strip_root_from_xpath(self.xml, xml_xpath)
                 self.fill_tree(self.xml, xml_xpath)
@@ -440,7 +440,7 @@ class serializer:
             field_type = field_name and model._columns[field_name]._type or False
             logger.debug("Field type %s" % field_type)
 
-            if not field_type or not field_type in ['one2many', 'many2many', 'many2one']:
+            if not field_type or field_type not in ['one2many', 'many2many', 'many2one']:
                 # Simple field, not many2many, one2many or many2one
                 if not field_name or len(field_name) == 0:
                     # Add empty tag
@@ -474,10 +474,10 @@ class serializer:
                     xml_xpath = field_xpath
                     current_el_xpath = self.get_el_path(current_el)
                     root_xpath = self.get_el_path(self.xml)
-                    if not current_el_xpath in xml_xpath and not root_xpath in xml_xpath:
+                    if current_el_xpath not in xml_xpath and root_xpath not in xml_xpath:
                         logger.error("Cannot add %s anywhere" % xml_xpath)
 
-                    if not current_el_xpath in xml_xpath and root_xpath in xml_xpath:
+                    if current_el_xpath not in xml_xpath and root_xpath in xml_xpath:
                         current_el_xpath = root_xpath
                         current_el = self.xml
 
@@ -538,7 +538,8 @@ class serializer:
         json_pattern = simplejson.loads(pattern.json_pattern)
 
         # Before deserialize hook
-        hook_res = self._call_hook(self.model_name, "before_deserialize", xml=self.xml)
+        hook_res = self._call_hook(self.model_name, "before_deserialize",
+                                   xml=self.xml)
         if isinstance(hook_res, dict):
             self.additional_values.update(hook_res)
         else:
@@ -690,14 +691,14 @@ class serializer:
                         self.created_ids.append(new_id)
                 continue
 
-            if field_name and not field_name in model_obj._columns:
+            if field_name and field_name not in model_obj._columns:
                 logger.warn("Field %s not found in %s" % (field_name, model_obj._name))
                 continue
 
             field_type = field_name and model_obj._columns[field_name]._type or False
             logger.debug("Field type %s" % field_type)
 
-            if not field_type or not field_type in ['one2many', 'many2many', 'many2one']:
+            if not field_type or field_type not in ['one2many', 'many2many', 'many2one']:
                 # Get the value
                 value = None
                 if not xml_xpath or len(xml_xpath) == 0:

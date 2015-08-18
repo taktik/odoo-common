@@ -26,7 +26,7 @@ import simplejson
 logger = logging.getLogger(__name__)
 
 
-class pattern_model(orm.Model):
+class PatternModel(orm.Model):
     _name = 'tk.json.pattern'
 
     def validate_json(self, cr, uid, ids, context=None):
@@ -50,6 +50,3 @@ class pattern_model(orm.Model):
         'model_id': fields.many2one('ir.model', 'Model', required=False),
         'json_pattern': fields.text('JSON Pattern')
     }
-
-
-pattern_model()

@@ -1,3 +1,4 @@
+# coding=utf-8
 # #############################################################################
 #
 # Copyright (c) 2008-2012 NaN Projectes de Programari Lliure, S.L.
@@ -43,6 +44,7 @@ tools.config['jasperport'] = tools.config.get('jasperport', 8090)
 # Determines the file name where the process ID of the JasperServer process should be stored
 tools.config['jasperpid'] = tools.config.get('jasperpid', 'openerp-jasper.pid')
 
+
 class Report:
     def __init__(self, name, cr, uid, ids, data, context):
         self.name = name
@@ -75,8 +77,8 @@ class Report:
         data = reports.read(self.cr, self.uid, ids[0], ['report_rml', 'jasper_output'])
 
         # ===============================================================================
-        #		FIX DONE BY ARIF TO SPECIFY THE REPORT TYPE FROM WIZARD on 23/02/2011
-        #===============================================================================
+        # FIX DONE BY ARIF TO SPECIFY THE REPORT TYPE FROM WIZARD on 23/02/2011
+        # ===============================================================================
         if 'form' in self.data and 'report_type' in self.data['form'] and self.data['form']['report_type']:
             self.data['report_type'] = self.data['form']['report_type']
 
@@ -84,9 +86,9 @@ class Report:
             data['jasper_output'] = self.data['report_type']
         elif 'form' in self.data and 'report_type' in self.data['form']:
             data['jasper_output'] = self.data['form']['report_type']
-        #===============================================================================
-        #		FIX DONE
-        #===============================================================================
+        # ===============================================================================
+        # FIX DONE
+        # ===============================================================================
         if data['jasper_output']:
             self.outputFormat = data['jasper_output']
 
@@ -111,13 +113,13 @@ class Report:
         # If the language used is xpath create the xmlFile in dataFile.
         if self.report.language() == 'xpath':
             if self.data.get('data_source', 'model') == 'records':
-                #generator = XmlRecordDataGenerator()
+                # generator = XmlRecordDataGenerator()
                 generator = CsvRecordDataGenerator(self.report, self.data)
             elif self.data.get('data_source', 'model') == 'xml_records':
                 generator = XmlRecordDataGenerator(self.report, self.data)
                 self.datasource_type = 'xml'
             else:
-                #generator = XmlBrowseDataGenerator( self.report, self.model, self.pool, self.cr, self.uid, self.ids, self.context )
+                # generator = XmlBrowseDataGenerator( self.report, self.model, self.pool, self.cr, self.uid, self.ids, self.context )
                 generator = CsvBrowseDataGenerator(self.report, self.model, self.pool, self.cr, self.uid, self.ids, self.context)
             generator.generate(dataFile)
             self.temporaryFiles += generator.temporaryFiles
@@ -128,20 +130,19 @@ class Report:
             if subreport.language() == 'xpath':
                 fd, subreportDataFile = tempfile.mkstemp()
                 subreportDataFiles.append({
-                'parameter': subreportInfo['parameter'],
-                'dataFile': subreportDataFile,
-                'jrxmlFile': subreportInfo['filename'],
+                    'parameter': subreportInfo['parameter'],
+                    'dataFile': subreportDataFile,
+                    'jrxmlFile': subreportInfo['filename'],
                 })
                 self.temporaryFiles.append(subreportDataFile)
 
                 generator = CsvBrowseDataGenerator(subreport, self.model, self.pool, self.cr, self.uid, self.ids, self.context)
                 generator.generate(subreportDataFile)
 
-
         # Call the external java application that will generate the PDF file in outputFile
         self.executeReport(dataFile, outputFile, subreportDataFiles)
         end = time.time()
-        print "ELAPSED: ", ( end - start ) / 60
+        print "ELAPSED: ", (end - start) / 60
 
         # Read data from the generated file and return it
         f = open(outputFile, 'rb')
@@ -153,7 +154,7 @@ class Report:
         for file in self.temporaryFiles:
             os.unlink(file)
         self.temporaryFiles = []
-        return ( data, self.outputFormat )
+        return (data, self.outputFormat)
 
     def path(self):
         return os.path.abspath(os.path.dirname(__file__))
@@ -175,7 +176,7 @@ class Report:
         host = tools.config['db_host'] or 'localhost'
         port = tools.config['db_port'] or '5432'
         dbname = self.cr.dbname
-        return 'jdbc:postgresql://%s:%s/%s' % ( host, port, dbname )
+        return 'jdbc:postgresql://%s:%s/%s' % (host, port, dbname)
 
     def userName(self):
         return tools.config['db_user'] or self.systemUserName()
@@ -187,11 +188,11 @@ class Report:
         locale = self.context.get('lang', 'en_US')
 
         connectionParameters = {
-        'output': self.outputFormat,  # 'xml': dataFile,  #'csv': dataFile,
-        'dsn': self.dsn(),
-        'user': self.userName(),
-        'password': self.password(),
-        'subreports': subreportDataFiles,
+            'output': self.outputFormat,  # 'xml': dataFile,  #'csv': dataFile,
+            'dsn': self.dsn(),
+            'user': self.userName(),
+            'password': self.password(),
+            'subreports': subreportDataFiles,
         }
         if self.datasource_type == 'xml':
             connectionParameters['xml'] = dataFile
@@ -199,9 +200,9 @@ class Report:
             connectionParameters['csv'] = dataFile
 
         parameters = {
-        'STANDARD_DIR': self.report.standardDirectory(),
-        'REPORT_LOCALE': locale,
-        'IDS': self.ids,
+            'STANDARD_DIR': self.report.standardDirectory(),
+            'REPORT_LOCALE': locale,
+            'IDS': self.ids,
         }
         if 'parameters' in self.data:
             parameters.update(self.data['parameters'])
@@ -264,4 +265,4 @@ class ir_actions_report_xml(orm.Model):
 
 ir_actions_report_xml()
 
-#################################################################################3
+# ################################################################################3

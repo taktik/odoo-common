@@ -42,7 +42,6 @@ class tk_log(orm.Model):
 
         new_cr = RegistryManager.get(db_name).cursor()
 
-
         if level == 'info':
             logger.info(message)
         elif level == 'debug':
@@ -70,8 +69,6 @@ class tk_log(orm.Model):
 
         return log_id
 
-
-
     def _get_trimmed_message(self, cr, uid, ids, field_name, arg, context=None):
         """
         Return message trimmed to max 100 characters
@@ -96,13 +93,12 @@ class tk_log(orm.Model):
         'name': fields.function(_get_trimmed_message, method=True, type='char', size=100, store=True, string='Label'),
         'message': fields.text('Message', required=True),
         'level': fields.selection([
-                                      ('debug', 'Debug'),
-                                      ('info', 'Information'),
-                                      ('warning', 'Warning'),
-                                      ('error', 'Error'),
-                                      ('fatal', 'Fatal'),
-                                  ], 'Level'),
-
+            ('debug', 'Debug'),
+            ('info', 'Information'),
+            ('warning', 'Warning'),
+            ('error', 'Error'),
+            ('fatal', 'Fatal'),
+        ], 'Level'),
         'model_name': fields.char('Model Name', size=64),
         'uid': fields.many2one('res.users', 'User'),
         'object_id': fields.integer('ID'),
@@ -125,7 +121,7 @@ class tk_log(orm.Model):
                 'context': {'init': True},
                 'res_id': log.object_id,
                 'target': 'current',
-        }
+                }
 
 
 tk_log()

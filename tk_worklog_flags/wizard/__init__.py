@@ -1,2 +1,3 @@
-import tk_worklog_invoice
-import tk_worklog_internal
+# coding=utf-8
+from . import tk_worklog_invoice
+from . import tk_worklog_internal

@@ -1,7 +1,8 @@
+# coding=utf-8
 from openerp import fields, models, api
 
-class TkAccountInvoice(models.Model):
 
+class TkAccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
     slice_percent = fields.Float('Slice Percent', default=100)

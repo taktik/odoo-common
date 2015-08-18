@@ -1,3 +1,4 @@
+# coding=utf-8
 ##############################################################################
 #
 # Copyright (c) 2008-2012 NaN Projectes de Programari Lliure, S.L.
@@ -25,6 +26,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ##############################################################################
+
 
 class AbstractDataGenerator:
     # Simple function all DataGenerators should implement

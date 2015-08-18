@@ -1,3 +1,4 @@
+# coding=utf-8
 # #############################################################################
 #
 # Copyright (c) 2008-2012 NaN Projectes de Programari Lliure, S.L.
@@ -29,6 +30,7 @@ import base64
 
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+
 
 class create_data_template(osv.osv_memory):
     _name = 'jasper.create.data.template'

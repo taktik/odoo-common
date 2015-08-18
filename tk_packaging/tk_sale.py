@@ -1,3 +1,4 @@
+# coding=utf-8
 from openerp.osv import orm, fields
 from openerp import SUPERUSER_ID
 
@@ -14,16 +15,18 @@ class tk_sale_order_line(orm.Model):
         """
         packaging_obj = self.pool.get('product.packaging')
         product_product_obj = self.pool.get('product.product')
-        res = super(tk_sale_order_line, self).product_id_change_with_wh(cr, uid, ids, pricelist, product, qty=qty, uom=uom, qty_uos=qty_uos,
-                                                                uos=uos, name=name, partner_id=partner_id,
-                                                                lang=lang, update_tax=update_tax, date_order=date_order,
-                                                                packaging=packaging, fiscal_position=fiscal_position, flag=flag,
-                                                                warehouse_id=warehouse_id, context=context)
+        res = super(tk_sale_order_line, self).product_id_change_with_wh(
+            cr, uid, ids, pricelist, product, qty=qty, uom=uom,
+            qty_uos=qty_uos,
+            uos=uos, name=name, partner_id=partner_id,
+            lang=lang, update_tax=update_tax, date_order=date_order,
+            packaging=packaging, fiscal_position=fiscal_position, flag=flag,
+            warehouse_id=warehouse_id, context=context)
         if not res:
             res = {}
-        if not 'value' in res:
+        if 'value' not in res:
             res['value'] = {}
-        if not 'domain' in res:
+        if 'domain' not in res:
             res['domain'] = {}
 
         if not product:
@@ -34,7 +37,7 @@ class tk_sale_order_line(orm.Model):
             product_tmpl_id = product_record.get('product_tmpl_id', False)
             if product_tmpl_id:
                 packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0]), ('sale', '=', True)])
-                res['value'].update({'packaging_domain_ids': packaging_ids}) # Update packaging_domain_ids values
+                res['value'].update({'packaging_domain_ids': packaging_ids})  # Update packaging_domain_ids values
                 if packaging_ids and len(packaging_ids) == 1:
                     # If only one packaging, put it directly in packaging_id
                     res['value'].update({'packaging_id': packaging_ids[0]})

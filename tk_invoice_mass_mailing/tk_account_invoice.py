@@ -1,7 +1,8 @@
+# coding=utf-8
 from openerp import models, fields, api, _
 
-class tk_account_invoice(models.Model):
 
+class tk_account_invoice(models.Model):
     _inherit = 'account.invoice'
 
     @api.multi
@@ -75,7 +76,6 @@ class tk_account_invoice(models.Model):
         self.ensure_one()
         contact_emails = self._get_invoice_partner_mail(self.partner_id)
         return contact_emails
-
 
     @api.model
     @api.returns('res.partner')

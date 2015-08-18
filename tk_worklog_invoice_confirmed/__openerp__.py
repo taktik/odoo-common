@@ -1,5 +1,4 @@
-#
-#
+# coding=utf-8
 {
     "name": "Taktik Flag Worklog as Invoiced",
     "version": "1.0",

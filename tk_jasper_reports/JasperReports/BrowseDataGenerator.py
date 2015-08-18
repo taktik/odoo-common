@@ -43,6 +43,7 @@ from AbstractDataGenerator import *
 
 _logger = logging.getLogger(__name__)
 
+
 class BrowseDataGenerator(AbstractDataGenerator):
     def __init__(self, report, model, pool, cr, uid, ids, context):
         self.report = report
@@ -214,7 +215,7 @@ class XmlBrowseDataGenerator(BrowseDataGenerator):
             if field == 'id':
                 # Check for field 'id' because we can't find it's type in _columns
                 value = str(value)
-            elif value == False:
+            elif not value:
                 value = ''
             elif record._table._columns[field]._type == 'date':
                 value = '%s 00:00:00' % str(value)
@@ -259,7 +260,7 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
                 for x in xrange(copies):
                     self.allRecords.append(new)
 
-        #f = codecs.open( fileName, 'wb+', 'utf-8' )
+        # f = codecs.open( fileName, 'wb+', 'utf-8' )
         f = open(fileName, 'wb+')
         csv.QUOTE_ALL = True
         # JasperReports CSV reader requires an extra colon at the end of the line.
@@ -304,7 +305,6 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
                     value = None
                     print "Field '%s' does not exist in model '%s'." % (root, record._table)
 
-
             # Check if it's a many2one
             if isinstance(value, orm.browse_record):
                 fields2 = [f.partition('/')[2] for f in fields if f.partition('/')[0] == root]
@@ -330,7 +330,7 @@ class CsvBrowseDataGenerator(BrowseDataGenerator):
             #
             # In order not to change the way we detect many2one fields, we simply check
             # that the field is in self.report.fields() and that's it.
-            if not currentPath in self.report.fields():
+            if currentPath not in self.report.fields():
                 continue
 
             # Show all translations for a field

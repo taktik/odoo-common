@@ -1,14 +1,15 @@
+# coding=utf-8
 from openerp.osv import orm, fields
 from openerp.tools.translate import _
 from openerp import netsvc
 import openerp.pooler
 from openerp import tools
 import logging
-# # Little hack to force decimal_point to be "." and not dependent of locale (see pyodbc pyodbcmodule.cpp)
+# Little hack to force decimal_point to be "." and not dependent of locale (see pyodbc pyodbcmodule.cpp)
 import locale
 
 locale._override_localeconv.update({'decimal_point': '.'})
-## End hack
+# End hack
 
 locale._override_localeconv = {}
 

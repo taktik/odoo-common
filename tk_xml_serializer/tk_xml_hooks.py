@@ -21,6 +21,7 @@
 from openerp.osv import orm, fields
 from openerp.addons.tk_xml_serializer.tk_xml_serializer import serializer
 
+
 class TkXmlHooks(orm.AbstractModel):
     _name = "tk.xml.hooks"
 

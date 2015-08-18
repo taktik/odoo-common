@@ -158,10 +158,10 @@ class taktik_importer_model(orm.Model):
                     res_id = res[0]
                     key_domain.append(('id', '=', res_id))
                 else:
-                    key_domain.append(('id', '=', False)) # Will force creation
+                    key_domain.append(('id', '=', False))  # Will force creation
             except Exception, e:
                 _logger.warning(e)
-                key_domain.append(('id', '=', False)) # Will force creation
+                key_domain.append(('id', '=', False))  # Will force creation
 
         for key in keys:
             if columns.get(key).get('type') in ('many2many', 'one2many'):

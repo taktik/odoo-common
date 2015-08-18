@@ -1,1 +1,2 @@
-import tk_cron
+# coding=utf-8
+from . import tk_cron

@@ -1,5 +1,7 @@
+# coding=utf-8
 from openerp.osv import fields, osv
 from datetime import datetime, date
+
 
 class tk_account(osv.osv):
     _inherit = 'account.invoice'
@@ -13,7 +15,7 @@ class tk_account(osv.osv):
         """
         if not isinstance(ids, list):
             ids = [ids]
-        self.write(cr, uid, ids, {'internal_number':None})
+        self.write(cr, uid, ids, {'internal_number': None})
         return True
 
     def check_date(self, cr, uid, ids):
@@ -24,12 +26,25 @@ class tk_account(osv.osv):
         """
         for invoice in self.browse(cr, uid, ids):
             if invoice.type in ('out_invoice', 'out_refund'):
-                last_invoice_id = self.search(cr, uid, [('state', 'in', ('open', 'paid')), ('type', '=', invoice.type), ('journal_id','=',invoice.journal_id.id)], limit=1, order='date_invoice DESC')
+                last_invoice_id = self.search(
+                    cr, uid,
+                    [
+                        ('state', 'in', ('open', 'paid')),
+                        ('type', '=', invoice.type),
+                        ('journal_id', '=', invoice.journal_id.id)
+                    ], limit=1,
+                    order='date_invoice DESC')
                 if not last_invoice_id:
                     return True
                 last_invoice = self.browse(cr, uid, last_invoice_id[0])
                 if invoice.date_invoice and invoice.date_invoice < last_invoice.date_invoice and not invoice.internal_number:
-                    raise osv.except_osv('Error !', 'The date of the invoice for %s (%s) must be after the last invoice date (%s)' % (invoice.partner_id.name, invoice.date_invoice, str(last_invoice.date_invoice)))
+                    raise osv.except_osv('Error !',
+                                         'The date of the invoice for %s (%s) '
+                                         'must be after the last invoice'
+                                         ' date (%s)' % (
+                                             invoice.partner_id.name,
+                                             invoice.date_invoice,
+                                             str(last_invoice.date_invoice)))
         return True
 
 tk_account()

@@ -1,3 +1,4 @@
+# coding=utf-8
 import csv
 import threading
 import cStringIO
@@ -8,6 +9,7 @@ import logging
 import openerp.pooler as pooler
 
 logger = logging.getLogger(__name__)
+
 
 class DictUnicodeWriter(object):
 
@@ -21,15 +23,17 @@ class DictUnicodeWriter(object):
     def writerow(self, D):
         def treat_encoding(key, value):
             encoded_string = "?"
-            try :
-                encoded_string = value.encode('utf-8',errors='replace')
+            try:
+                encoded_string = value.encode('utf-8', errors='replace')
             except Exception, e:
                 encoded_string = value
                 print e
                 print "key: %s, value: %s" % (key, value)
             return encoded_string
-            
-        self.writer.writerow({k:isinstance(v, basestring) and treat_encoding(k, v) or v for k,v in D.items()})
+
+        self.writer.writerow(
+            {k: isinstance(v, basestring) and treat_encoding(k, v) or v for
+             k, v in D.items()})
         # Fetch UTF-8 output from the queue ...
         data = self.queue.getvalue()
         data = data.decode("utf-8")
@@ -70,7 +74,7 @@ class data_exporter():
             if not field_info and searched_field != 'id':
                 continue
             field_value = field_info and (field_info._type == 'boolean' and (values[searched_field] or 'False') or (values[searched_field] or '')) or values[searched_field] 
-            #This is a subfield
+            # This is a subfield
             if isinstance(field_value, tuple):
                 scope_ids = [field_value[0]]
                 subrow = self.make_row(scope_ids, tree['fields'][field])
@@ -122,12 +126,12 @@ class data_exporter():
         dict_writer = DictUnicodeWriter(output_string, self.header, dialect='used_for_export')
         dict_writer.writeheader()
         dict_writer.writerow(self.row)
-        #As we could possibly have something like this
-        #{'element1': [{'element2': Value}, {'element3': Value2}], 'element4':Value3},
-        #We have to remember that a record can lies on multiple lines
+        # As we could possibly have something like this
+        # {'element1': [{'element2': Value}, {'element3': Value2}], 'element4':Value3},
+        # We have to remember that a record can lies on multiple lines
         print rows
         for row in rows:
-            #We make the first row
+            # We make the first row
             real_rows = self.decompose_row(row)
             if real_rows:
                 first_row = real_rows[0]
@@ -165,8 +169,8 @@ class data_exporter():
     def start_export(self):
         base_model_obj = self.pool.get(self.base_model_name)
         domain = []
-        if base_model_obj._columns.get('active', False) :
-            domain.append(('active','in',['True','False']))
+        if base_model_obj._columns.get('active', False):
+            domain.append(('active', 'in', ['True', 'False']))
         ids = self.id and self.id or base_model_obj.search(self.cr, 1, domain)
         rows = self.make_row(ids, self.entity)
         self.create_csv(rows)

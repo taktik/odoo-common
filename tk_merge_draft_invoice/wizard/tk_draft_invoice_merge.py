@@ -1,3 +1,4 @@
+# coding=utf-8
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
@@ -32,7 +33,6 @@ class tk_draft_invoice_merge(osv.osv_memory):
 
             res.update({'invoice_ids': context.get('active_ids', False)})
         return res
-
 
     def get_view_dict(self, cr, uid, ids, view_name, context=None):
         message_view_id = self.pool.get('ir.ui.view').search(cr, uid,

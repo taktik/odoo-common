@@ -51,8 +51,6 @@ class tk_export_xml(orm.Model):
 
         export = self.browse(cr, uid, ids[0], context=context)
 
-
-
         domain = literal_eval(export.domain_custom) or []
 
         query = '''
@@ -205,8 +203,6 @@ class tk_export_xml(orm.Model):
         return True
 
     def onchange_model_id(self, cr, uid, ids, name, model_id, context=None):
-
-
         if model_id:
             # Objects
             record_obj = self.pool.get('tk.field.record')

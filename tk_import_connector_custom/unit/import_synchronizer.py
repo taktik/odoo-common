@@ -1,3 +1,4 @@
+# coding=utf-8
 import logging
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.unit.synchronizer import ImportSynchronizer
