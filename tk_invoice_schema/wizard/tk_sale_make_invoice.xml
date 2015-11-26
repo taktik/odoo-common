@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="taktik_view_sale_advance_payment_inv_inherit" model="ir.ui.view">
+            <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+            <field name="name">taktik.view.sale.advance.payment.inv.inherit</field>
+            <field name="model">sale.advance.payment.inv</field>
+            <field name="arch" type="xml">
+                <button string="Show Lines to Invoice" position="before">
+                    <button name="show_lines" type="object" string="Show lines to invoice" class="oe_highlight"
+                            attrs="{'invisible': [('advance_payment_method', '!=', 'schema')]}"/>
+                </button>
+
+                <button string="Create and View Invoice" position="replace">
+                    <button name="create_invoices" string="Create and View Invoice" type="object"
+                            context="{'open_invoices': True}" class="oe_highlight"
+                            attrs="{'invisible': [('advance_payment_method', 'in', ['lines','schema'])]}"/>
+                </button>
+
+                <button string="Create Invoice" position="replace">
+                    <button name="create_invoices" string="Create Invoice" type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('advance_payment_method', 'in', ['lines','schema'])]}"/>
+                </button>
+
+            </field>
+        </record>
+
+        <record id="view_sale_order_invoice_partially_form" model="ir.ui.view">
+            <field name="name">sale.order.line.invoice.partially.form</field>
+            <field name="model">sale.order.line.invoice.partially</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Invoice Sale Order Lines">
+                    <sheet>
+                        <separator string="Invoice lines"/>
+                        <group>
+                            <field name="line_ids" nolabel="1">
+                                <tree version="7.0" string="Lines"
+                                      create="false" editable="bottom">
+                                    <field name="sale_order_line_id"
+                                           invisible="1"/>
+                                    <field name="chosen_line"/>
+                                    <field name="name"/>
+                                    <field name="recurring_product"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="show_slices" type="object"
+                                string="Next" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="tk_amount_invoice_selector_slides_form" model="ir.ui.view">
+            <field name="name">tk.amount.invoice.selector.slides.form</field>
+            <field name="model">tk.amount.invoice.selector</field>
+            <field name="arch" type="xml">
+                <form version="7.0" string="Invoice Sale Order Lines">
+                    <sheet>
+                        <separator string="Slides"/>
+                        <group>
+                            <field name="slice_ids" nolabel="1" widget="one2many_list"
+                                   context="{'total_amount':total_amount}">
+                                <tree editable="bottom" version="7.0">
+                                    <field name="name" />
+                                    <field name="invoicing_percent"/>
+                                    <field name="invoicing_amount" />
+                                    <field name="invoice_date"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="create_invoices" type="object"
+                                string="Next" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</openerp>
