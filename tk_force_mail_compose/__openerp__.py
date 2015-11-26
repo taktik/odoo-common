@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Kévin Goris
+#    Author: Lefever David
 #    Copyright (c) 2015 Taktik S.A. (http://www.taktik.io)
 #    All Rights Reserved
 #
@@ -22,9 +22,13 @@
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU Affero General Public License for more details.
 #
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
 {
-    "name": "Taktik Invoice Mass Mailing",
-    "version": "1.0",
+    "name": "Taktik Force Mail Compose",
+    "version": "8.0.1.0.0",
     "author": "Taktik S.A.",
     "category": "Taktik",
     "website": "http://www.taktik.io",
@@ -32,14 +36,15 @@
         'mail'
     ],
     "description": """
-    Taktik Mail Notification
-    ===============
-    This module enable to check a box on the message subtype. If the box is
-    not checked, the message will not generate a mail.
+Taktik Force Mail Compose
+=========================
+This module force the mails to be sent when using the mail.compose.message
+wizard.
+This wizard can be found in the Sales Orders and the Invoices (button
+Send by Email).
+It will thus send the mail even if the partners are set to receive
+no notifications.
         """,
-    "data": [
-        "view/tk_mail_message_subtype.xml"
-    ],
     "demo": [],
     "test": [],
     "active": False,
@@ -48,7 +53,3 @@
     "auto_install": False,
     "application": True,
 }
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
