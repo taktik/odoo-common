@@ -23,7 +23,7 @@
 #    GNU Affero General Public License for more details.
 #
 {
-    "name": "Taktik Sale Invoice Slice",
+    "name": "Taktik Sale Invoice Schema",
     "version": "1.0",
     "author": "Taktik S.A.",
     "category": "Taktik",
@@ -35,7 +35,11 @@
     "description": """
 Taktik Sale Invoice Slice
 =========================
-This module is a one click install to load all libraries developed for Taktik Project by Taktik S.A.
+Invoicing Schema:
+
+* Recurrent products
+* Invoicing SO by Slice
+* Select line you want to slice
         """,
     "data": [
         "wizard/tk_sale_make_invoice.xml",
