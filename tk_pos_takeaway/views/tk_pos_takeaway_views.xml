@@ -1,0 +1,29 @@
+<openerp>
+    <data>
+
+        <record id="view_pos_config_form_tk_pos_takeaway" model="ir.ui.view">
+            <field name="name">view.pos.config.form.pos.takeaway</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <group string="Features" position="after">
+                    <group string="Consumer Goods">
+                        <group>
+                            <field name="customer_consumer_goods_1" />
+                        </group>
+                        <group>
+                            <field name="customer_consumer_goods_2" />
+                        </group>
+                        <group>
+                            <field name="customer_consumer_goods_3" />
+                        </group>
+                        <group>
+                            <field name="customer_consumer_goods_4" />
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+    </data>
+</openerp>

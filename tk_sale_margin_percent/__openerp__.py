@@ -1,5 +1,4 @@
-#
-#
+# coding=utf-8
 {
     "name": "Taktik Sale Order Margin in Percent",
     "version": "1.0",

@@ -1,5 +1,4 @@
-#
-#
+# coding=utf-8
 {
     "name": "Taktik Worklog Flags",
     "version": "1.0",

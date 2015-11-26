@@ -1,6 +1,4 @@
-# 
-# 
-# 
+# coding=utf-8
 {
     "name": "Taktik log module",
     "version": "0.1",

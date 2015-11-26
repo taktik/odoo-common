@@ -1,0 +1,37 @@
+
+.pos .consumer-goods-top {
+    margin-bottom: 5px;
+}
+
+.pos .consumer-goods {
+    display: block;
+    text-align: center;
+    vertical-align: top;
+    width: 100%;
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.pos .consumer-goods button {
+    height: 39px;
+    display: inline;
+    width: 204px;
+    margin-left: -6px;
+    margin-right: 10px;
+    font-weight: bold;
+    vertical-align: middle;
+    color: #555555;
+    font-size: 14px;
+}
+
+.pos .consumer-goods button:last-child {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 205px;
+}
+.pos .consumer-goods button:active {
+    border: none;
+    color: white;
+    background: #7f82ac;
+}

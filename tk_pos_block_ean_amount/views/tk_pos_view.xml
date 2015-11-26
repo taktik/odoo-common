@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="tk_pos_block_ean_amount_view_pos_config_form_inherit">
+            <field name="name">pos.config.form.view</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id"
+                   ref="point_of_sale.view_pos_config_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Receipt']" position="after">
+                    <group string="Amount Limit" col="4" >
+                        <field name='amount_limit' />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

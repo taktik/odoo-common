@@ -1,3 +1,4 @@
+# coding=utf-8
 # #############################################################################
 #
 # Copyright (c) 2008-2012 NaN Projectes de Programari Lliure, S.L.
@@ -32,6 +33,7 @@ import codecs
 from JasperReport import *
 from AbstractDataGenerator import *
 
+
 class CsvRecordDataGenerator(AbstractDataGenerator):
     def __init__(self, report, data):
         self.temporaryFiles = []
@@ -56,7 +58,7 @@ class CsvRecordDataGenerator(AbstractDataGenerator):
                     print "FIELD '%s' NOT FOUND IN REPORT." % field
                     continue
                 value = record.get(field, False)
-                if value == False:
+                if not value:
                     value = ''
                 elif isinstance(value, unicode):
                     value = value.encode('utf-8')
@@ -86,7 +88,7 @@ class XmlRecordDataGenerator(AbstractDataGenerator):
                 recordNode.appendChild(fieldNode)
 
                 # The rest of field types must be converted into str
-                if value == False:
+                if not value:
                     value = ''
                 elif isinstance(value, str):
                     value = unicode(value, 'utf-8')
@@ -104,9 +106,9 @@ class XmlRecordDataGenerator(AbstractDataGenerator):
             recordNode = self.document.createElement('record')
             topNode.appendChild(recordNode)
             for field, value in record.iteritems():
-                #				if field not in self.report.fields():
-                #					print "FIELD '%s' NOT FOUND IN REPORT." % field
-                #					continue
+                # if field not in self.report.fields():
+                # print "FIELD '%s' NOT FOUND IN REPORT." % field
+                # continue
 
                 if type(value) == type([]):
                     self.handle_list_values(self.document, recordNode, field, value)
@@ -115,7 +117,7 @@ class XmlRecordDataGenerator(AbstractDataGenerator):
                 fieldNode = self.document.createElement(field)
                 recordNode.appendChild(fieldNode)
                 # The rest of field types must be converted into str
-                if value == False:
+                if not value:
                     value = ''
                 elif isinstance(value, str):
                     value = unicode(value, 'utf-8')

@@ -1,0 +1,21 @@
+<openerp>
+    <data>
+        <template id="tk_pos_takeaway_assets_backend"
+                  name="tk_pos_takeaway_assets_backend"
+                  inherit_id="point_of_sale.assets_backend">
+            <xpath expr="." position="inside">
+                <script src="/tk_pos_takeaway/static/src/js/pos.js"
+                        type="text/javascript"></script>
+            </xpath>
+        </template>
+
+        <template id="tk_pos_takeaway_assets" name="tk_pos_takeaway_css"
+                  inherit_id="point_of_sale.index">
+            <xpath expr="//script[@id='loading-script']" position="before">
+                <link rel="stylesheet"
+                      href="/tk_pos_takeaway/static/src/css/pos.css"/>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

@@ -1,3 +1,4 @@
+# coding=utf-8
 {
     "name": "Taktik ODBC Module",
     "version": "0.1",

@@ -16,6 +16,7 @@ from openerp.osv import fields, orm
 from .backend import taktik_importer_backend
 from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
 
+
 class taktik_queue_job(orm.Model):
     _inherit = 'queue.job'
 

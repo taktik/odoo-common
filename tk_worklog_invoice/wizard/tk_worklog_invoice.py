@@ -1,3 +1,4 @@
+# coding=utf-8
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp.osv.orm import browse_record_list, browse_record, browse_null
@@ -61,7 +62,6 @@ class tk_worklog_invoice(osv.osv_memory):
 
         res.update({'worklog_ids': context.get('active_ids', False), 'partner_id': supplier, 'partner_domain': partner_domain})
         return res
-
 
     def get_view_dict(self, cr, uid, ids, view_name, context=None):
         message_view_id = self.pool.get('ir.ui.view').search(cr, uid,
@@ -143,7 +143,7 @@ class tk_worklog_invoice(osv.osv_memory):
                 'price_unit': price,
                 'quantity': qty,
                 'discount': factor.factor,
-                'invoice_line_tax_id': [(6, 0, tax )],
+                'invoice_line_tax_id': [(6, 0, tax)],
                 'invoice_id': invoice_id.id,
                 'name': factor_name,
                 'product_id': product_id,

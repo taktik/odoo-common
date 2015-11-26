@@ -1,7 +1,9 @@
+# coding=utf-8
 from openerp.osv import orm, osv
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from openerp import SUPERUSER_ID
 from datetime import datetime
+
 
 class tk_purchase_order(orm.Model):
     _inherit = 'purchase.order'
@@ -45,14 +47,13 @@ class tk_purchase_order(orm.Model):
         user = res_users_obj.browse(cr, uid, uid)
         parent_company_id = res_company_obj.get_parent_company_id(cr, uid, context.get('force_company', False) if context.get('force_company', False) else user.company_id.id)
         context['force_company'] = parent_company_id
-        order = purchase_order_obj.browse(cr, SUPERUSER_ID, order.id, context=context) #Fix this --> for order.partner_id.property_account_payable.id
+        order = purchase_order_obj.browse(cr, SUPERUSER_ID, order.id, context=context)  # Fix this --> for order.partner_id.property_account_payable.id
         company_id = res_company_obj.get_parent_company_id(cr, uid, order.company_id.id)
         journal_ids = self.pool['account.journal'].search(cr, uid, [('type', '=', 'purchase'), ('company_id', '=', company_id)], limit=1)
         if not journal_ids:
             raise osv.except_osv(
                 'Error!',
                 'Define purchase journal for this company: "%s" (id:%d).' % (order.company_id.name, order.company_id.id))
-
 
         return {
             'name': order.partner_ref or order.name,
@@ -68,6 +69,7 @@ class tk_purchase_order(orm.Model):
             'payment_term': order.payment_term_id.id or False,
             'company_id': order.company_id.id,
         }
+
 
 class tk_procurement_order(orm.Model):
 
@@ -97,7 +99,7 @@ class tk_procurement_order(orm.Model):
         if seller_qty:
             qty = max(qty, seller_qty)
         price = pricelist_obj.price_get(cr, uid, [pricelist_id], procurement.product_id.id, qty, partner.id, {'uom': uom_id})[pricelist_id]
-        #Passing partner_id to context for purchase order line integrity of Line name
+        # Passing partner_id to context for purchase order line integrity of Line name
         new_context = context.copy()
         new_context.update({'lang': partner.lang, 'partner_id': partner.id})
         product = prod_obj.browse(cr, uid, procurement.product_id.id, context=new_context)

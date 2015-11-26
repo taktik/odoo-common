@@ -1,3 +1,4 @@
+# coding=utf-8
 from openerp.osv import orm, fields
 from openerp import SUPERUSER_ID
 
@@ -43,7 +44,7 @@ class tk_purchase_order_line(orm.Model):
         if not res:
             res = {}
 
-        if not 'value' in res:
+        if 'value' not in res:
             res['value'] = {}
             res['domain'] = {}
 
@@ -55,7 +56,7 @@ class tk_purchase_order_line(orm.Model):
             product_tmpl_id = product_record.get('product_tmpl_id', False)
             if product_tmpl_id:
                 packaging_ids = packaging_obj.search(cr, uid, [('product_tmpl_id', '=', product_tmpl_id[0]), ('purchase', '=', True)])
-                res['value'].update({'packaging_domain_ids': packaging_ids}) # Update packaging_domain_ids values
+                res['value'].update({'packaging_domain_ids': packaging_ids})  # Update packaging_domain_ids values
                 if packaging_ids and len(packaging_ids) == 1:
                     # If only one packaging, put it directly in packaging_id
                     res['value'].update({'packaging_id': packaging_ids[0]})

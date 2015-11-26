@@ -1,4 +1,6 @@
+# coding=utf-8
 from openerp.osv import orm, fields
+
 
 class tk_stock_move(orm.Model):
     _inherit = 'stock.move'

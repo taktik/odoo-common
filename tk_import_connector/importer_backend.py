@@ -17,23 +17,22 @@ class taktik_importer_backend(orm.Model):
         """
         return [('1.0.0', '1.0.0')]
 
-
     def _delimiter(self, cr, uid, context=None):
         return [(',', 'Comma'),
                 (';', 'Semicolon'),
                 ('\t', 'Tab'),
                 (' ', 'Space'),
-        ]
+                ]
 
     def _mode(self, cr, uid, context=None):
         return [('init', 'Create'),
                 ('update', 'Update'),
-        ]
+                ]
 
     def __get_available_languages(self, cr, uid, context=None):
         res_lang_obj = self.pool.get('res.lang')
         lang_ids = res_lang_obj.search(cr, uid, [])
-        lang_data = res_lang_obj.read(cr, uid, lang_ids, ['name','code'], context)
+        lang_data = res_lang_obj.read(cr, uid, lang_ids, ['name', 'code'], context)
         return [(lang_info['code'], lang_info['name']) for lang_info in lang_data]
 
     _defaults = {

@@ -1,4 +1,5 @@
-import tk_purchase
-import tk_product
-import tk_stock
-import tk_sale
+# coding=utf-8
+from . import tk_purchase
+from . import tk_product
+from . import tk_stock
+from . import tk_sale

@@ -1,3 +1,4 @@
+# coding=utf-8
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 import time
@@ -27,15 +28,15 @@ class account_analytic_line(osv.osv):
             data = {}
 
         journal_types = {}
-        #for each account analytic line selected, we fill the journal types dictionary. This dictionary have the journal
-        #type as key, the value is the account analytic lines which have the key as journal type
+        # for each account analytic line selected, we fill the journal types dictionary. This dictionary have the journal
+        # type as key, the value is the account analytic lines which have the key as journal type
         for line in self.pool.get('account.analytic.line').browse(cr, uid, ids, context=context):
             if line.journal_id.type not in journal_types:
                 journal_types[line.journal_id.type] = set()
             journal_types[line.journal_id.type].add(line.account_id.id)
 
         for journal_type, account_ids in journal_types.items():
-            #One invoice per analytic account will be created
+            # One invoice per analytic account will be created
             for account in analytic_account_obj.browse(cr, uid, list(account_ids), context=context):
                 partner = account.partner_id
                 if (not partner) or not (account.pricelist_id):
@@ -52,6 +53,8 @@ class account_analytic_line(osv.osv):
                         pterm_list.sort()
                         date_due = pterm_list[-1]
 
+                bba_vals = self.pool.get('account.invoice').generate_bbacomm(cr, uid, False, 'out_invoice', 'bba', account.partner_id.id, False, context=None)
+
                 curr_invoice = {
                     'name': time.strftime('%d/%m/%Y') + ' - ' + account.name,
                     'partner_id': account.partner_id.id,
@@ -60,7 +63,8 @@ class account_analytic_line(osv.osv):
                     'account_id': partner.property_account_receivable.id,
                     'currency_id': account.pricelist_id.currency_id.id,
                     'date_due': date_due,
-                    'fiscal_position': account.partner_id.property_account_position.id
+                    'fiscal_position': account.partner_id.property_account_position.id,
+                    'reference': bba_vals.get('value', {}).get('reference', False),
                 }
 
                 context2 = context.copy()
@@ -80,11 +84,11 @@ class account_analytic_line(osv.osv):
                                 AND journal.type = %s
                                 AND to_invoice IS NOT NULL
                             GROUP BY product_id, to_invoice, product_uom_id""",
-                           #SELECT product_id, user_id, to_invoice, sum(unit_amount), product_uom_id
-                           #GROUP BY product_id, user_id, to_invoice, product_uom_id
+                           # SELECT product_id, user_id, to_invoice, sum(unit_amount), product_uom_id
+                           # GROUP BY product_id, user_id, to_invoice, product_uom_id
                            (account.id, tuple(ids), journal_type))
 
-                #for product_id, user_id, factor_id, qty, uom in cr.fetchall():
+                # for product_id, user_id, factor_id, qty, uom in cr.fetchall():
                 for product_id, factor_id, qty, uom in cr.fetchall():
                     if data.get('product'):
                         product_id = data['product'][0]
@@ -112,7 +116,7 @@ class account_analytic_line(osv.osv):
                         'price_unit': price,
                         'quantity': qty,
                         'discount': factor.factor,
-                        'invoice_line_tax_id': [(6, 0, tax )],
+                        'invoice_line_tax_id': [(6, 0, tax)],
                         'invoice_id': last_invoice,
                         'name': factor_name,
                         'product_id': product_id,

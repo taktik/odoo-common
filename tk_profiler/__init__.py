@@ -1,3 +1,4 @@
+# coding=utf-8
 import controllers
 from cProfile import Profile
 

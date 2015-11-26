@@ -43,10 +43,14 @@ import jasper_report
 class report_xml_file(osv.osv):
     _name = 'ir.actions.report.xml.file'
     _columns = {
-    'file': fields.binary('File', required=True, filters="*.jrxml,*.properties,*.ttf", help=''),
-    'filename': fields.char('File Name', size=256, required=False, help=''),
-    'report_id': fields.many2one('ir.actions.report.xml', 'Report', required=True, ondelete='cascade', help=''),
-    'default': fields.boolean('Default', help=''),
+        'file': fields.binary('File', required=True,
+                              filters="*.jrxml,*.properties,*.ttf", help=''),
+        'filename': fields.char('File Name', size=256, required=False,
+                                help=''),
+        'report_id': fields.many2one('ir.actions.report.xml', 'Report',
+                                     required=True, ondelete='cascade',
+                                     help=''),
+        'default': fields.boolean('Default', help=''),
     }
 
     def create(self, cr, uid, vals, context=None):
@@ -74,22 +78,24 @@ class report_xml(osv.osv):
     _name = 'ir.actions.report.xml'
     _inherit = 'ir.actions.report.xml'
     _columns = {
-    'jasper_output': fields.selection(
-        [('html', 'HTML'), ('csv', 'CSV'), ('xls', 'XLS'), ('rtf', 'RTF'), ('odt', 'ODT'), ('ods', 'ODS'),
-         ('txt', 'Text'), ('pdf', 'PDF')], 'Jasper Output'),
-    #'jasper_file_ids': fields.one2many('ir.actions.report.xml.file', 'report_id', 'Files', help=''),
-    'jasper_model_id': fields.many2one('ir.model', 'Model', help=''),  # We use jas-er_model
-    'jasper_report': fields.boolean('Is Jasper Report?', help=''),
+        'jasper_output': fields.selection(
+            [('html', 'HTML'), ('csv', 'CSV'), ('xls', 'XLS'), ('rtf', 'RTF'),
+             ('odt', 'ODT'), ('ods', 'ODS'),
+             ('txt', 'Text'), ('pdf', 'PDF')], 'Jasper Output'),
+        # 'jasper_file_ids': fields.one2many('ir.actions.report.xml.file', 'report_id', 'Files', help=''),
+        'jasper_model_id': fields.many2one('ir.model', 'Model', help=''),
+        # We use jas-er_model
+        'jasper_report': fields.boolean('Is Jasper Report?', help=''),
     }
     _defaults = {
-    'jasper_output': lambda self, cr, uid, context: context.get('jasper_report') and 'pdf',
+        'jasper_output': lambda self, cr, uid, context: context.get(
+            'jasper_report') and 'pdf',
     }
 
-
-    #===============================================================================
-    #	FIX DONE BY ARIF on 22.02.2011
-    #	AUTOMATIC JASPER REPORT REGISTRATION DISABLED TO WORK IT FROM WIZARD
-    #===============================================================================
+    # ===============================================================================
+    # FIX DONE BY ARIF on 22.02.2011
+    # AUTOMATIC JASPER REPORT REGISTRATION DISABLED TO WORK IT FROM WIZARD
+    # ===============================================================================
     def x_register_all(self, cursor):
         value = super(report_xml, self).register_all(cursor)
         cursor.execute("SELECT * FROM ir_act_report_xml WHERE report_rml ilike '%.jrxml' ORDER BY id")

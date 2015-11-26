@@ -1,7 +1,8 @@
+# coding=utf-8
 from openerp import models, fields, api, _
 
-class tk_account_invoice(models.Model):
 
+class tk_account_invoice(models.Model):
     _inherit = 'account.invoice'
 
     @api.multi
@@ -56,26 +57,6 @@ class tk_account_invoice(models.Model):
             email.write({'attachment_ids': [(6, 0, attachments.ids)]})
             emails += email
         return emails
-
-    def _get_invoice_partner_mail(self, partner):
-
-        emails = ''
-        if not partner.is_company:
-            return partner.email
-        for contact in partner.child_ids:
-            if contact.type == 'invoice':
-                emails += "%s," % contact.email
-        if not emails:
-            emails = partner.email
-        return emails
-
-    @api.multi
-    def get_email(self):
-        """ Return a valid email for customer """
-        self.ensure_one()
-        contact_emails = self._get_invoice_partner_mail(self.partner_id)
-        return contact_emails
-
 
     @api.model
     @api.returns('res.partner')

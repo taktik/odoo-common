@@ -1,3 +1,4 @@
+# coding=utf-8
 import csv
 import threading
 import time
@@ -10,6 +11,7 @@ import openerp.pooler as pooler
 from openerp.osv import fields, osv
 
 logger = logging.getLogger(__name__)
+
 
 class data_importer():
 
@@ -42,7 +44,6 @@ class data_importer():
             self.import_error = True
             raise Exception(errors)
 
-
     def get_relation_field(self, field_info, c_id):
         type = field_info._type
         if type == 'many2one':
@@ -50,20 +51,20 @@ class data_importer():
         elif type == 'related':
             return '%s, %d' % (c_id, field_info._obj)
         elif type == 'one2many':
-            return [(4,c_id)]
+            return [(4, c_id)]
         elif type == 'many2many':
-            return [(4,c_id)]
+            return [(4, c_id)]
 
     def get_new_relation_field(self, field_info, values):
         type = field_info._type
         model_obj = self.pool.get(field_info._obj)
-        c_id = model_obj.create(self.cr, self.uid, values, {'import':True, 'lang':self.lang})
+        c_id = model_obj.create(self.cr, self.uid, values, {'import': True, 'lang': self.lang})
         if type == 'many2one':
             return c_id
         elif type == 'one2many':
-            return [(4,c_id)]
+            return [(4, c_id)]
         elif type == 'many2many':
-            return [(4,c_id)]
+            return [(4, c_id)]
 
     def convert_value(self, model_obj, field_info, value):
         converted_value = value
@@ -95,12 +96,12 @@ class data_importer():
             readable_domain += ' AND %s %s %s' % (condition[0], condition[1], condition[2])
         return readable_domain
 
-
     def treat_subtree(self, tree, model_obj, fullname, row, line_number, parent=False):
         model_columns = {}
         model_columns.update(model_obj._columns)
         parent_field = fullname
-        model_id = self.pool.get('ir.model').search(self.cr, self.uid, [('model','=',model_obj._name)])[0]
+        model_id = self.pool.get('ir.model').search(self.cr, self.uid, [
+            ('model', '=', model_obj._name)])[0]
         if fullname.count('/'):
             parent_fields = fullname.split('/')
             parent_field = parent_fields[len(parent_fields) - 1:][0]
@@ -147,7 +148,7 @@ class data_importer():
             self.import_error = True
             raise Exception(error_message)
         
-        #update avec id
+        # update avec id
         if '.id' in tree.keys():
             del tree['.id']
             c_id = False
@@ -161,13 +162,15 @@ class data_importer():
             if not ids or len(ids) > 1:
                 self.import_error = True
                 raise Exception("Il n'existe pas de %s avec l'id %s" % (model_obj._name, c_id))
-            self.entities_to_update.setdefault(model_id, {}).setdefault(c_id,[]).append(entity)
+            self.entities_to_update.setdefault(model_id, {}).setdefault(c_id,
+                                                                        []).append(
+                entity)
             return int(c_id)
-        #update
+        # update
         elif (self.update or self.update_strict) and model_id in self.keys and fullname in self.keys[model_id]:
             keys = self.keys[model_id][fullname]
             domain = []
-            active_clause = ('active','in',['True','False'])
+            active_clause = ('active', 'in', ['True', 'False'])
             for key in keys:
                 field_info = model_columns[key]
                 field = key
@@ -189,9 +192,10 @@ class data_importer():
                     raise Exception(message)
                 return entity
             else:
-                self.entities_to_update.setdefault(model_id, {}).setdefault(ids[0],[]).append(entity)
+                self.entities_to_update.setdefault(model_id, {}).setdefault(
+                    ids[0], []).append(entity)
                 return int(ids[0])
-        #create
+        # create
         else:
             try:
                 self.check_required(model_obj, entity, parent)
@@ -206,10 +210,10 @@ class data_importer():
             value = row[key]
             if key == '.id':
                 key = 'id'
-            domain.append((key,'=',value))
+            domain.append((key, '=', value))
         self.import_error = False
         entity = self.treat_subtree(self.tree, self.model_obj, '', row, line_number)
-        if isinstance(entity, int) or isinstance(entity, long) :
+        if isinstance(entity, int) or isinstance(entity, long):
             return
         if self.import_error:
             self.errors = True
@@ -222,15 +226,17 @@ class data_importer():
             else:
                 if not self.update_strict:
                     if not self.import_error:
-                        self.model_obj.create(self.cr, self.uid, entity, {'import':True,'lang':self.lang})
+                        self.model_obj.create(self.cr, self.uid, entity,
+                                              {'import': True,
+                                               'lang': self.lang})
                 else:
                     self.log_error(line_number, 'The system was not able to find a %s to update' % self.model_obj._name)
         else:
             if not self.import_error:
-                self.model_obj.create(self.cr, self.uid, entity, {'import':True,'lang':self.lang    })
+                self.model_obj.create(self.cr, self.uid, entity,
+                                      {'import': True, 'lang': self.lang})
 
-
-    def print_tree(self, tree, rank = 0):
+    def print_tree(self, tree, rank=0):
         for key in tree.keys():
             print '%s%s' % (rank * '\t', key)
             if tree[key]:
@@ -268,10 +274,10 @@ class data_importer():
                     self.progress += 1
                     self.log_progress(self.progress)
                 for values in self.entities_to_update[model_id][c_id]:
-                    try :
-                        current_model_obj.write(self.cr, self.uid, [int(c_id)], values, {'lang':self.lang})
+                    try:
+                        current_model_obj.write(self.cr, self.uid, [int(c_id)], values, {'lang': self.lang})
                     except Exception, e:
-                        self.errors= True
+                        self.errors = True
                         self.log_error(self.i, "Error : %s / Model : %s / Values : %s" % (e, current_model_obj._name, values))
         return self.errors
 
@@ -282,16 +288,16 @@ class data_importer():
             self.progress_cr.commit()
             self.cr.commit()
         else:
-            if not self.ignore_errors :
+            if not self.ignore_errors:
                 self.cr.rollback()
             self.write_errors(logical_file)
-            file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'state':  'error', 'errors': len(self.log), 'name' : logical_file.import_name + '_error.txt'})
+            file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'state':  'error', 'errors': len(self.log), 'name': logical_file.import_name + '_error.txt'})
             self.progress_cr.commit()
             self.cr.commit()
         self.cr.close()
         self.progress_cr.close()
 
-    #log progress has to be done in a separated thread because of the transaction
+    # log progress has to be done in a separated thread because of the transaction
     def log_progress(self, progress):
         file_obj = self.progress_pool.get('tk_import.file')
         file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'progress': progress})
@@ -321,7 +327,7 @@ class data_importer():
 
         self.model_obj = self.pool.get(logical_file.model_id.model)
         self.model_id = logical_file.model_id.id
-        #self.product_tmpl_columns = self.pool.get('product.template')._columns.keys()
+        # self.product_tmpl_columns = self.pool.get('product.template')._columns.keys()
         file_path = import_path + '/' + logical_file.file
 
         file = open(file_path, 'rb')
@@ -329,7 +335,7 @@ class data_importer():
 
         self.cr.autocommit(False)
 
-        if self.ignore_errors :
+        if self.ignore_errors:
             self.cr.autocommit(True)
 
         file_obj.write(self.cr, self.uid, self.logical_file_id, {'state':  'processing'})
@@ -337,8 +343,8 @@ class data_importer():
 
         self.i = 0
         self.progress = 0
-        #Compute the number of steps possible
-        #Round to the superior multiple of 20
+        # Compute the number of steps possible
+        # Round to the superior multiple of 20
         steps = number_of_record / 20
         if steps * 20 < number_of_record:
             steps += 1
@@ -354,18 +360,18 @@ class data_importer():
                 self.log_error(self.i, e)
 
         if self.entities_to_update:
-            self.number_of_entities = reduce(lambda x,y: x+y, [len(self.entities_to_update[entity]) for entity in self.entities_to_update.keys()])
+            self.number_of_entities = reduce(lambda x, y: x+y, [len(self.entities_to_update[entity]) for entity in self.entities_to_update.keys()])
             self.number_of_records = number_of_record + self.number_of_entities
         else:
             self.number_of_entities = 1
             self.number_of_records = number_of_record
-        #compute new progress
+        # compute new progress
         self.steps = self.number_of_records / 20
         if self.steps * 20 != self.number_of_records:
             self.steps += 1
         self.progress = (float(self.i) / float(self.number_of_records)) * 100
         self.progress = int(self.progress)
-        #if progress is not a multiple of 5, set to the superior multiple of 5
+        # if progress is not a multiple of 5, set to the superior multiple of 5
         if self.progress % 5 != 0:
             self.progress = ((self.progress / 5) + 1) * 5
         self.log_progress(self.progress)

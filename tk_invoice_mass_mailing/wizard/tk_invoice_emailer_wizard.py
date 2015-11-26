@@ -21,6 +21,7 @@
 
 from openerp import models, fields, api, _
 
+
 class TkInvoiceEmailerWizard(models.TransientModel):
     """ Send emails for each selected Invoice. """
 
@@ -45,8 +46,8 @@ class TkInvoiceEmailerWizard(models.TransientModel):
         return email_templates[0]
 
     invoice_ids = fields.Many2many('account.invoice',
-                                string='Invoices',
-                                default=_get_invoice_ids)
+                                   string='Invoices',
+                                   default=_get_invoice_ids)
 
     email_template_id = fields.Many2one('email.template', string='Invoices', default=_get_default_templates)
 
@@ -66,6 +67,5 @@ class TkInvoiceEmailerWizard(models.TransientModel):
         if not self.invoice_ids:
             raise api.Warning(_('No Invoice selected.'))
 
-        self.invoice_ids.with_context(active_model='account.invoice',active_ids=self.invoice_ids.ids)._generate_emails(self.email_template_id)
+        self.invoice_ids.with_context(active_model='account.invoice', active_ids=self.invoice_ids.ids)._generate_emails(self.email_template_id)
         return {'type': 'ir.actions.act_window_close'}
-

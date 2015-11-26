@@ -1,3 +1,4 @@
+# coding=utf-8
 import pytz
 from datetime import datetime, date, timedelta
 import logging
@@ -25,7 +26,6 @@ class tk_date_tools():
         date = utc_timestamp.astimezone(timezone)
         return date
 
-
     @staticmethod
     def datestring_timezone(date, timezone=None):
         """
@@ -38,7 +38,6 @@ class tk_date_tools():
         date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S") if date else None
         return tk_date_tools.datetime_timezone(date, timezone)
 
-
     @staticmethod
     def datetime_to_string(datetime_value, format=None):
         if not datetime_value:
@@ -46,7 +45,6 @@ class tk_date_tools():
         if not format:
             format = "%d-%m-%Y %H:%M:%S"
         return datetime.strftime(format)
-
 
     @staticmethod
     def datetime_timezone_to_utc(date, timezone=None):
@@ -92,7 +90,6 @@ class tk_date_tools():
         new_date = utc_timestamp.astimezone(timezone)
         return new_date
 
-
     @staticmethod
     def datestring_utc_to_timezone(date_param, timezone=None):
         """
@@ -125,7 +122,6 @@ class tk_date_tools():
             logger.warning(e)
             return False
 
-
     @staticmethod
     def get_string_from_float(value):
         """
@@ -141,7 +137,6 @@ class tk_date_tools():
         if len(min) < 2:
             min = "0" + min
         return int(hour), int(min)
-
 
     @staticmethod
     def get_time_string_from_float_time(value):

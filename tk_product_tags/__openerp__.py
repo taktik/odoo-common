@@ -1,6 +1,4 @@
-# 
-# 
-# 
+# coding=utf-8
 {
     "name": "Taktik Product Tags",
     "version": "0.1",

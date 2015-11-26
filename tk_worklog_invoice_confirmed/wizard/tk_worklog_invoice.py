@@ -1,14 +1,22 @@
+# coding=utf-8
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
+
 
 class tk_worklog_invoice_confirmed(osv.osv_memory):
     _name = 'tk_worklog_invoice_confirmed'
 
     _columns = {
-        'worklog_ids': fields.many2many('account.analytic.line', 'tk_worklog_confirmed_rel', 'wiz_id', 'worklog_id',
-            'Worklogs'),
-        'invoice_id': fields.many2one('account.invoice', 'Invoice', required=True),
-        'partner_domain': fields.many2many('res.partner', 'tk_worklog_partner_confirmed_domain_rel', 'wiz_id', 'partner_id', 'Partner domain for invoice'),
+        'worklog_ids': fields.many2many('account.analytic.line',
+                                        'tk_worklog_confirmed_rel', 'wiz_id',
+                                        'worklog_id',
+                                        'Worklogs'),
+        'invoice_id': fields.many2one('account.invoice', 'Invoice',
+                                      required=True),
+        'partner_domain': fields.many2many('res.partner',
+                                           'tk_worklog_partner_confirmed_domain_rel',
+                                           'wiz_id', 'partner_id',
+                                           'Partner domain for invoice'),
         'partner_id': fields.many2one('res.partner', 'Partner'),
     }
 
@@ -49,10 +57,10 @@ class tk_worklog_invoice_confirmed(osv.osv_memory):
             res.update({'worklog_ids': context.get('active_ids', False), 'partner_id': customer, 'partner_domain': partner_domain})
         return res
 
-
     def get_view_dict(self, cr, uid, ids, view_name, context=None):
         message_view_id = self.pool.get('ir.ui.view').search(cr, uid,
-            [('name', '=', view_name)])
+                                                             [('name', '=',
+                                                               view_name)])
         result_message = {
             'view_type': 'form',
             'view_mode': 'form',
@@ -69,8 +77,10 @@ class tk_worklog_invoice_confirmed(osv.osv_memory):
         wizard = self.browse(cr, uid, ids[0])
         invoice_id = wizard.invoice_id
         worklog_ids = wizard.worklog_ids
-        self.pool.get('account.analytic.line').write(cr, uid, [entry.id for entry in worklog_ids],
-            {'invoice_id': invoice_id.id})
+        self.pool.get('account.analytic.line').write(cr, uid,
+                                                     [entry.id for entry in
+                                                      worklog_ids], {
+                                                         'invoice_id': invoice_id.id})
 
         view = self.views['success']
         return self.get_view_dict(cr, uid, ids, view, context)

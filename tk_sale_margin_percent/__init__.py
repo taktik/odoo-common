@@ -1,1 +1,2 @@
-import sale
+# coding=utf-8
+from . import sale

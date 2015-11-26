@@ -1,6 +1,8 @@
+# coding=utf-8
 from openerp import fields, models
 from openerp.osv import osv
 from openerp import _
+
 
 class tk_sale_invoice_slice(models.Model):
 
@@ -10,21 +12,22 @@ class tk_sale_invoice_slice(models.Model):
     name = fields.Char('Name')
     invoice_date = fields.Date('Invoice Date', default=fields.Date.context_today)
 
+
 class tk_sale_advance_payment_inv(models.TransientModel):
 
     _inherit = 'sale.advance.payment.inv'
 
     slice_ids = fields.Many2many('tk.sale.invoice.slice', string='Slices')
     advance_payment_method = fields.Selection(
-            [('all', 'Invoice the whole sales order'), ('percentage','Percentage'), ('fixed','Fixed price (deposit)'),
-                ('lines', 'Some order lines'), ('slices', 'Invoice By Slice')],
-            'What do you want to invoice?', required=True,
-            help="""Use Invoice the whole sale order to create the final invoice.
+        [('all', 'Invoice the whole sales order'),
+         ('percentage', 'Percentage'), ('fixed', 'Fixed price (deposit)'),
+         ('lines', 'Some order lines'), ('slices', 'Invoice By Slice')],
+        'What do you want to invoice?', required=True,
+        help="""Use Invoice the whole sale order to create the final invoice.
                 Use Percentage to invoice a percentage of the total amount.
                 Use Fixed Price to invoice a specific amound in advance.
                 Use Some Order Lines to invoice a selection of the sales order lines.),
                 Use Invoice By Slice to split the amount in several invoice """)
-
 
     def _prepare_advance_invoice_vals(self, cr, uid, ids, context=None):
         if context is None:
@@ -41,29 +44,38 @@ class tk_sale_advance_payment_inv(models.TransientModel):
 
         result = []
         for sale in sale_obj.browse(cr, uid, sale_ids, context=context):
-            val = inv_line_obj.product_id_change(cr, uid, [], wizard.product_id.id,
-                    False, partner_id=sale.partner_id.id, fposition_id=sale.fiscal_position.id)
+            val = inv_line_obj.product_id_change(cr, uid, [],
+                                                 wizard.product_id.id,
+                                                 False,
+                                                 partner_id=sale.partner_id.id,
+                                                 fposition_id=sale.fiscal_position.id)
             res = val['value']
 
             # determine and check income account
             if not wizard.product_id.id:
                 prop = ir_property_obj.get(cr, uid,
-                            'property_account_income_categ', 'product.category', context=context)
+                                           'property_account_income_categ',
+                                           'product.category', context=context)
                 prop_id = prop and prop.id or False
                 account_id = fiscal_obj.map_account(cr, uid, sale.fiscal_position or False, prop_id)
                 if not account_id:
                     raise osv.except_osv(_('Configuration Error!'),
-                            _('There is no income account defined as global property.'))
+                                         _(
+                                             'There is no income account defined as global property.'))
                 res['account_id'] = account_id
             if not res.get('account_id'):
                 raise osv.except_osv(_('Configuration Error!'),
-                        _('There is no income account defined for this product: "%s" (id:%d).') % \
-                            (wizard.product_id.name, wizard.product_id.id,))
+                                     _('There is no income account defined '
+                                       'for this product: "%s" (id:%d).') %
+                                     (wizard.product_id.name,
+                                      wizard.product_id.id,))
 
             # determine invoice amount
             if wizard.amount <= 0.00 and wizard.advance_payment_method != 'slices':
                 raise osv.except_osv(_('Incorrect Data'),
-                    _('The value of Advance Amount must be positive.'))
+                                     _(
+                                         'The value of Advance Amount '
+                                         'must be positive.'))
             if wizard.advance_payment_method == 'percentage':
                 inv_amount = sale.amount_untaxed * wizard.amount / 100
                 if not res.get('name'):
@@ -71,13 +83,15 @@ class tk_sale_advance_payment_inv(models.TransientModel):
             if wizard.advance_payment_method == 'slices':
                 if percent_amount <= 0.00:
                     raise osv.except_osv(_('Incorrect Data'),
-                        _('The value of Advance Amount must be positive.'))
+                                         _(
+                                             'The value of Advance Amount'
+                                             ' must be positive.'))
                 inv_amount = sale.amount_untaxed * percent_amount / 100.0
                 res['name'] = name
             else:
                 inv_amount = percent_amount
                 if not res.get('name'):
-                    #TODO: should find a way to call formatLang() from rml_parse
+                    # TODO: should find a way to call formatLang() from rml_parse
                     symbol = sale.pricelist_id.currency_id.symbol
                     if sale.pricelist_id.currency_id.position == 'after':
                         symbol_order = (inv_amount, symbol)
@@ -155,8 +169,10 @@ class tk_sale_advance_payment_inv(models.TransientModel):
             slices = [(x.name, x.invoicing_amount, x.invoice_date) for x in wizard.slice_ids]
             invoicing_amout_total = sum([x[1] for x in slices])
             if invoicing_amout_total != 100:
-                 raise osv.except_osv(_('Invalid Amount'),
-                        _('The total invoicing amount is different from 100 %%'))
+                raise osv.except_osv(_('Invalid Amount'),
+                                     _(
+                                         'The total invoicing amount '
+                                         'is different from 100 %%'))
             for name, percent_amount, invoice_date in slices:
                 context['name'] = name
                 context['percent_amount'] = percent_amount
@@ -173,7 +189,7 @@ class tk_sale_advance_payment_inv(models.TransientModel):
                 inv_ids.append(self._create_invoices(cr, uid, inv_values, sale_id, context=context))
 
         if context.get('open_invoices', False):
-            return self.open_invoices( cr, uid, ids, inv_ids, context=context)
+            return self.open_invoices(cr, uid, ids, inv_ids, context=context)
         return {'type': 'ir.actions.act_window_close'}
 
 

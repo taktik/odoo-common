@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import connector
-import backend
-import importer_backend
-import importer_model
+from . import connector
+from . import backend
+from . import importer_backend
+from . import importer_model
