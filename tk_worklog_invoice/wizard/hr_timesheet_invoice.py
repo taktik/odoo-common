@@ -53,6 +53,8 @@ class account_analytic_line(osv.osv):
                         pterm_list.sort()
                         date_due = pterm_list[-1]
 
+                bba_vals = self.pool.get('account.invoice').generate_bbacomm(cr, uid, False, 'out_invoice', 'bba', account.partner_id.id, False, context=None)
+
                 curr_invoice = {
                     'name': time.strftime('%d/%m/%Y') + ' - ' + account.name,
                     'partner_id': account.partner_id.id,
@@ -61,7 +63,8 @@ class account_analytic_line(osv.osv):
                     'account_id': partner.property_account_receivable.id,
                     'currency_id': account.pricelist_id.currency_id.id,
                     'date_due': date_due,
-                    'fiscal_position': account.partner_id.property_account_position.id
+                    'fiscal_position': account.partner_id.property_account_position.id,
+                    'reference': bba_vals.get('value', {}).get('reference', False),
                 }
 
                 context2 = context.copy()
