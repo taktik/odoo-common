@@ -14,4 +14,4 @@ class MailComposeMessage(osv.TransientModel):
         ctx.update({
             'force_mail': True
         })
-        super(tk_mail_compose_message, self).send_mail(cr, uid, ids, context=ctx)
+        super(MailComposeMessage, self).send_mail(cr, uid, ids, context=ctx)
