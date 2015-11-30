@@ -27,7 +27,7 @@
 #
 ##############################################################################
 {
-    "name": "Taktik Force Mail Compose",
+    "name": "Taktik Notify Mail Compose",
     "version": "8.0.1.0.0",
     "author": "Taktik S.A.",
     "category": "Taktik",
@@ -36,14 +36,16 @@
         'mail'
     ],
     "description": """
-Taktik Force Mail Compose
+Taktik Notify Mail Compose
 =========================
-This module force the mails to be sent when using the mail.compose.message
-wizard.
+
+This module adds an option in the partner for
+"Receive Inbox Notifications by Email": "Never Except Manual Send By Mail",
+allowing a partner to receive only mails sent using the
+mail.compose.message wizard.
+
 This wizard can be found in the Sales Orders and the Invoices (button
 Send by Email).
-It will thus send the mail even if the partners are set to receive
-no notifications.
         """,
     "demo": [],
     "test": [],

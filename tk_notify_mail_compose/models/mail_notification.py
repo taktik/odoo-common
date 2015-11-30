@@ -8,7 +8,7 @@ class MailNotification(models.Model):
     def get_partners_to_email(self, cr, uid, ids, message, context=None):
         """
         Return the list of partners to notify, based on their preferences.
-        Override to get the partner if force_mail is set in the context,
+        Override to get the partner if from_mail_compose is set in the context,
         even if the partner.notify_email is none.
         """
         notify_pids = []
@@ -23,7 +23,11 @@ class MailNotification(models.Model):
             if message.author_id and message.author_id.email == partner.email:
                 continue
             # Partner does not want to receive any emails or is opt-out
-            if not context.get('force_mail', False) and partner.notify_email == 'none':
+            if partner.notify_email == 'none':
+                continue
+            # Partner only wants to receive mail sent with the 'Send by Email' wizard
+            # (from_mail_compose in the context).
+            if partner.notify_email == 'never_except_mail_compose' and not context.get('from_mail_compose', False):
                 continue
             notify_pids.append(partner.id)
         return notify_pids

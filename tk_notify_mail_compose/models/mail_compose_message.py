@@ -7,11 +7,11 @@ class MailComposeMessage(osv.TransientModel):
 
     def send_mail(self, cr, uid, ids, context=None):
         """
-        Add force_mail in the context.
+        Add from_mail_compose in the context.
         """
         context = dict(context or {})
         ctx = context.copy()
         ctx.update({
-            'force_mail': True
+            'from_mail_compose': True
         })
         super(MailComposeMessage, self).send_mail(cr, uid, ids, context=ctx)
