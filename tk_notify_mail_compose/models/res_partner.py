@@ -9,7 +9,10 @@ class ResPartner(models.Model):
         """
         Adds an option in the notify_email.
         """
-        self._columns['notify_email'].selection.append(
-            ('never_except_mail_compose', 'Never Except Manual Send By Mail')
-        )
+        if 'never_except_mail_compose' not in [x[0] for x in
+                                  self._columns['notify_email'].selection]:
+            self._columns['notify_email'].selection.append(
+                ('never_except_mail_compose',
+                 'Never Except Manual Send By Mail')
+            )
         return super(ResPartner, self)._register_hook(cr)
