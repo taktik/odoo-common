@@ -43,25 +43,6 @@ openerp.tk_image_url_field = function (instance) {
         },
     });
 
-    /*
-    Add kanban_image_url method in KanbanRecord to be able to show an image
-    directly from its URL (from a image_url field for instance).
-    Usage in the kanban view, for a product with a field image_url containing the URL of an image:
-    <img t-att-src="kanban_image_url('product.product', 'image_url', record.id.value)" class="oe_kanban_image"/>
-     */
-    instance.web_kanban.KanbanRecord = instance.web_kanban.KanbanRecord.extend({
-        kanban_image_url: function (model, field, id, cache, options) {
-            options = options || {};
-            var url;
-            if (this.record[field] && this.record[field].value) {
-                url = this.record[field].value;
-            } else if (this.record[field] && !this.record[field].value) {
-                url = "/web/static/src/img/placeholder.png";
-            }
-            return url;
-        }
-    });
-
     instance.web.form.widgets.add('image_url', 'instance.web.form.FieldImageURL');
 
 }
