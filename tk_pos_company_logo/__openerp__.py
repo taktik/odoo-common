@@ -38,7 +38,7 @@
     "description": """
 POS Module
 =======================
-This module automatically use the company logo in the Point of Sale
+This module automatically uses the company logo in the Point of Sale
 
         """,
     "data": [
