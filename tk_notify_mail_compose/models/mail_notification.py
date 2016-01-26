@@ -1,3 +1,5 @@
+import threading
+
 from openerp import tools, SUPERUSER_ID
 from openerp import models, fields, api, _, exceptions
 
