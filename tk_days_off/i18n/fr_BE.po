@@ -1,0 +1,305 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* clb_days_off
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-12 19:10+0000\n"
+"PO-Revision-Date: 2015-10-12 21:18+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: fr_BE\n"
+"X-Generator: Poedit 1.8.5\n"
+
+#. module: clb_days_off
+#: field:training.holiday.period,active:0
+msgid "Active"
+msgstr "Actif"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:64
+#, python-format
+msgid "All Saints' Day"
+msgstr "La Toussaint"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:65
+#, python-format
+msgid "Armistice Day"
+msgstr "L’Armistice"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:60
+#, python-format
+msgid "Ascension"
+msgstr "L’Ascension"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:63
+#, python-format
+msgid "Assumption of Mary"
+msgstr "L’Assomption"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:62
+#, python-format
+msgid "Belgian National day"
+msgstr "La fête nationale belge"
+
+#. module: clb_days_off
+#: model:ir.actions.act_window,name:clb_days_off.holiday_categ_all_act
+#: model:ir.ui.menu,name:clb_days_off.holiday_categ_all_mi
+#: field:training.holiday.period,category_id:0
+msgid "Category"
+msgstr "Catégories"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:66
+#, python-format
+msgid "Christmas"
+msgstr "Noël"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/models/clb_hr_holidays.py:62
+#, python-format
+msgid "Configuration Error !"
+msgstr "Erreur de configuration !"
+
+#. module: clb_days_off
+#: field:training.holiday.period,create_uid:0
+#: field:training.holiday.year,create_uid:0
+#: field:training.holiday.year.wizard,create_uid:0
+#: field:training.holidays.category,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: clb_days_off
+#: field:training.holiday.period,create_date:0
+#: field:training.holiday.year,create_date:0
+#: field:training.holiday.year.wizard,create_date:0
+#: field:training.holidays.category,create_date:0
+msgid "Created on"
+msgstr "Créé sur"
+
+#. module: clb_days_off
+#: field:training.holiday.period,date_start:0
+msgid "Date Start"
+msgstr "Date de début"
+
+#. module: clb_days_off
+#: field:training.holiday.period,date_stop:0
+msgid "Date Stop"
+msgstr "Date de fin"
+
+#. module: clb_days_off
+#: model:ir.actions.act_window,name:clb_days_off.holiday_year_wizard_act
+#: model:ir.ui.menu,name:clb_days_off.holiday_year_wizard_mi
+msgid "Days Off Generator"
+msgstr "Générateur de congés"
+
+#. module: clb_days_off
+#: model:ir.ui.menu,name:clb_days_off.holiday_mi
+msgid "Days off"
+msgstr "Congés"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:58
+#, python-format
+msgid "Easter Monday"
+msgstr "Le lundi de Pâques"
+
+#. module: clb_days_off
+#: view:training.holiday.year.wizard:clb_days_off.holiday_year_wizard
+msgid "Enter a year not already generate."
+msgstr "Entrez une année qui n’a pas déjà été générée"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:48
+#, python-format
+msgid "Error!"
+msgstr "Erreur!"
+
+#. module: clb_days_off
+#: view:training.holiday.period:clb_days_off.holiday_period_search
+msgid "Futures Periods"
+msgstr "Futures Periods"
+
+#. module: clb_days_off
+#: view:training.holiday.year.wizard:clb_days_off.holiday_year_wizard
+msgid "Generate Week-end"
+msgstr "Week-end générés"
+
+#. module: clb_days_off
+#: view:training.holiday.period:clb_days_off.holiday_period_search
+msgid "Group By..."
+msgstr "Groupé par…"
+
+#. module: clb_days_off
+#: view:training.holidays.category:clb_days_off.holiday_categ_form
+#: view:training.holidays.category:clb_days_off.holiday_categ_tree
+msgid "Holiday Category"
+msgstr "Catégories de congés"
+
+#. module: clb_days_off
+#: view:training.holiday.period:clb_days_off.holiday_period_form
+msgid "Holiday Period"
+msgstr "Période de congé"
+
+#. module: clb_days_off
+#: view:training.holiday.period:clb_days_off.holiday_period_tree
+#: field:training.holiday.year,period_ids:0
+msgid "Holiday Periods"
+msgstr "Périodes de congés"
+
+#. module: clb_days_off
+#: view:training.holiday.year:clb_days_off.holiday_year_form
+msgid "Holiday Year"
+msgstr "Année de congés"
+
+#. module: clb_days_off
+#: view:training.holiday.year:clb_days_off.holiday_year_tree
+msgid "Holiday Years"
+msgstr "Années de congés"
+
+#. module: clb_days_off
+#: field:training.holiday.period,id:0 field:training.holiday.year,id:0
+#: field:training.holiday.year.wizard,id:0
+#: field:training.holidays.category,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:59
+#, python-format
+msgid "Labour day"
+msgstr "La fête du travail"
+
+#. module: clb_days_off
+#: field:training.holiday.period,write_uid:0
+#: field:training.holiday.year,write_uid:0
+#: field:training.holiday.year.wizard,write_uid:0
+#: field:training.holidays.category,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière mise à jour de"
+
+#. module: clb_days_off
+#: field:training.holiday.period,write_date:0
+#: field:training.holiday.year,write_date:0
+#: field:training.holiday.year.wizard,write_date:0
+#: field:training.holidays.category,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière mise à jour de"
+
+#. module: clb_days_off
+#: model:ir.model,name:clb_days_off.model_hr_holidays
+msgid "Leave"
+msgstr "Congé"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:41
+#, python-format
+msgid "Legal"
+msgstr "Legal"
+
+#. module: clb_days_off
+#: field:training.holiday.period,name:0 field:training.holidays.category,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:57
+#, python-format
+msgid "New Year's Days"
+msgstr "Le Jour de l’An"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:61
+#, python-format
+msgid "Pentecost Monday"
+msgstr "Le lundi de pentecôte"
+
+#. module: clb_days_off
+#: model:ir.actions.act_window,name:clb_days_off.holiday_period_all_act
+#: model:ir.ui.menu,name:clb_days_off.holiday_period_all_mi
+#: model:ir.ui.menu,name:clb_days_off.holiday_period_user_mi
+#: view:training.holiday.year:clb_days_off.holiday_year_form
+msgid "Periods"
+msgstr "Périodes"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:48
+#, python-format
+msgid "Please enter valid year"
+msgstr "Entrez  une année valide s’il vous plaît"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/models/clb_hr_holidays.py:63
+#, python-format
+msgid "Please, Can you configure the Days off ?"
+msgstr "S’il vous plaît, pourriez-vous configurer les congés ?"
+
+#. module: clb_days_off
+#: constraint:training.holiday.period:0
+msgid "Please, check the start date !"
+msgstr "Pourriez-vous vérifier la date de début !"
+
+#. module: clb_days_off
+#: view:training.holiday.period:clb_days_off.holiday_period_search
+msgid "Search Holiday Period Email"
+msgstr "Recherche Période de congé email"
+
+#. module: clb_days_off
+#: view:training.holiday.year:clb_days_off.holiday_year_search
+msgid "Search Holiday Year"
+msgstr "Recherche d’année de congés"
+
+#. module: clb_days_off
+#: view:training.holiday.year.wizard:clb_days_off.holiday_year_wizard
+msgid "The wizard will generate the days of Belgian statutory leaves."
+msgstr "Ce wizard va générer les jours de congés légaux Belges."
+
+#. module: clb_days_off
+#: sql_constraint:training.holiday.year:0
+msgid "The year must be unique !"
+msgstr "L’année doit être unique!"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:38
+#, python-format
+msgid "Week-end"
+msgstr "Week-end"
+
+#. module: clb_days_off
+#: code:addons/clb_days_off/wizard/clb_days_off_wizard.py:90
+#, python-format
+msgid "Week-end %02d"
+msgstr "Week-end %02d"
+
+#. module: clb_days_off
+#: view:training.holiday.period:clb_days_off.holiday_period_search
+#: field:training.holiday.period,year_id:0 field:training.holiday.year,year:0
+#: field:training.holiday.year.wizard,year:0
+msgid "Year"
+msgstr "Année"
+
+#. module: clb_days_off
+#: model:ir.actions.act_window,name:clb_days_off.holiday_year_all_act
+#: model:ir.ui.menu,name:clb_days_off.holiday_year_all_mi
+msgid "Years"
+msgstr "Années"
+
+#. module: clb_days_off
+#: view:training.holiday.year.wizard:clb_days_off.holiday_year_wizard
+msgid "_Apply"
+msgstr "_Apply"
+
+#. module: clb_days_off
+#: view:training.holiday.year.wizard:clb_days_off.holiday_year_wizard
+msgid "_Cancel"
+msgstr "_Cancel"

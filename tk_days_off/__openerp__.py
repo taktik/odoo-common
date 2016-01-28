@@ -26,30 +26,34 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    "name": "Point of Sale company logo",
-    "version": "8.0.1.0.1",
-    "author": "Taktik S.A.",
-    "website": "http://www.taktik.be",
-    'summary': "Point of Sale - (Company logo)",
-    "depends": [
-        "point_of_sale",
-    ],
-    "description": """
-POS company logo
-===================================
-This module automatically uses the company logo in the Point of Sale
 
-        """,
-    "data": [
-        "views/tk_pos_company_logo_assets.xml",
+{
+    'name': 'Days Off',
+    'version': '8.0.1.0.0',
+    'author': 'Taktik',
+    'website': 'http://www.taktik.be',
+    'summary': "Hr holidays - improvements (Be)",
+    'category': 'Other',
+    'depends': [
+        'base',
+        'hr',
+        'hr_holidays'
     ],
-    "qweb": [],
-    "demo": [],
-    "test": [],
-    "active": False,
-    "license": "AGPL-3",
-    "installable": True,
-    "auto_install": False,
-    "application": True,
+    'description': """
+Days Off allows to :
+===============================================================
+* generate days off via a wizard for a specific year (for Belgium)
+* manually change/add/remove the generated days.
+* When calculating the days of a leave request, adapted to take into account the days off generated.
+
+    """,
+    'data': [
+        'data/holidays_ir_config_parameter.xml',
+        'views/days_off_view.xml',
+        'views/hr_holidays_view.xml',
+        'wizard/days_off_wizard_views.xml',
+        'security/ir.model.access.csv',
+    ],
+    'installable': True,
+    'active': False,
 }

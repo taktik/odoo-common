@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="holiday_year_wizard">
+            <field name="name">training.holiday.year.wizard</field>
+            <field name="model">training.holiday.year.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Generate Week-end" version="7.0">
+                    <header>
+                        <p class="oe_grey oe_inline">
+                            The wizard will generate the days of Belgian statutory leaves.
+                            <br/>
+                            Enter a year not already generate.
+                        </p>
+                    </header>
+                    <div>
+                        <group>
+                            <field name="year"/>
+		                    <separator colspan="2"/>
+                        </group>
+                    </div>
+                        <footer>
+                            <group colspan="2" col="2">
+		                        <button string="_Cancel" icon="gtk-cancel" special="cancel"/>
+		                        <button name="action_apply" type="object" string="_Apply" icon="gtk-apply"/>
+		                    </group>
+                        </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="holiday_year_wizard_act">
+            <field name="name">Days Off Generator</field>
+            <field name="res_model">training.holiday.year.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="holiday_year_wizard" />
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="holiday_year_wizard_mi"
+                  parent="holiday_mi"
+                  action="holiday_year_wizard_act"
+                  icon="STOCK_EXECUTE"
+                  groups="base.group_hr_manager"/>
+
+    </data>
+</openerp>
