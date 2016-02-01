@@ -37,7 +37,7 @@
     ],
     "description": """
 Taktik Notify Mail Compose
-=========================
+============================
 
 This module adds an option in the partner for
 "Receive Inbox Notifications by Email": "Never Except Manual Send By Mail",
