@@ -240,7 +240,7 @@ class data_importer():
         for key in tree.keys():
             print '%s%s' % (rank * '\t', key)
             if tree[key]:
-                self.print_tree(tree[key], rank+1)
+                self.print_tree(tree[key], rank + 1)
 
     def log_error(self, line_number, message):
         self.log.append('Line % 5d : %s' % (line_number, message))
@@ -284,14 +284,14 @@ class data_importer():
     def finish(self, logical_file):
         file_obj = self.pool.get('tk_import.file')
         if not self.errors:
-            file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'state':  'processed', 'errors': 0})
+            file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'state': 'processed', 'errors': 0})
             self.progress_cr.commit()
             self.cr.commit()
         else:
             if not self.ignore_errors:
                 self.cr.rollback()
             self.write_errors(logical_file)
-            file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'state':  'error', 'errors': len(self.log), 'name': logical_file.import_name + '_error.txt'})
+            file_obj.write(self.progress_cr, self.uid, self.logical_file_id, {'state': 'error', 'errors': len(self.log), 'name': logical_file.import_name + '_error.txt'})
             self.progress_cr.commit()
             self.cr.commit()
         self.cr.close()
@@ -338,7 +338,7 @@ class data_importer():
         if self.ignore_errors:
             self.cr.autocommit(True)
 
-        file_obj.write(self.cr, self.uid, self.logical_file_id, {'state':  'processing'})
+        file_obj.write(self.cr, self.uid, self.logical_file_id, {'state': 'processing'})
         self.cr.commit()
 
         self.i = 0
@@ -360,7 +360,7 @@ class data_importer():
                 self.log_error(self.i, e)
 
         if self.entities_to_update:
-            self.number_of_entities = reduce(lambda x, y: x+y, [len(self.entities_to_update[entity]) for entity in self.entities_to_update.keys()])
+            self.number_of_entities = reduce(lambda x, y: x + y, [len(self.entities_to_update[entity]) for entity in self.entities_to_update.keys()])
             self.number_of_records = number_of_record + self.number_of_entities
         else:
             self.number_of_entities = 1

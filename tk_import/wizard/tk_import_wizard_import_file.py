@@ -19,10 +19,10 @@ class import_field(osv.osv_memory):
     _rec_name = 'label'
 
     _columns = {
-        'name':             fields.char('Name', size=64),
-        'model_id':         fields.many2one('ir.model', 'Model'),
-        'label':            fields.char('Label', size=256),
-        'column':           fields.char('Column', size=1024),
+        'name': fields.char('Name', size=64),
+        'model_id': fields.many2one('ir.model', 'Model'),
+        'label': fields.char('Label', size=256),
+        'column': fields.char('Column', size=1024),
     }
 
 import_field()
@@ -40,45 +40,45 @@ class import_file(osv.osv_memory):
         return [(lang_info['code'], lang_info['name']) for lang_info in lang_data]
     
     _columns = {
-        'file':             fields.binary('File to import', required=True),
-        'model_id':         fields.many2one('ir.model', 'Model', required=True),
-        'import_name':      fields.char('Filename', size=128, required=True),
-        'error_report':     fields.binary(string='Error Report', readonly=True),
-        'name':             fields.char('Report Name', size=64),
-        'update':           fields.boolean('Update', help='If "Update" is chosen, the system will update the already existing records and create the others. If not, the system will only create new record even if there is existing ones'),
-        'update_strict':    fields.boolean('Update Strict'),
-        'current_model':    fields.many2one('ir.model', 'Current Model'),
-        'current_column':   fields.char('Column', size=1024),
-        'available_keys':   fields.many2many('tk_import.field', 'tk_import_field_av_to_wizard', 'wizard_id', 'field_id', string='Available Keys'),
-        'selected_keys':    fields.many2many('tk_import.field', 'tk_import_field_sel_to_wizard', 'wizard_id', 'field_id', string='Selected Keys'),
-        'progress':         fields.integer('%'),
-        'type':             fields.selection(__types, 'Type'),
-        'import_model_id':  fields.many2one('tk_import.model', 'Import Model'),
-        'template_id':      fields.many2one('tk_import.template', 'Template', help='You can use a predefined binding or define a new one at the end of the wizard.'),
-        'save_template':    fields.boolean('Save template'),
-        'template_name':    fields.char('Name', size=128),
-        'import_file_id':   fields.many2one('tk_import.file', 'Import File'),
+        'file': fields.binary('File to import', required=True),
+        'model_id': fields.many2one('ir.model', 'Model', required=True),
+        'import_name': fields.char('Filename', size=128, required=True),
+        'error_report': fields.binary(string='Error Report', readonly=True),
+        'name': fields.char('Report Name', size=64),
+        'update': fields.boolean('Update', help='If "Update" is chosen, the system will update the already existing records and create the others. If not, the system will only create new record even if there is existing ones'),
+        'update_strict': fields.boolean('Update Strict'),
+        'current_model': fields.many2one('ir.model', 'Current Model'),
+        'current_column': fields.char('Column', size=1024),
+        'available_keys': fields.many2many('tk_import.field', 'tk_import_field_av_to_wizard', 'wizard_id', 'field_id', string='Available Keys'),
+        'selected_keys': fields.many2many('tk_import.field', 'tk_import_field_sel_to_wizard', 'wizard_id', 'field_id', string='Selected Keys'),
+        'progress': fields.integer('%'),
+        'type': fields.selection(__types, 'Type'),
+        'import_model_id': fields.many2one('tk_import.model', 'Import Model'),
+        'template_id': fields.many2one('tk_import.template', 'Template', help='You can use a predefined binding or define a new one at the end of the wizard.'),
+        'save_template': fields.boolean('Save template'),
+        'template_name': fields.char('Name', size=128),
+        'import_file_id': fields.many2one('tk_import.file', 'Import File'),
         'import_from_file': fields.boolean('Import from file'),
-        'ignore_errors':    fields.boolean('Ignore errors (Import anyway)'),
-        'import_lang':      fields.selection(__get_available_languages, 'Language'),
-        'separator':        fields.char('Separator', size=1),
-        'quote_delimiter':  fields.char('Quote Delimiter', size=1)
-        }
+        'ignore_errors': fields.boolean('Ignore errors (Import anyway)'),
+        'import_lang': fields.selection(__get_available_languages, 'Language'),
+        'separator': fields.char('Separator', size=1),
+        'quote_delimiter': fields.char('Quote Delimiter', size=1)
+    }
 
     error_types = {
-        'rel':      'Relational Field not precisely defined : ',
+        'rel': 'Relational Field not precisely defined : ',
         'required': 'Required fields missing : ',
-        'fct':      'Function fields with no way to set value :',
-        'notin':    'Fields not existing :'
+        'fct': 'Function fields with no way to set value :',
+        'notin': 'Fields not existing :'
     }
 
     views = {
-        'default':  'file.importer.view',
-        'step2':    'file.importer.view_step2',
-        'success':  'file.importer.view_success',
-        'failure':  'file.importer.view_failure',
-        'resume':   'file.importer.view_resume',
-        }
+        'default': 'file.importer.view',
+        'step2': 'file.importer.view_step2',
+        'success': 'file.importer.view_success',
+        'failure': 'file.importer.view_failure',
+        'resume': 'file.importer.view_resume',
+    }
 
     def default_get(self, cr, uid, field_list, context={}):
         res = {
@@ -163,14 +163,14 @@ class import_file(osv.osv_memory):
         file_obj = self.pool.get('tk_import.file')
         user_obj = self.pool.get('res.users')
         values = {
-            'import_name':      wizard.import_name,
-            'import_model_id':  wizard.import_model_id.id,
-            'size':             len(self.file_content),
-            'lines':            len(self.file_content.splitlines()) - 1,
-            'template_id':      wizard.template_id and wizard.template_id.id or False,
-            'update':           wizard.update,
-            'update_strict':    wizard.update_strict,
-            }
+            'import_name': wizard.import_name,
+            'import_model_id': wizard.import_model_id.id,
+            'size': len(self.file_content),
+            'lines': len(self.file_content.splitlines()) - 1,
+            'template_id': wizard.template_id and wizard.template_id.id or False,
+            'update': wizard.update,
+            'update_strict': wizard.update_strict,
+        }
         logical_file_id = file_obj.create(cr, uid, values)
         if not logical_file_id:
             raise osv.except_osv(_('Error!'),
@@ -206,7 +206,7 @@ class import_file(osv.osv_memory):
     def decompose_column(self, tree, columns):
         field = columns[0]
         if field != '.id' and field.count('.id'):
-            field = field[:len(field)-3]
+            field = field[:len(field) - 3]
             columns.append('.id')
         if field not in tree:
             tree[field] = {}

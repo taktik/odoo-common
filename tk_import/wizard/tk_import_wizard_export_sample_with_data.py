@@ -35,10 +35,10 @@ class tk_import_wizard_export_sample_with_data(osv.osv_memory):
     }
     
     views = {
-        'default':  'export.sample.with.data.view.form',
-        'step2':    'export.sample.with.data.view.form.step2',
-        'success':  'export.sample.with.data.view.form.success',
-        }
+        'default': 'export.sample.with.data.view.form',
+        'step2': 'export.sample.with.data.view.form.step2',
+        'success': 'export.sample.with.data.view.form.success',
+    }
 
     relation = ['one2many', 'many2many', 'many2one', 'related']
     

@@ -4,19 +4,15 @@ import logging
 import base64
 import itertools
 import re
-
+from .backend import taktik_importer_backend_custom
+from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
+from openerp.osv import fields, orm
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
 
-from openerp.osv import fields, orm
-
-
 _logger = logging.getLogger(__name__)
-
-from .backend import taktik_importer_backend_custom
-from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
 
 FIELDS_RECURSION_LIMIT = 2
 

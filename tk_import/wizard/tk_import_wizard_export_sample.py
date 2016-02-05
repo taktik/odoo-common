@@ -46,10 +46,10 @@ class tk_import_wizard_export_sample(osv.osv_memory):
     }
     
     views = {
-        'default':  'export.sample.view.form.step1',
-        'step2':    'export.sample.view.form.step2',
-        'success':  'export.sample.view.form.success',
-        }
+        'default': 'export.sample.view.form.step1',
+        'step2': 'export.sample.view.form.step2',
+        'success': 'export.sample.view.form.success',
+    }
     
     relation = ['one2many', 'many2many', 'many2one', 'related']
     

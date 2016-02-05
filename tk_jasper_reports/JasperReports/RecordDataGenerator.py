@@ -80,7 +80,7 @@ class XmlRecordDataGenerator(AbstractDataGenerator):
             recordNode = document.createElement(field_name)
             topNode.appendChild(recordNode)
             for field, value in record.iteritems():
-                if type(value) == type([]):
+                if isinstance(value, list):
                     self.handle_list_values(document, recordNode, field, value)
                     continue
 
@@ -110,7 +110,7 @@ class XmlRecordDataGenerator(AbstractDataGenerator):
                 # print "FIELD '%s' NOT FOUND IN REPORT." % field
                 # continue
 
-                if type(value) == type([]):
+                if isinstance(value, list):
                     self.handle_list_values(self.document, recordNode, field, value)
                     continue
 

@@ -25,7 +25,7 @@ class sale_order(osv.Model):
                                           store={
                                               'sale.order.line': (_get_order, ['margin'], 20),
                                               'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 20),
-                                              }),
+                                          }),
     }
 
 sale_order()

@@ -8,9 +8,9 @@ from openerp import workflow, exceptions
 class tk_invoice_interpose(osv.osv_memory):
     _name = 'tk_invoice_interpose'
     _columns = {
-        'invoice_id':   fields.many2one('account.invoice', 'Invoice', required=True),
-        'number':       fields.char('Invoice number', size=64, required=True),
-        'date':         fields.date('Invoice date', required=True),
+        'invoice_id': fields.many2one('account.invoice', 'Invoice', required=True),
+        'number': fields.char('Invoice number', size=64, required=True),
+        'date': fields.date('Invoice date', required=True),
     }
 
     def next(self, cr, uid, ids, context=None):
@@ -73,8 +73,8 @@ class tk_invoice_interpose(osv.osv_memory):
         # Try to get the previous invoice, going maximum 5 sequence numbers before
         max_previous = 5 if sequence_number > 5 else sequence_number
         previous_invoice = None
-        previous_sequence_number = '%%0%sd' % sequence['padding'] % (sequence_number-1)  # %%0%s = padding
-        for i in range(sequence_number, sequence_number-max_previous, -1):
+        previous_sequence_number = '%%0%sd' % sequence['padding'] % (sequence_number - 1)  # %%0%s = padding
+        for i in range(sequence_number, sequence_number - max_previous, -1):
             previous_sequence_number = '%%0%sd' % sequence['padding'] % i  # %%0%s = padding
             previous_invoice_ids = invoice_obj.search(
                 cr, uid, [('number',
@@ -91,8 +91,8 @@ class tk_invoice_interpose(osv.osv_memory):
 
         # Try to get next invoice number, going maximum 5 sequence numbers after
         next_invoice = None
-        next_sequence_number = '%%0%sd' % sequence['padding'] % (sequence_number+1)  # %%0%s = padding
-        for i in range(sequence_number, sequence_number+5):
+        next_sequence_number = '%%0%sd' % sequence['padding'] % (sequence_number + 1)  # %%0%s = padding
+        for i in range(sequence_number, sequence_number + 5):
             next_sequence_number = '%%0%sd' % sequence['padding'] % i
             next_invoice_ids = invoice_obj.search(cr, uid, [('number', 'like',
                                                              '%s%s%%' % (

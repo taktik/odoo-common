@@ -18,7 +18,7 @@
         "view/tk_import_company_view.xml",
         'wizard/tk_import_wizard_export_sample_view.xml',
         'wizard/tk_import_wizard_export_sample_with_data_view.xml',
-        ],
+    ],
     "active": False,
     "installable": True
 }

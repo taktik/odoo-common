@@ -4,6 +4,9 @@ import logging
 import base64
 import itertools
 import re
+from openerp.osv import fields, orm
+from .backend import taktik_importer_backend
+from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
 
 try:
     from cStringIO import StringIO
@@ -11,10 +14,6 @@ except ImportError:
     from StringIO import StringIO
 
 _logger = logging.getLogger(__name__)
-
-from openerp.osv import fields, orm
-from .backend import taktik_importer_backend
-from .unit.import_synchronizer import DelayedBatchImport, TaktikImport
 
 
 class taktik_queue_job(orm.Model):
