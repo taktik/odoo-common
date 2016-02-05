@@ -69,4 +69,3 @@ class TkInvoiceEmailerWizard(models.TransientModel):
 
         self.invoice_ids.with_context(active_model='account.invoice', active_ids=self.invoice_ids.ids)._generate_emails(self.email_template_id)
         return {'type': 'ir.actions.act_window_close'}
-

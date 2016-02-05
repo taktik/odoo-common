@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="holiday_categ_tree">
+            <field name="name">training.holidays.category.tree</field>
+            <field name="model">training.holidays.category</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Holiday Category">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="holiday_categ_form">
+            <field name="name">training.holidays.category.form</field>
+            <field name="model">training.holidays.category</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Holiday Category" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="holiday_categ_all_act">
+            <field name="name">Category</field>
+            <field name="res_model">training.holidays.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
+
+        <record model="ir.ui.view" id="holiday_period_tree">
+            <field name="name">training.holiday.period.tree</field>
+            <field name="model">training.holiday.period</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Holiday Periods">
+                    <field name="year_id"/>
+                    <field name="name"/>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="active"/>
+                    <field name="category_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="holiday_period_form">
+            <field name="name">training.holiday.period.form</field>
+            <field name="model">training.holiday.period</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Holiday Period" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="year_id" widget="selection"/>
+                            <field name="date_start"/>
+                            <field name="date_stop"/>
+                            <field name="active"/>
+                            <field name="category_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="holiday_period_search">
+            <field name="name">training.holiday.period.search</field>
+            <field name="model">training.holiday.period</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Holiday Period Email">
+                    <group colspan='4'>
+                        <filter icon="terp-stock" string="Futures Periods"
+                                domain="[('date_start', '>=', time.strftime('%%Y-%%m-%%d'))]"/>
+                        <separator orientation="vertical"/>
+                        <field name="name"/>
+                        <field name="year_id"/>
+                        <field name="category_id"/>
+                    </group>
+                    <newline/>
+                    <group expand="0" string="Group By..." colspan="4"
+                           col="20">
+                        <filter string="Year" icon="terp-go-year" domain="[]"
+                                context="{'group_by':'year_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="holiday_period_all_act">
+            <field name="name">Periods</field>
+            <field name="res_model">training.holiday.period</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="search_view_id" ref="holiday_period_search"/>
+        </record>
+
+        <menuitem id="holiday_mi"
+                  name="Days off"
+                  parent="hr.menu_hr_configuration"
+                  sequence='15'
+                  groups="base.group_user"/>
+
+        <menuitem id="holiday_categ_all_mi"
+                  action="holiday_categ_all_act"
+                  parent="holiday_mi"
+                  groups="base.group_user"/>
+
+        <menuitem id="holiday_period_all_mi"
+                  action="holiday_period_all_act"
+                  parent="holiday_mi"
+                  groups="base.group_user"/>
+
+        <menuitem id="holiday_period_user_mi"
+                  action="holiday_period_all_act"
+                  parent="hr_holidays.menu_open_ask_holidays"
+                  groups="base.group_user"/>
+
+        <record model="ir.ui.view" id="holiday_year_tree">
+            <field name="name">training.holiday.year.tree</field>
+            <field name="model">training.holiday.year</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Holiday Years">
+                    <field name="year" widget="char"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="holiday_year_form">
+            <field name="name">training.holiday.year.form</field>
+            <field name="model">training.holiday.year</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Holiday Year" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="year"/>
+                            <separator string="Periods" colspan="4"/>
+                            <field name="period_ids" colspan="4" nolabel="1">
+                                <tree string="Periods">
+                                    <field name="name"/>
+                                    <field name="date_start"/>
+                                    <field name="date_stop"/>
+                                    <field name="category_id"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="holiday_year_search">
+            <field name="name">training.holiday.year.search</field>
+            <field name="model">training.holiday.year</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Holiday Year">
+                    <field name="year"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="holiday_year_all_act">
+            <field name="name">Years</field>
+            <field name="res_model">training.holiday.year</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="holiday_year_search"/>
+        </record>
+
+        <menuitem id="holiday_year_all_mi"
+                  action="holiday_year_all_act"
+                  parent="holiday_mi"
+                  groups="base.group_user"/>
+
+    </data>
+</openerp>

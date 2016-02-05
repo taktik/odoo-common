@@ -1,0 +1,9 @@
+<openerp>
+    <data noupdate="0">
+        <!--week end doesn't count like an holiday == 1 -->
+        <record id="holiday_we_parameter" model="ir.config_parameter">
+            <field name="key">holidays.week.end.not.count</field>
+            <field name="value">1</field>
+        </record>
+    </data>
+</openerp>
