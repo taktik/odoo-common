@@ -26,10 +26,17 @@
     'summary': 'Point of Sale Limit Amount',
     'description': """
 Limit Amount
-========================
+=============
+This module avoid to scan an ean in the amount field of the POS.
 
-This module allows you to avoid to scan an ean/barcode in the field amount when
-a customer pay
+Main Features
+-------------
+* Add the amount limit in the pos config.
+* Display a warning message if we tried to scan an ean in the amount field.
+
+Contributors
+------------
+* Maxime Vanderhaeghe | Taktik S.A. <mv@taktik.com>
     """,
     'author': 'Taktik S.A.',
     'images': [],
