@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+<!-- Add: JS Files -->
+        <template id="tk_pos_drawer_assets_backend"
+                  name="tk_pos_drawer_assets_backend"
+                  inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript"
+                        src="/tk_pos_drawer/static/src/js/custom_screen.js">
+                </script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
