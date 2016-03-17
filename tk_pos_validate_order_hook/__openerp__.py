@@ -28,23 +28,24 @@
 ##############################################################################
 
 {
-    'name': 'Point of Sale Drawer',
+    'name': 'Point of Sale Validate Order Hook',
     'version': '8.0.1.0.0',
     'author': 'Taktik',
     'website': 'http://www.taktik.be',
-    'summary': "POS - Drawer improvements",
+    'summary': "POS - Validate Order Hook",
     'category': 'Other',
     'depends': [
         'point_of_sale',
     ],
     'description': """
-POS Drawer allows to :
+POS Validate Order Hook allows to :
 ===============================================================
-* Open the drawer only if it's necessary.
+* Centralise the js method validate order & offer hook for
+inheritance in other module
 
     """,
     "data": [
-        "views/tk_pos_drawer_assets.xml",
+        "views/tk_pos_validate_order_hook_assets.xml",
     ],
     "qweb": [],
     "demo": [],

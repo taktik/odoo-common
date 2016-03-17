@@ -6,6 +6,14 @@ openerp.tk_pos_drawer = function(instance){
 
     module.PaymentScreenWidget.include({
 
+        before_print_hook: function(xml_receipt) {
+
+        },
+
+        before_openCashDrawer_hook: function(currentOrder) {
+            return true;
+        },
+
         validate_order: function(options) {
 
             var self = this;
@@ -50,24 +58,28 @@ openerp.tk_pos_drawer = function(instance){
                     return;
                 }
             }
-            
+
+            //var journalTypeCash = false;
+            //var journalTypeOther = false;
+            //
+            //for (var i = 0; i < currentOrder.get('paymentLines').length; i++) {
+            //    if(currentOrder.get('paymentLines').models[i].name === 'Cash (EUR)'){
+            //        journalTypeCash = true;
+            //    }else{
+            //        journalTypeOther = true;
+            //    }
+            //}
+            //
+            //
+            //
+            //if(journalTypeOther && !journalTypeCash){
+            //    if (Math.abs(currentOrder.getPaidTotal() - currentOrder.getTotalTaxIncluded()) <= 0.00001) {
+            //        openCashDrawer = false;
+            //    }
+            //}
+
             var openCashDrawer = true;
-            var journalTypeCash = false;
-            var journalTypeOther = false;
-
-            for (var i = 0; i < currentOrder.get('paymentLines').length; i++) {
-                if(currentOrder.get('paymentLines').models[i].name === 'Cash (EUR)'){
-                    journalTypeCash = true;
-                }else{
-                    journalTypeOther = true;
-                }
-            }
-
-            if(journalTypeOther && !journalTypeCash){
-                if (Math.abs(currentOrder.getPaidTotal() - currentOrder.getTotalTaxIncluded()) <= 0.00001) {
-                    openCashDrawer = false;
-                }
-            }
+            openCashDrawer = this.before_openCashDrawer_hook(currentOrder);
 
             if (this.pos.config.iface_cashdrawer && openCashDrawer) {
                     this.pos.proxy.open_cashbox();
@@ -107,13 +119,32 @@ openerp.tk_pos_drawer = function(instance){
                 this.pos.push_order(currentOrder)
                 if(this.pos.config.iface_print_via_proxy){
                     var receipt = currentOrder.export_for_printing();
-                    this.pos.proxy.print_receipt(QWeb.render('XmlReceipt',{
+                    var xml_receipt = QWeb.render('XmlReceipt',{
                         receipt: receipt, widget: self,
-                    }));
+                    });
+                    this.before_print_hook(xml_receipt);
+                    this.pos.proxy.print_receipt(xml_receipt);
                     this.pos.get('selectedOrder').destroy();    //finish order and go back to scan screen
                 }else{
                     this.pos_widget.screen_selector.set_current_screen(this.next_screen);
                 }
+
+                //this.pos.push_order(currentOrder)
+                //if(this.pos.config.iface_print_via_proxy){
+                //    var receipt = currentOrder.export_for_printing();
+                //    this.pos.proxy.print_receipt(QWeb.render('XmlReceipt',{
+                //        receipt: receipt, widget: self,
+                //    }));
+                //    this.pos.get('selectedOrder').destroy();    //finish order and go back to scan screen
+                //}else{
+                //    this.pos_widget.screen_selector.set_current_screen(this.next_screen);
+                //}
+
+                //instance.web.Model('pos.order').call('save_xml_receipt', [12], {}).then(function(){
+                //
+                //    }).fail(function (error, event) {
+                //
+                //    });
 
             }
 
