@@ -50,28 +50,23 @@ openerp.tk_pos_drawer = function(instance){
                     return;
                 }
             }
-
-            // Allows to open the drawer only if needed : if only cash,
-            var openCashDrawer = false;
+            
+            var openCashDrawer = true;
             var journalTypeCash = false;
             var journalTypeOther = false;
 
-            for (var i = 0; i < this.pos.cashregisters.length; i++) {
-                if(this.pos.cashregisters[i].journal.type === 'cash'){
+            for (var i = 0; i < currentOrder.get('paymentLines').length; i++) {
+                if(currentOrder.get('paymentLines').models[i].name === 'Cash (EUR)'){
                     journalTypeCash = true;
                 }else{
                     journalTypeOther = true;
                 }
             }
 
-            if(journalTypeCash && !journalTypeOther){
-                openCashDrawer = true;
-            }else if(journalTypeCash && journalTypeOther){
-                if (Math.abs(currentOrder.getPaidTotal() - currentOrder.getTotalTaxIncluded()) > 0.00001) {
-                    openCashDrawer = true;
+            if(journalTypeOther && !journalTypeCash){
+                if (Math.abs(currentOrder.getPaidTotal() - currentOrder.getTotalTaxIncluded()) <= 0.00001) {
+                    openCashDrawer = false;
                 }
-            }else{
-                openCashDrawer = false;
             }
 
             if (this.pos.config.iface_cashdrawer && openCashDrawer) {
