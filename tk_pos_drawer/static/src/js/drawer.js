@@ -18,15 +18,12 @@ openerp.tk_pos_drawer = function(instance){
                     journalTypeOther = true;
                 }
             }
-
             if(journalTypeOther && !journalTypeCash){
                 if (Math.abs(currentOrder.getPaidTotal() - currentOrder.getTotalTaxIncluded()) <= 0.00001) {
                     open = false;
                 }
             }
-
             return open;
-        },
-
+        }
     });
 };
