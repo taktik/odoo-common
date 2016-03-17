@@ -35,7 +35,7 @@
     'summary': "POS - Drawer improvements",
     'category': 'Other',
     'depends': [
-        'point_of_sale',
+        'tk_pos_validate_order_hook',
     ],
     'description': """
 POS Drawer allows to :

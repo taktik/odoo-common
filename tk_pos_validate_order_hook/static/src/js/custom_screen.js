@@ -1,4 +1,4 @@
-openerp.tk_pos_drawer = function(instance){
+openerp.tk_pos_validate_order_hook = function(instance){
 
     var QWeb = instance.web.qweb,
     _t = instance.web._t;
@@ -59,27 +59,7 @@ openerp.tk_pos_drawer = function(instance){
                 }
             }
 
-            //var journalTypeCash = false;
-            //var journalTypeOther = false;
-            //
-            //for (var i = 0; i < currentOrder.get('paymentLines').length; i++) {
-            //    if(currentOrder.get('paymentLines').models[i].name === 'Cash (EUR)'){
-            //        journalTypeCash = true;
-            //    }else{
-            //        journalTypeOther = true;
-            //    }
-            //}
-            //
-            //
-            //
-            //if(journalTypeOther && !journalTypeCash){
-            //    if (Math.abs(currentOrder.getPaidTotal() - currentOrder.getTotalTaxIncluded()) <= 0.00001) {
-            //        openCashDrawer = false;
-            //    }
-            //}
-
-            var openCashDrawer = true;
-            openCashDrawer = this.before_openCashDrawer_hook(currentOrder);
+            var openCashDrawer = this.before_openCashDrawer_hook(currentOrder);
 
             if (this.pos.config.iface_cashdrawer && openCashDrawer) {
                     this.pos.proxy.open_cashbox();
