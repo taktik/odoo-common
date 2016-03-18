@@ -2,7 +2,7 @@ openerp.tk_pos_drawer = function(instance){
 
     var QWeb = instance.web.qweb,
     _t = instance.web._t;
-    var module = instance.tk_pos_validate_order_hook;
+    var module = instance.point_of_sale;
 
     module.PaymentScreenWidget.include({
 

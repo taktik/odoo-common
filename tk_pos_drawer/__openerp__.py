@@ -35,6 +35,7 @@
     'summary': "POS - Drawer improvements",
     'category': 'Other',
     'depends': [
+        'web',
         'tk_pos_validate_order_hook',
     ],
     'description': """
