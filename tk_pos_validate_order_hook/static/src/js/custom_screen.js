@@ -6,7 +6,7 @@ openerp.tk_pos_validate_order_hook = function(instance){
 
     module.PaymentScreenWidget.include({
 
-        before_print_hook: function(xml_receipt) {
+        before_print_hook: function(currentOrder, xml_receipt) {
 
         },
 
@@ -102,7 +102,7 @@ openerp.tk_pos_validate_order_hook = function(instance){
                     var xml_receipt = QWeb.render('XmlReceipt',{
                         receipt: receipt, widget: self,
                     });
-                    this.before_print_hook(xml_receipt);
+                    this.before_print_hook(currentOrder, xml_receipt);
                     this.pos.proxy.print_receipt(xml_receipt);
                     this.pos.get('selectedOrder').destroy();    //finish order and go back to scan screen
                 }else{
