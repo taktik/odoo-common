@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="ir_config_leave_request_mail_to_partner_id" model="ir.config_parameter">
+            <field name="key">leave_request_mail_to_partner_id</field>
+            <field name="value">1</field>
+        </record>
+    </data>
+</openerp>
