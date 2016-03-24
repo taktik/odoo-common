@@ -14,7 +14,16 @@ openerp.tk_pos_validate_order_hook = function(instance){
             return true;
         },
 
+        before_validate_order_hook: function(options){
+            return true;
+        },
+
         validate_order: function(options) {
+
+            var flag_continue = this.before_validate_order_hook(options);
+            if(!flag_continue){
+                return
+            }
 
             var self = this;
             options = options || {};
