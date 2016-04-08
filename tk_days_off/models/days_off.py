@@ -22,8 +22,15 @@ class HolidayYear(models.Model):
         'year_id',
         string='Holiday Periods'
     )
+
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+    )
+
     _sql_constraints = [
-        ('uniq_year', 'unique(year)', 'The year must be unique !'),
+        ('uniq_year', 'unique(year,company_id)',
+         'The year must be unique for a company !'),
     ]
 
 
@@ -79,6 +86,13 @@ class HolidayPeriod(models.Model):
         string='Category'
     )
 
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+    )
+
     _constraints = [
-        (_check_date_start_stop, "Please, check the start date !", ['date_start', 'date_stop']),
+        (_check_date_start_stop,
+         "Please, check the start date !",
+         ['date_start', 'date_stop']),
     ]

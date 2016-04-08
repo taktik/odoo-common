@@ -8,15 +8,21 @@
             <field name="arch" type="xml">
                 <form string="Generate Week-end" version="7.0">
                     <header>
-                        <p class="oe_grey oe_inline">
-                            The wizard will generate the days of Belgian statutory leaves.
+                        <p class="oe_inline">
+                            The wizard will generate the days off.
                             <br/>
-                            Enter a year not already generate.
+                            Legal leaves are available for Belgium, France, USA
+                            <br/>
+                            <br/>
+                            WARNING : If the country of the selected company, is not supported only week-ends will be generated.
+                            <br/>
+                            Enter a year not already generated.
                         </p>
                     </header>
                     <div>
                         <group>
                             <field name="year"/>
+                            <field name="company_id"/>
 		                    <separator colspan="2"/>
                         </group>
                     </div>

@@ -29,10 +29,10 @@
 
 {
     'name': 'Days Off',
-    'version': '8.0.1.0.0',
+    'version': '8.0.1.0.1',
     'author': 'Taktik',
     'website': 'http://www.taktik.be',
-    'summary': "Hr holidays - improvements (Be)",
+    'summary': "Hr holidays - improvements",
     'category': 'Other',
     'depends': [
         'base',
@@ -42,9 +42,11 @@
     'description': """
 Days Off allows to :
 ===============================================================
-* generate days off via a wizard for a specific year (for Belgium)
+* generate days off via a wizard for a specific year (BE,FR,US)
+* Only federal days off are supported for USA.
 * manually change/add/remove the generated days.
 * When calculating the days of a leave request, adapted to take into account the days off generated.
+* Support multi-companies
 
     """,
     'data': [
@@ -52,6 +54,7 @@ Days Off allows to :
         'views/days_off_view.xml',
         'views/hr_holidays_view.xml',
         'wizard/days_off_wizard_views.xml',
+        'security/days_off_security.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,

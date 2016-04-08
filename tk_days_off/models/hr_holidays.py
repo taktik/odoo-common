@@ -59,8 +59,10 @@ class HrHolidays(models.Model):
         if self.date_from and self.date_to:
             diff_day = self._get_number_of_days(self.date_from, self.date_to)
             if not diff_day:
-                raise exceptions.Warning(_('Configuration Error !'),
-                                         _('Please, Can you configure the Days off ?'))
+                raise exceptions.Warning(
+                    _('Configuration Error !'),
+                    _('Please, Can you configure the Days off ?')
+                )
             self.number_of_days_temp = diff_day
             return
         self.number_of_days_temp = 0
@@ -68,9 +70,21 @@ class HrHolidays(models.Model):
 
     date_from = fields.Datetime(
         string='Start Date',
+        default=lambda self: datetime.today().replace(
+            hour=9,
+            minute=0,
+            second=0,
+            microsecond=0
+        )
     )
     date_to = fields.Datetime(
         string='End Date',
+        default=lambda self: datetime.today().replace(
+            hour=17,
+            minute=30,
+            second=0,
+            microsecond=0
+        )
     )
     number_of_days_temp = fields.Float(
         string='Allocation',
