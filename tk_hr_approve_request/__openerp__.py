@@ -47,7 +47,6 @@ Hr Holidays approve request allows to :
     """,
     "data": [
         "data/tk_hr_approve_request_mail_template.xml",
-        "data/tk_hr_config_parameter.xml",
         "views/tk_hr_holidays_request_templates_views.xml",
     ],
     "qweb": [],
