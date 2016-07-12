@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <template id="tk_fixed_footer_assets_backend" name="tk fixed footer assets for backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/tk_fixed_footer/static/lib/fixed_footer_bottom/fixed_footer_bottom.js"/>
+                <script type="text/javascript" src="/tk_fixed_footer/static/src/js/fixed_footer.js"/>
+            </xpath>
+        </template>
+    </data>
+</openerp>
