@@ -20,7 +20,19 @@ openerp.tk_pos_block_ean_amount = function(instance){
             }
             // else
             return this._super(options);
-        }
-    });
+        },
+        pay_deliver: function(){
+            var self = this;
+            var currentOrder = this.pos.get('selectedOrder');
 
+            if(this.pos.config.amount_limit && currentOrder.selected_paymentline.amount && this.pos.config.amount_limit < currentOrder.selected_paymentline.amount){
+                self.pos_widget.screen_selector.show_popup('error',{
+                    message: _t('Amount must be less than ' + this.pos.config.amount_limit),
+                    comment: _t('Please insert a correct amount in the field')
+                });
+                return;
+            }
+            return this._super();
+        },
+    });
 };
