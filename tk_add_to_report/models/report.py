@@ -80,6 +80,23 @@ class Report(models.Model):
     """
     _inherit = 'report'
 
+    def get_company_from_model(self, cr, uid, ids, model_name, company_field_name='company_id', context=None):
+        """
+        Get the company linked to the record. If no configuration or no field are found, get the user's company.
+        :return: (dictionary) {record.id: company_id}
+        """
+        user_company_id = self.pool.get('res.users').browse(cr, uid, uid, context).company_id.id
+
+        if self.pool.get(model_name).__contains__(company_field_name):
+            res = {
+                browse_model_id.id: browse_model_id.__getitem__(company_field_name).id
+                for browse_model_id in self.pool.get(model_name).browse(cr, uid, ids, context=context)
+            }
+        else:
+            res = {model_id: user_company_id for model_id in ids}
+
+        return res
+
     def get_pdf(self, cr, uid, ids, report_name, html=None, data=None, context=None):
         """
         Check if this report model need to include the 'Term and Condition' (tac) pdf.
@@ -91,49 +108,34 @@ class Report(models.Model):
         """
         action_report_obj = self.pool.get('ir.actions.report.xml')
         report_id = action_report_obj.search(
-            cr,
-            uid,
-            [('report_name', '=', report_name)]
+            cr, uid, [('report_name', '=', report_name)]
         )
         report = action_report_obj.browse(
-            cr,
-            uid,
-            report_id[0],
-            context
+            cr, uid, report_id[0], context
         )
         if report.include_term_and_condition_pdf:
-            tac_binary = b64decode(
-                self.pool.get('res.users').browse(
-                    cr, uid, uid, context).get_sale_term_and_condition()
+            merger = PdfFileMerger()
+
+            company_model_data = self.get_company_from_model(
+                cr, uid, ids, report.model, report.company_field_name, context=context
             )
+            company_model = self.pool.get('res.company')
 
-            if tac_binary:
+            for record in self.browse(cr, uid, ids, context=context):
+                # Get company linked term and conditions pdf.
+                company_id = company_model.browse(cr, uid, company_model_data[record.id], context=context)
+                tac_binary = b64decode(company_id.term_and_condition_pdf_file or '')
                 tac_pdf = PdfFileReader(BytesIO(tac_binary))
-                merger = PdfFileMerger()
 
-                for record in self.browse(cr, uid, ids, context=context):
-                    pdf = super(Report, self).get_pdf(
-                        cr,
-                        uid,
-                        record.ids,
-                        report_name,
-                        html,
-                        data,
-                        context
-                    )
-                    merger.append(StringIO(pdf))
+                pdf = super(Report, self).get_pdf(
+                    cr, uid, record.ids, report_name, html, data, context
+                )
+                merger.append(StringIO(pdf))
+                merger.append(tac_pdf)
 
-                    merger.append(tac_pdf)
-
-                final_pdf = StringIO()
-                merger.write(final_pdf)
-                return final_pdf.getvalue()
+            final_pdf = StringIO()
+            merger.write(final_pdf)
+            return final_pdf.getvalue()
         return super(Report, self).get_pdf(
-            cr,
-            uid,
-            ids,
-            report_name,
-            html,
-            data,
-            context
+            cr, uid, ids, report_name, html, data, context
         )
