@@ -39,3 +39,4 @@ class IrActionsReportXml(models.Model):
         'Include Term and Condition Pdf',
         default=False
     )
+    company_field_name = fields.Char('Company Field Name')
