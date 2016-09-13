@@ -27,18 +27,18 @@
 #
 #############################################################################
 {
-    "name": "Taktik Account Move Line Search Extention",
+    "name": "Taktik Account Move Line Search Extension",
     "version": "0.1",
     "author": "Taktik S.A.",
     "category": "Generic Modules/Others",
     "website": "http://www.taktik.be",
     "description":
         """
-        Allow to use ',' or '.' as decimal separator in the Move Line Search Extention
+        Allow to use ',' or '.' as decimal separator in the Move Line Search Extension
         """,
     "depends": [
         "base",
-        "account_move_line_search_extention"
+        "account_move_line_search_extension"
     ],
     "init_xml": [],
     "demo_xml": [],
