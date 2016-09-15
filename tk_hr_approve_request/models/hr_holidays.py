@@ -1,10 +1,38 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
+##############################################################################
+#
+#   Author: Taktik S.A.
+#   Copyright (c) 2015 Taktik S.A. (http://www.taktik.be)
+#   All Rights Reserved
+#
+#   WARNING: This program as such is intended to be used by professional
+#   programmers who take the whole responsibility of assessing all potential
+#   consequences resulting from its eventual inadequacies and bugs.
+#   End users who are looking for a ready-to-use solution with commercial
+#   guarantees and support are strongly advised to contact a Free Software
+#   Service Company.
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as
+#   published by the Free Software Foundation, either version 3 of the
+#   License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
+#
+#   You should have received a copy of the GNU Affero General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#############################################################################
+
+
 import re
 from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime, timedelta
 import random
 from openerp import models, api, fields
-
 
 
 def random_token():
@@ -74,12 +102,16 @@ class HrHoliday(models.Model):
         template_id = self.env.ref(
             'tk_hr_approve_request.tk_hr_request_mail_template'
         )
-        recipient_id = res.employee_id.parent_id.user_id.partner_id.id
-        res.token = random_token()
-        mail_values = template_id.generate_email(template_id.id, res.id)
-        mail_values['recipient_ids'] = [(4, recipient_id)]
-        mail_values = res.replace_links_body(mail_values)
-        msg_id = mail_obj.create(mail_values)
+        # if the employee has a manager it sends a email
+        # otherwise we assume the employee has the access right to approve
+        # his leave request
+        if res.employee_id.parent_id.user_id:
+            recipient_id = res.employee_id.parent_id.user_id.partner_id.id
+            res.token = random_token()
+            mail_values = template_id.generate_email(template_id.id, res.id)
+            mail_values['recipient_ids'] = [(4, recipient_id)]
+            mail_values = res.replace_links_body(mail_values)
+            msg_id = mail_obj.create(mail_values)
         return res
 
     def format_date(self, date):
