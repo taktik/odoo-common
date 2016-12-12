@@ -1,0 +1,142 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tk_invoice_by_slice
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-09 13:43+0000\n"
+"PO-Revision-Date: 2016-12-09 13:43+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:62
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:67
+#, python-format
+msgid "Configuration Error!"
+msgstr "Erreur de configuration!"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,create_date:0
+msgid "Created on"
+msgstr "Créé sur"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:75
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:85
+#, python-format
+msgid "Incorrect Data"
+msgstr "Données incorrectes"
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:172
+#, python-format
+msgid "Invalid Amount"
+msgstr "Montant non valide"
+
+#. module: tk_invoice_by_slice
+#: model:ir.model,name:tk_invoice_by_slice.model_account_invoice
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,invoice_date:0
+msgid "Invoice Date"
+msgstr "Date de la facture"
+
+#. module: tk_invoice_by_slice
+#: view:sale.order:tk_invoice_by_slice.tk_view_order_form_inherited
+msgid "Invoice Informations"
+msgstr "Informations sur la facture"
+
+#. module: tk_invoice_by_slice
+#: field:sale.order,invoice_progress:0
+msgid "Invoice Progress"
+msgstr "Progression de la facture"
+
+#. module: tk_invoice_by_slice
+#: view:tk.sale.invoice.slice:tk_invoice_by_slice.tk_sale_invoice_slice_tree
+msgid "Invoice Slice"
+msgstr "Tranche de facture"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,invoicing_amount:0
+msgid "Invoicing Amount"
+msgstr "Montant de la facturation"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: tk_invoice_by_slice
+#: field:tk.sale.invoice.slice,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: tk_invoice_by_slice
+#: model:ir.model,name:tk_invoice_by_slice.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Facture de paiement d'avance"
+
+#. module: tk_invoice_by_slice
+#: model:ir.model,name:tk_invoice_by_slice.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: tk_invoice_by_slice
+#: field:account.invoice,slice_percent:0
+msgid "Slice Percent"
+msgstr "Pourcentage de tranche"
+
+#. module: tk_invoice_by_slice
+#: field:sale.advance.payment.inv,slice_ids:0
+msgid "Slices"
+msgstr "Tranches"
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:173
+#, python-format
+msgid "The total invoicing amount is different from 100 %%"
+msgstr "Le montant total de facturation est différent de 100%%"
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:76
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:86
+#, python-format
+msgid "The value of Advance Amount must be positive."
+msgstr "La valeur du montant anticipé doit être positive."
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:63
+#, python-format
+msgid "There is no income account defined as global property."
+msgstr "Aucun compte de revenu n'est défini comme un bien global."
+
+#. module: tk_invoice_by_slice
+#: code:addons/tk_invoice_by_slice/wizard/tk_sale_make_invoice.py:68
+#, python-format
+msgid "There is no income account defined for this product: \"%s\" (id:%d)."
+msgstr "Il n'y a aucun compte de revenu défini pour ce produit: \"%s\" (id:%d)."
+

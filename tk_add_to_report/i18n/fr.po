@@ -1,0 +1,58 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tk_add_to_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-09 13:32+0000\n"
+"PO-Revision-Date: 2016-12-09 13:32+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_add_to_report
+#: model:ir.model,name:tk_add_to_report.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: tk_add_to_report
+#: field:ir.actions.report.xml,company_field_name:0
+msgid "Company Field Name"
+msgstr "Champ nom de la société"
+
+#. module: tk_add_to_report
+#: field:ir.actions.report.xml,include_term_and_condition_pdf:0
+msgid "Include Term and Condition Pdf"
+msgstr "Inclure le pdf termes et conditions"
+
+#. module: tk_add_to_report
+#: model:ir.model,name:tk_add_to_report.model_report
+msgid "Report"
+msgstr "Rapport"
+
+#. module: tk_add_to_report
+#: field:res.company,term_and_condition_file_name:0
+msgid "Term and condition file name"
+msgstr "Nom du fichier termes et conditions"
+
+#. module: tk_add_to_report
+#: field:res.company,term_and_condition_pdf_file:0
+msgid "Terms and Conditions"
+msgstr "Termes et conditions"
+
+#. module: tk_add_to_report
+#: code:addons/tk_add_to_report/models/res_company.py:50
+#, python-format
+msgid "The 'Terms and Conditions' file must be a pdf."
+msgstr "Le fichier 'Termes et conditions' doit être un pdf."
+
+#. module: tk_add_to_report
+#: model:ir.model,name:tk_add_to_report.model_res_users
+msgid "Users"
+msgstr "Utilisateurs"
+

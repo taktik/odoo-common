@@ -1,0 +1,58 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tk_xml_serializer
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-09 13:37+0000\n"
+"PO-Revision-Date: 2016-12-09 13:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,create_date:0
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,id:0
+#: field:tk.xml.hooks,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,json_pattern:0
+msgid "JSON Pattern"
+msgstr "Modèle JSON"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,model_id:0
+msgid "Model"
+msgstr "Modèle"
+
+#. module: tk_xml_serializer
+#: field:tk.json.pattern,name:0
+msgid "Name"
+msgstr "Nom"
+

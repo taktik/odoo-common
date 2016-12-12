@@ -1,0 +1,84 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tk_invoice_date
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-09 13:48+0000\n"
+"PO-Revision-Date: 2016-12-09 13:48+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_invoice_date
+#: view:tk_invoice_interpose:tk_invoice_date.tk_invoice_interpose_form_view
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,create_date:0
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: tk_invoice_date
+#: view:account.invoice:tk_invoice_date.tk_invoice_form_inherited
+#: view:account.invoice:tk_invoice_date.tk_invoice_supplier_form_inherited
+msgid "Delete number"
+msgstr "Supprimer le numéro"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: tk_invoice_date
+#: view:tk_invoice_interpose:tk_invoice_date.tk_invoice_interpose_form_view
+msgid "Interpose Invoice"
+msgstr "Interposer la facture"
+
+#. module: tk_invoice_date
+#: model:ir.actions.act_window,name:tk_invoice_date.action_interpose_invoice
+msgid "Interpose invoice"
+msgstr "Interposer la facture"
+
+#. module: tk_invoice_date
+#: model:ir.model,name:tk_invoice_date.model_account_invoice
+#: field:tk_invoice_interpose,invoice_id:0
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,date:0
+msgid "Invoice date"
+msgstr "Date de la facture"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,number:0
+msgid "Invoice number"
+msgstr "Numéro de facture"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: tk_invoice_date
+#: field:tk_invoice_interpose,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: tk_invoice_date
+#: view:tk_invoice_interpose:tk_invoice_date.tk_invoice_interpose_form_view
+msgid "Validate invoice"
+msgstr "Valider la facture"
+

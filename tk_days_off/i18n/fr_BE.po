@@ -121,7 +121,7 @@ msgstr "Créé par"
 #: field:training.holiday.year.wizard,create_date:0
 #: field:training.holidays.category,create_date:0
 msgid "Created on"
-msgstr "Créé sur"
+msgstr "Créé le"
 
 #. module: tk_days_off
 #: field:training.holiday.period,date_start:0
@@ -262,7 +262,7 @@ msgstr "Congé"
 #: code:addons/tk_days_off/wizard/days_off_wizard.py:59
 #, python-format
 msgid "Legal"
-msgstr "Legal"
+msgstr "Légal"
 
 #. module: tk_days_off
 #: view:training.holiday.year.wizard:tk_days_off.holiday_year_wizard
@@ -313,7 +313,7 @@ msgstr "Entrez  une année valide."
 #: code:addons/tk_days_off/models/hr_holidays.py:64
 #, python-format
 msgid "Please, Can you configure the Days off ?"
-msgstr "Please, Can you configure the Days off ?"
+msgstr "Pouvez-vous configurer les jours de congé ?"
 
 #. module: tk_days_off
 #: constraint:training.holiday.period:0
@@ -334,7 +334,7 @@ msgstr "Recherche d’année de congés"
 #: code:addons/tk_days_off/wizard/days_off_wizard.py:174
 #, python-format
 msgid "Thanksgiving Day"
-msgstr "Thanksgiving Day"
+msgstr "Jour de thanksgiving"
 
 #. module: tk_days_off
 #: code:addons/tk_days_off/wizard/days_off_wizard.py:84
@@ -349,7 +349,7 @@ msgstr ""
 #. module: tk_days_off
 #: view:training.holiday.year.wizard:tk_days_off.holiday_year_wizard
 msgid "The wizard will generate the days off."
-msgstr "Le wizard va générer les jours de congés."
+msgstr "L'assistant de configuration va générer les jours de congés."
 
 #. module: tk_days_off
 #: sql_constraint:training.holiday.year:0
@@ -359,17 +359,17 @@ msgstr "L’année doit être unique pour une société!"
 #. module: tk_days_off
 #: model:ir.model,name:tk_days_off.model_training_holiday_period
 msgid "Training Holiday Period"
-msgstr "Training Holiday Period"
+msgstr "Période de vacances de formation"
 
 #. module: tk_days_off
 #: model:ir.model,name:tk_days_off.model_training_holiday_year
 msgid "Training Holiday Year"
-msgstr "Training Holiday Year"
+msgstr "Année de formation"
 
 #. module: tk_days_off
 #: model:ir.model,name:tk_days_off.model_training_holidays_category
 msgid "Training Holidays Category"
-msgstr "Training Holidays Category"
+msgstr "Catégorie vacances de formation"
 
 #. module: tk_days_off
 #: code:addons/tk_days_off/wizard/days_off_wizard.py:167

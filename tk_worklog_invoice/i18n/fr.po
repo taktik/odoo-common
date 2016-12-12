@@ -1,0 +1,255 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tk_worklog_invoice
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-12 12:23+0000\n"
+"PO-Revision-Date: 2016-12-12 12:23+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view
+msgid "Add Worklog to Invoice"
+msgstr "Ajout de journaux de travail à la facture"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view_success
+msgid "Add Worklog to Invoice - Success"
+msgstr "Ajout de journaux de travail à la facture - Succès"
+
+#. module: tk_worklog_invoice
+#: model:ir.actions.act_window,name:tk_worklog_invoice.action_tk_worklog_invoice
+msgid "Add to invoice"
+msgstr "Ajouter à la facture"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:42
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:43
+#, python-format
+msgid "Analytic Account Incomplete!"
+msgstr "Compte analytique incomplet!"
+
+#. module: tk_worklog_invoice
+#: model:ir.model,name:tk_worklog_invoice.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Ligne analytique"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:121
+#, python-format
+msgid "At least one line has no product !"
+msgstr "Au moins une ligne n'a pas de produit !"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:140
+#, python-format
+msgid "Configuration Error"
+msgstr "Erreur de configuration"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:107
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:111
+#, python-format
+msgid "Configuration Error!"
+msgstr "Erreur de configuration!"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:43
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:44
+#, python-format
+msgid "Contract incomplete. Please fill in the Customer and Pricelist fields."
+msgstr "Contrat incomplet. Veuillez remplir les champs client et liste de prix."
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,price:0
+msgid "Cost"
+msgstr "Coût"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,create_lines:0
+msgid "Create Invoice Lines"
+msgstr "Créer des lignes de facturation"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,create_date:0
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,date:0
+msgid "Date"
+msgstr "Date"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,name:0
+msgid "Description"
+msgstr "Description"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view
+msgid "Do you want to show details of each activity to your customer?"
+msgstr "Voulez-vous afficher les détails de chaque activité à votre client?"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:121
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:48
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:49
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:50
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:51
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:52
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:53
+#, python-format
+msgid "Error !"
+msgstr "Erreur !"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:93
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:97
+#, python-format
+msgid "Error!"
+msgstr "Erreur!"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,invoice_id:0
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:141
+#, python-format
+msgid "No income account defined for product '%s'"
+msgstr "Aucun compte de revenu défini pour le produit '%s'"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,partner_id:0
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,partner_domain:0
+msgid "Partner domain for invoice"
+msgstr "Domaine partenaire pour facture"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:108
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:112
+#, python-format
+msgid "Please define income account for product '%s'."
+msgstr "Veuillez définir le compte de revenu pour le produit '%s'."
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view
+msgid "Please select the worklog to add to the invoice"
+msgstr "Veuillez sélectionner le journal à ajouter à la facture"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:52
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:53
+#, python-format
+msgid "Some worklog are already invoiced"
+msgstr "Certains worklogs sont déjà facturés"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:50
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:51
+#, python-format
+msgid "Some worklog are not invoiceable"
+msgstr "Certains journaux de travail ne sont pas facturés"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:48
+#: code:addons/tk_worklog_invoice/wizard/tk_worklog_invoice.py:49
+#, python-format
+msgid "The Partner must be the same for all the worklog"
+msgstr "Le partenaire doit être le même pour tous les journaux de travail"
+
+#. module: tk_worklog_invoice
+#: help:tk_worklog_invoice,price:0
+msgid "The cost of each work done will be displayed on the invoice. You probably don't want to check this"
+msgstr "Le coût de chaque travail effectué sera affiché sur la facture. Vous ne voulez probablement pas vérifier cela"
+
+#. module: tk_worklog_invoice
+#: help:tk_worklog_invoice,name:0
+msgid "The detail of each work done will be displayed on the invoice"
+msgstr "Le détail de chaque travail effectué sera affiché sur la facture"
+
+#. module: tk_worklog_invoice
+#: help:tk_worklog_invoice,date:0
+msgid "The real date of each work will be displayed on the invoice"
+msgstr "La date réelle de chaque travail sera affichée sur la facture"
+
+#. module: tk_worklog_invoice
+#: help:tk_worklog_invoice,time:0
+msgid "The time of each work done will be displayed on the invoice"
+msgstr "Le temps de chaque travail sera affiché sur la facture"
+
+#. module: tk_worklog_invoice
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:93
+#: code:addons/tk_worklog_invoice/wizard/hr_timesheet_invoice.py:97
+#, python-format
+msgid "There is no product defined. Please select one or force the product through the wizard."
+msgstr "Il n'y a pas de produit défini. Veuillez en sélectionner un ou forcer le produit via l'assistant."
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,time:0
+msgid "Time spent"
+msgstr "Temps passé"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view_success
+msgid "We've added this worklog to the invoice"
+msgstr "Nous avons ajouté ce journal à la facture"
+
+#. module: tk_worklog_invoice
+#: field:tk_worklog_invoice,worklog_ids:0
+msgid "Worklogs"
+msgstr "Journaux de travail"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view
+msgid "_Cancel"
+msgstr "_Cancel"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view_success
+msgid "_Close"
+msgstr "_Close"
+
+#. module: tk_worklog_invoice
+#: view:tk_worklog_invoice:tk_worklog_invoice.tk_worklog_invoice_view
+msgid "_Next"
+msgstr "_Next"
+
