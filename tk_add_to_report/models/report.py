@@ -87,7 +87,7 @@ class Report(models.Model):
         """
         user_company_id = self.pool.get('res.users').browse(cr, uid, uid, context).company_id.id
 
-        if self.pool.get(model_name).__contains__(company_field_name):
+        if company_field_name and self.pool.get(model_name).__contains__(company_field_name):
             res = {
                 browse_model_id.id: browse_model_id.__getitem__(company_field_name).id
                 for browse_model_id in self.pool.get(model_name).browse(cr, uid, ids, context=context)
@@ -122,16 +122,16 @@ class Report(models.Model):
             company_model = self.pool.get('res.company')
 
             for record in self.browse(cr, uid, ids, context=context):
-                # Get company linked term and conditions pdf.
-                company_id = company_model.browse(cr, uid, company_model_data[record.id], context=context)
-                tac_binary = b64decode(company_id.term_and_condition_pdf_file or '')
-                tac_pdf = PdfFileReader(BytesIO(tac_binary))
-
                 pdf = super(Report, self).get_pdf(
                     cr, uid, record.ids, report_name, html, data, context
                 )
                 merger.append(StringIO(pdf))
-                merger.append(tac_pdf)
+
+                # Get company linked term and conditions pdf.
+                company_id = company_model.browse(cr, uid, company_model_data[record.id], context=context)
+                if company_id.term_and_condition_pdf_file:
+                    tac_pdf = PdfFileReader(BytesIO(b64decode(company_id.term_and_condition_pdf_file)))
+                    merger.append(tac_pdf)
 
             final_pdf = StringIO()
             merger.write(final_pdf)
