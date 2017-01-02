@@ -27,4 +27,20 @@
 #
 #############################################################################
 
-from . import models
+from openerp import api, exceptions, models, _
+
+class TaktikCron(models.Model):
+    _inherit = 'ir.cron'
+
+    @api.multi
+    def write(self, values):
+        self.ensure_one()
+        if 'nextcall' in values:
+            subscription_document = self.env['subscription.subscription'].search([('cron_id', '=', self.id)])
+            if subscription_document and (subscription_document.state != 'draft'):
+                raise exceptions.Warning("Error! \n"
+                                         "This cron job is linked to the recurring document \"{}\" and is in the \"{}\" state\n\n"
+                                         "Please set the recurring document to the state \"draft\" before updating the cron job"
+                                         .format(subscription_document.name.encode('utf-8'), subscription_document.state.encode('utf-8')))
+        res = super(TaktikCron, self).write(values)
+        return res
