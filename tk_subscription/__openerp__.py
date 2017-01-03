@@ -28,16 +28,20 @@
 #############################################################################
 
 {
-    "name": "Taktik Sale Order Margin in Percent",
-    "version": "1.0",
+    "name": "Taktik Subscription Module",
+    "version": "0.1",
     "author": "Taktik S.A.",
     "category": "Generic Modules/Others",
     "website": "http://www.taktik.be",
-    "description": "Taktik Sale Order Margin in Percent",
-    "depends": ['sale'],
+    "description":
+        """
+        """,
+    "depends": ["base", "subscription"],
     "init_xml": [],
     "demo_xml": [],
-    "data": ['view/sale_view.xml'],
+    "data": [
+        'view/tk_subscription_view.xml',
+    ],
     "active": False,
     "installable": True
 }

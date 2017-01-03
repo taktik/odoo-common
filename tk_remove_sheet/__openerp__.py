@@ -1,24 +1,29 @@
-# coding=utf-8
-# ############################################################################
+# -*- encoding: utf-8 -*-
+##############################################################################
 #
-# Copyright (C) 2014 Taktik SA <http://taktik.be>
-#    @author Adil Houmadi
+#    Author: Taktik S.A.
+#    Copyright (c) 2015 Taktik S.A. (http://www.taktik.be)
+#    All Rights Reserved
 #
-#    This file is a part of profiler
+#    WARNING: This program as such is intended to be used by professional
+#    programmers who take the whole responsibility of assessing all potential
+#    consequences resulting from its eventual inadequacies and bugs.
+#    End users who are looking for a ready-to-use solution with commercial
+#    guarantees and support are strongly advised to contact a Free Software
+#    Service Company.
 #
-#    profiler is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License v3 or later
-#    as published by the Free Software Foundation, either version 3 of the
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
 #    License, or (at your option) any later version.
 #
-#    profiler is distributed in the hope that it will be useful,
+#    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License v3 or later for more details.
+#    GNU Affero General Public License for more details.
 #
 #    You should have received a copy of the GNU Affero General Public License
-#    v3 or later along with this program.
-#    If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
 {
