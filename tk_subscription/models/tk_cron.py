@@ -35,7 +35,10 @@ class TaktikCron(models.Model):
     @api.multi
     def write(self, values):
         self.ensure_one()
-        if 'nextcall' in values:
+        if 'nextcall' in values \
+            or 'interval_number' in values \
+            or 'interval_type' in values \
+            or 'numbercall' in values:
             subscription_document = self.env['subscription.subscription'].search([('cron_id', '=', self.id)])
             if subscription_document and (subscription_document.state != 'draft'):
                 raise exceptions.Warning("Error! \n"
