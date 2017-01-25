@@ -32,5 +32,22 @@
                 </data>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="subscription_smart_button">
+            <field name="name">res.partner.subscription</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='buttons']" position="inside">
+                    <button name="return_subscription_partner"
+                            class="oe_inline oe_stat_button"
+                            icon="fa-file-text"
+                            type="object"
+                            help="Show all the subscription of this partner">
+                        <field name="subscriptions_count" widget="statinfo" string="Subscriptions"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>

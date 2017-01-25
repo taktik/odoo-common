@@ -66,9 +66,9 @@ class TaktikSubscriptionSubscription(models.Model):
     @api.onchange('partner_id')
     def partner_id_filter(self):
         """
+        Recompute the partner filter when 'partner_id' change.
 
-
-        :return:
+        :return: domain filter on the invoice
         """
 
         if not self.ret_invoice_only:
@@ -83,4 +83,44 @@ class TaktikSubscriptionSubscription(models.Model):
     invoice_only = fields.Boolean(string='Invoice only ?',
                                   required=True,
                                   default=False,
-                                  help="")
+                                  help="Sort the invoices on the selected partner.")
+
+
+class TaktikResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    @api.multi
+    def return_subscription_partner(self):
+        """
+        :return:
+        """
+        self.ensure_one()
+        tree_subscription_view = self.env.ref('subscription.view_subscription_tree').id
+        form_subscription_view = self.env.ref('subscription.view_subscription_form').id
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'views': [(tree_subscription_view, 'tree'), (form_subscription_view, 'form')],
+            'res_model': 'subscription.subscription',
+            'domain': ['|', ('partner_id', '=', self.id), ('partner_id', 'in', self.child_ids.ids)],
+            'target': 'current',
+            'context': {'default_partner_id': self.id}
+        }
+
+    @api.multi
+    def _count_subscriptions(self):
+        """
+        Compute the number of subscription linked to the given res.partner
+
+        :return: number of subscription linked to the partner
+        """
+        for partner in self:
+            subscriptions = self.env['subscription.subscription']
+            count = subscriptions.search_count([('partner_id', '=', partner.id)])
+            for child in partner.child_ids:
+                count += subscriptions.search_count([('partner_id', '=', child.id)])
+            partner.subscriptions_count = count
+
+    subscriptions_count = fields.Integer(compute='_count_subscriptions',
+                                         string='Subscriptions')
