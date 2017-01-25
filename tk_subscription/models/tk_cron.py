@@ -27,13 +27,20 @@
 #
 #############################################################################
 
-from openerp import api, exceptions, models, _
+from openerp import api, exceptions, fields, models, _
+
 
 class TaktikCron(models.Model):
     _inherit = 'ir.cron'
 
     @api.multi
     def write(self, values):
+        """
+        Check if a a record in linked to a recurring document before performing the write.
+        If it is already linked, it trigger a warning to prevent the user.
+
+        :return: Write the record
+        """
         self.ensure_one()
         if 'nextcall' in values \
             or 'interval_number' in values \
@@ -47,3 +54,33 @@ class TaktikCron(models.Model):
                                          .format(subscription_document.name.encode('utf-8'), subscription_document.state.encode('utf-8')))
         res = super(TaktikCron, self).write(values)
         return res
+
+
+class TaktikSubscriptionSubscription(models.Model):
+    _inherit = 'subscription.subscription'
+
+    @property
+    def ret_invoice_only(self):
+        return self.invoice_only
+
+    @api.onchange('partner_id')
+    def partner_id_filter(self):
+        """
+
+
+        :return:
+        """
+
+        if not self.ret_invoice_only:
+            return
+
+        return {'domain': {'invoice_id': [('partner_id', '=', self.partner_id.id)]}} if self.invoice_only else False
+
+    invoice_id = fields.Many2one('account.invoice',
+                                 string='Invoice',
+                                 required=True)
+
+    invoice_only = fields.Boolean(string='Invoice only ?',
+                                  required=True,
+                                  default=False,
+                                  help="")

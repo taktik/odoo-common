@@ -6,18 +6,30 @@
             <field name="model">subscription.subscription</field>
             <field name="inherit_id" ref="subscription.view_subscription_form"/>
             <field name="arch" type="xml">
-                <field name="interval_number" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
-                </field>
-                <field name="interval_type" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
-                </field>
-                <field name="exec_init" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
-                </field>
-                <field name="date_init" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
-                </field>
+                <data>
+                    <field name="interval_number" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                    </field>
+                    <field name="interval_type" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                    </field>
+                    <field name="exec_init" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                    </field>
+                    <field name="date_init" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
+                    </field>
+                    <field name="date_init" position="after">
+                        <field name="invoice_only"/>
+                    </field>
+                    <xpath expr="//page[@string='Subsription Data']//group[@col='4']" position="attributes">
+                        <attribute name="col">2</attribute>
+                    </xpath>
+                    <field name="doc_source" position="replace">
+                        <field name="invoice_id" attrs="{'invisible': [('invoice_only', '=', False)]}"/>
+                        <field name="doc_source" widget="reference" attrs="{'invisible': [('invoice_only', '=', True)]}"/>
+                    </field>
+                </data>
             </field>
         </record>
     </data>
