@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Message when the invoice does not exists  -->
+        <template id="leave_request_not_found"
+                  name="Leave request not found">
+            <t t-call="website.layout">
+                <div class="wrap">
+                    <div class="container">
+                        <div class="jumbotron mt32">
+                            <h1>Not Found</h1>
+                            <p>It seems that the leave request does not
+                                exists in our system!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Message when the registration is accepted  -->
+        <template id="leave_request_accepted"
+                  name="Leave request accepted">
+            <t t-call="website.layout">
+                <div class="wrap">
+                    <div class="container">
+                        <div class="jumbotron mt32">
+                            <h1>Leave request accepted</h1>
+                            <p>Your leave request is updated successfully.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <!-- Message when the registration is declined  -->
+        <template id="leave_request_refused"
+                  name="Leave request refused">
+            <t t-call="website.layout">
+                <div class="wrap">
+                    <div class="container">
+                        <div class="jumbotron mt32">
+                            <h1>Leave request refused</h1>
+                            <p>Your leave request is updated successfully.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</openerp>
