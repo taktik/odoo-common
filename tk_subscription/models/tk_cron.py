@@ -65,12 +65,6 @@ class TaktikSubscriptionSubscription(models.Model):
 
     @api.onchange('partner_id')
     def partner_id_filter(self):
-        """
-
-
-        :return:
-        """
-
         if not self.ret_invoice_only:
             return
 
