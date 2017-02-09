@@ -26,7 +26,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
-
-from . import tk_cron
-from . import subscription_subscription
-from . import res_partner
+import main

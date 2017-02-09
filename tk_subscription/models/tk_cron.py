@@ -77,4 +77,4 @@ class TaktikSubscriptionSubscription(models.Model):
     invoice_only = fields.Boolean(string='Invoice only ?',
                                   required=True,
                                   default=False,
-                                  help="")
+                                  help="Sort the invoices on the selected partner.")

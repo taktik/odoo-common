@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-25 10:24+0000\n"
-"PO-Revision-Date: 2017-01-25 10:24+0000\n"
+"POT-Creation-Date: 2017-01-25 17:28+0000\n"
+"PO-Revision-Date: 2017-01-25 17:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,16 @@ msgid "Invoice only ?"
 msgstr "Seulement les factures ?"
 
 #. module: tk_subscription
+#: model:ir.model,name:tk_subscription.model_res_partner
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: tk_subscription
+#: help:subscription.subscription,invoice_only:0
+msgid "Sort the invoices on the selected partner."
+msgstr "Trier toutes les factures pour le partnaire séléctioné"
+
+#. module: tk_subscription
 #: model:ir.model,name:tk_subscription.model_subscription_subscription
 msgid "Subscription"
 msgstr "Abonnement"
@@ -34,6 +44,16 @@ msgstr "Abonnement"
 #: model:ir.model,name:tk_subscription.model_subscription_document
 msgid "Subscription Document"
 msgstr "Contrat d'abonnement"
+
+#. module: tk_subscription
+#: view:res.partner:tk_subscription.subscription_smart_button
+msgid "Subscriptions"
+msgstr "Abonnements"
+
+#. module: tk_subscription
+#: view:res.partner:tk_subscription.subscription_smart_button
+msgid "Show all the subscription of this partner"
+msgstr "Montrer tout les abonnements pour ce partenaire"
 
 #. module: tk_subscription
 #: view:subscription.subscription:tk_subscription.view_subscription_form

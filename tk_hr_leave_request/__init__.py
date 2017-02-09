@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Author: Taktik S.A.
@@ -25,8 +25,6 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#############################################################################
-
-from . import tk_cron
-from . import subscription_subscription
-from . import res_partner
+##############################################################################
+import controllers
+import models
