@@ -28,4 +28,4 @@
 #############################################################################
 
 from . import tk_cron
-from . import tk_res_partner
+from . import res_partner
