@@ -143,7 +143,6 @@ class tk_sale_advance_payment_inv(models.TransientModel):
         """ create invoices for the active sales orders """
         sale_obj = self.pool.get('sale.order')
         sale_order_line_obj = self.pool.get('sale.order.line')
-        invoice_obj = self.pool.get('account.invoi')
         act_window = self.pool.get('ir.actions.act_window')
         wizard = self.browse(cr, uid, ids[0], context)
         sale_ids = context.get('active_ids', [])
