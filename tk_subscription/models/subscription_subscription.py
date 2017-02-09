@@ -27,6 +27,28 @@
 #
 #############################################################################
 
-from . import tk_cron
-from . import subscription_subscription
-from . import res_partner
+from openerp import api, exceptions, fields, models, _
+
+
+class SubscriptionSubscription(models.Model):
+    _inherit = 'subscription.subscription'
+
+    @property
+    def ret_invoice_only(self):
+        return self.invoice_only
+
+    @api.onchange('partner_id')
+    def partner_id_filter(self):
+        if not self.ret_invoice_only:
+            return
+
+        return {'domain': {'invoice_id': [('partner_id', '=', self.partner_id.id)]}} if self.invoice_only else False
+
+    invoice_id = fields.Many2one('account.invoice',
+                                 string='Invoice',
+                                 required=True)
+
+    invoice_only = fields.Boolean(string='Invoice only ?',
+                                  required=True,
+                                  default=False,
+                                  help="")

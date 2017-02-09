@@ -65,12 +65,6 @@ class TaktikSubscriptionSubscription(models.Model):
 
     @api.onchange('partner_id')
     def partner_id_filter(self):
-        """
-        Recompute the partner filter when 'partner_id' change.
-
-        :return: domain filter on the invoice
-        """
-
         if not self.ret_invoice_only:
             return
 
