@@ -63,18 +63,14 @@ class TaktikSubscriptionSubscription(models.Model):
     def ret_invoice_only(self):
         return self.invoice_only
 
-    @api.onchange('partner_id')
-    def partner_id_filter(self):
-        if not self.ret_invoice_only:
-            return
-
-        return {'domain': {'invoice_id': [('partner_id', '=', self.partner_id.id)]}} if self.invoice_only else False
+    @api.onchange('invoice_id')
+    def invoice_id_onchange(self):
+        if self.invoice_only:
+            self.doc_source = 'account.invoice,{0}'.format(self.invoice_id.id)
 
     invoice_id = fields.Many2one('account.invoice',
-                                 string='Invoice',
-                                 required=True)
+                                 string='Invoice')
 
     invoice_only = fields.Boolean(string='Invoice only ?',
-                                  required=True,
                                   default=False,
                                   help="Sort the invoices on the selected partner.")
