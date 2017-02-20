@@ -45,10 +45,8 @@ class SubscriptionSubscription(models.Model):
         return {'domain': {'invoice_id': [('partner_id', '=', self.partner_id.id)]}} if self.invoice_only else False
 
     invoice_id = fields.Many2one('account.invoice',
-                                 string='Invoice',
-                                 required=True)
+                                 string='Invoice')
 
     invoice_only = fields.Boolean(string='Invoice only ?',
-                                  required=True,
                                   default=False,
                                   help="")

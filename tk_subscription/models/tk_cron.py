@@ -54,23 +54,3 @@ class TaktikCron(models.Model):
                                          .format(subscription_document.name.encode('utf-8'), subscription_document.state.encode('utf-8')))
         res = super(TaktikCron, self).write(values)
         return res
-
-
-class TaktikSubscriptionSubscription(models.Model):
-    _inherit = 'subscription.subscription'
-
-    @property
-    def ret_invoice_only(self):
-        return self.invoice_only
-
-    @api.onchange('invoice_id')
-    def invoice_id_onchange(self):
-        if self.invoice_only:
-            self.doc_source = 'account.invoice,{0}'.format(self.invoice_id.id)
-
-    invoice_id = fields.Many2one('account.invoice',
-                                 string='Invoice')
-
-    invoice_only = fields.Boolean(string='Invoice only ?',
-                                  default=False,
-                                  help="Sort the invoices on the selected partner.")
