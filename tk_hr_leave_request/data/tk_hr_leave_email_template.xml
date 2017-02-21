@@ -1,0 +1,69 @@
+<openerp>
+    <data noupdate="1">
+        <!-- Mail request -->
+        <record id="tk_hr_leave_request_email_template" model="email.template">
+            <field name="name">Leave request - Mail Approbation</field>
+            <field name="email_from">${object.employee_id.work_email}</field>
+            <field name="subject">Leave request for ${object.employee_id.name} need approbation.</field>
+            <field name="model_id" ref="hr_holidays.model_hr_holidays"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <h3>Leave request for ${object.employee_id.name} need your approbation.</h3>
+                    <p><strong>Department :</strong> ${object.department_id.name}<br/>
+                    <strong>Description :</strong>  ${object.name}<br/>
+                    <strong>Leave Type :</strong>  ${object.holiday_status_id.name}<br/>
+                    <strong>Duration :</strong>  ${object.number_of_days_temp} days<br/>
+                    <strong>From :</strong> ${object.format_date(object.date_from)}
+                    <strong>to :</strong> ${object.format_date(object.date_to)}</p>
+
+
+                    <p><strong>To confirm/decline the validation request please click on the following links:</strong>
+                    <br/><a href="_URL_ACCEPT_">Confirm</a> / <a href="_URL_DECLINE_">Decline</a><br/><br/>
+                    </p>
+                    <p><strong>To see the leave request please click on the link bellow :</strong>
+                    <br/><a href="_URL_LEAVE_REQUEST_">Leave request</a>
+                    </p>
+                </div>
+            ]]></field>
+        </record>
+
+        <!-- Mail response -->
+        <record id="tk_hr_response_email_template" model="email.template">
+            <field name="name">Leave request - Mail Response</field>
+            <field name="email_from">noreply@villaeugenie.com</field>
+            <field name="subject">Leave allocation / Leave request status</field>
+            <field name="model_id" ref="hr_holidays.model_hr_holidays"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html"><![CDATA[
+                <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+                    <h3>
+                        % if object.type == 'add':
+                            Leave allocation request status.
+                        % endif
+                        % if object.type == 'remove':
+                            Leave request status.
+                        % endif
+                    </h3>
+
+                    <strong>Description :</strong>  ${object.name}<br/>
+                    <strong>Leave Type :</strong>  ${object.holiday_status_id.name}<br/>
+                    <strong>Duration :</strong>  ${object.number_of_days_temp} days<br/>
+                    <strong>From :</strong> ${object.format_date(object.date_from)}
+                    <strong>to :</strong> ${object.format_date(object.date_to)}</p>
+                    <br/>
+                    <p>
+                    <strong>
+                        % if object.type == 'add':
+                            Your leave allocation request has been: _RESPONSE_
+                        % endif
+                        % if object.type == 'remove':
+                            Your leave request has been: _RESPONSE_
+                        % endif
+                    </strong>
+                    </p>
+                </div>
+            ]]></field>
+        </record>
+    </data>
+</openerp>

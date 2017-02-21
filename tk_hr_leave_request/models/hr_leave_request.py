@@ -32,7 +32,7 @@ import re
 from openerp.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime, timedelta
 import random
-from openerp import models, api, fields
+from openerp import models, api, fields, _
 
 
 def random_token():
@@ -111,24 +111,89 @@ class HrHoliday(models.Model):
 
         return mail_values
 
-    @api.model
-    def create(self, values):
-        res = super(HrHoliday, self).create(values)
+    @api.multi
+    def replace_links_body_response(self, mail_values):
+        """
+        Replace the value in the email sent to the employee
+
+        """
+        mail_body = mail_values.get('body', '')
+        mail_body_html = mail_values.get('body_html', '')
+
+        if self.state == 'validate':
+            val = _(u'Accepted')
+        if self.state == 'refuse':
+            val = _(u'Refused')
+
+        rdict = {
+            '_RESPONSE_': val
+        }
+
+        robj = re.compile('|'.join(rdict.keys()))
+        result_body = robj.sub(
+            lambda m: rdict[m.group(0)],
+            mail_body
+        )
+        result_body_html = robj.sub(
+            lambda m: rdict[m.group(0)],
+            mail_body_html
+        )
+
+        mail_values.update({
+            'body': result_body,
+            'body_html': result_body_html
+        })
+
+        return mail_values
+
+    @api.multi
+    def write(self, values):
+        res = super(HrHoliday, self).write(values)
+        if ('state' in values and
+                (values.get('state', False) == 'confirm')):
+            self.send_request_by_mail()
+        if ('state' in values and
+                (values.get('state', False) == 'validate' or
+                 values.get('state', False) == 'refuse')):
+            self.send_response_by_mail()
+        return res
+
+    def send_request_by_mail(self):
         mail_obj = self.env['mail.mail']
         template_id = self.env.ref(
-            'tk_hr_leave_request.tk_hr_leave_request_mail_template'
+            'tk_hr_leave_request.tk_hr_leave_request_email_template'
         )
         # if the employee has a manager it sends a email
         # otherwise we assume the employee has the access right to approve
         # his leave request
-        if res.employee_id.parent_id.user_id:
-            recipient_id = res.employee_id.parent_id.user_id.partner_id.id
-            res.token = random_token()
-            mail_values = template_id.generate_email(template_id.id, res.id)
-            mail_values['recipient_ids'] = [(4, recipient_id)]
-            mail_values = res.replace_links_body(mail_values)
+        if (self.employee_id.parent_id.user_id and
+                self.date_from and self.date_to) or \
+                (self.employee_id.parent_id.user_id and self.number_of_days_temp):
+            recipient = self.employee_id.parent_id.user_id.partner_id
+            self.token = random_token()
+            ctx = self.env.context.copy()
+            ctx.update({'lang': recipient.lang})
+            mail_values = template_id.with_context(ctx).generate_email(
+                template_id.id, self.id
+            )
+            mail_values['recipient_ids'] = [(4, recipient.id)]
+            mail_values = self.replace_links_body(mail_values)
             msg_id = mail_obj.create(mail_values)
-        return res
+
+    def send_response_by_mail(self):
+        mail_obj = self.env['mail.mail']
+        template_id = self.env.ref(
+            'tk_hr_leave_request.tk_hr_response_email_template'
+        )
+        for holiday in self:
+            if holiday.state == 'validate' or holiday.state == 'refuse':
+                recipient = holiday.employee_id.user_id.partner_id
+                ctx = self.env.context.copy()
+                ctx.update({'lang': recipient.lang})
+                mail_values = template_id.with_context(ctx).generate_email(template_id.id, holiday.id)
+                mail_values['recipient_ids'] = [(4, recipient.id)]
+                mail_values = holiday.replace_links_body_response(mail_values)
+                msg_id = mail_obj.create(mail_values)
 
     def format_date(self, date):
         if date:
