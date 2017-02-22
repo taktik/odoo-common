@@ -48,7 +48,7 @@ see the leave request.
 
     """,
     "data": [
-        "data/tk_hr_leave_request_email_template.xml",
+        "data/tk_hr_leave_email_template.xml",
         "views/tk_hr_leave_request_templates_views.xml",
         "views/tk_hr_leave_request_view.xml",
         "workflow/tk_hr_leave_request.xml",
