@@ -121,9 +121,9 @@ class HrHoliday(models.Model):
         mail_body_html = mail_values.get('body_html', '')
 
         if self.state == 'validate':
-            val = _(u'Accepted')
+            val = u'Accepted'
         if self.state == 'refuse':
-            val = _(u'Refused')
+            val = u'Refused'
 
         rdict = {
             '_RESPONSE_': val
