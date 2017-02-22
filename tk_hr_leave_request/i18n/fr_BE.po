@@ -50,6 +50,7 @@ msgstr "\n"
 "                <div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
 "                    <h3>\n"
 "                        % if object.type == 'add':\n"
+
 "                            Status requête d'allocation de congé.\n"
 "                        % endif\n"
 "                        % if object.type == 'remove':\n"

@@ -30,27 +30,41 @@
 from openerp import api, exceptions, fields, models, _
 
 
-class TaktikCron(models.Model):
-    _inherit = 'ir.cron'
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
 
     @api.multi
-    def write(self, values):
+    def return_subscription_partner(self):
         """
-        Check if a a record in linked to a recurring document before performing the write.
-        If it is already linked, it trigger a warning to prevent the user.
-
-        :return: Write the record
+        :return:
         """
         self.ensure_one()
-        if 'nextcall' in values \
-            or 'interval_number' in values \
-            or 'interval_type' in values \
-            or 'numbercall' in values:
-            subscription_document = self.env['subscription.subscription'].search([('cron_id', '=', self.id)])
-            if subscription_document and (subscription_document.state != 'draft'):
-                raise exceptions.Warning("Error! \n"
-                                         "This cron job is linked to the recurring document \"{}\" and is in the \"{}\" state\n\n"
-                                         "Please set the recurring document to the state \"draft\" before updating the cron job"
-                                         .format(subscription_document.name.encode('utf-8'), subscription_document.state.encode('utf-8')))
-        res = super(TaktikCron, self).write(values)
-        return res
+        tree_subscription_view = self.env.ref('subscription.view_subscription_tree').id
+        form_subscription_view = self.env.ref('subscription.view_subscription_form').id
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'views': [(tree_subscription_view, 'tree'), (form_subscription_view, 'form')],
+            'res_model': 'subscription.subscription',
+            'domain': ['|', ('partner_id', '=', self.id), ('partner_id', 'in', self.child_ids.ids)],
+            'target': 'current',
+            'context': {'default_partner_id': self.id}
+        }
+
+    @api.multi
+    def _count_subscriptions(self):
+        """
+        Compute the number of subscription linked to the given res.partner
+
+        :return: number of subscription linked to the partner
+        """
+        for partner in self:
+            subscriptions = self.env['subscription.subscription']
+            count = subscriptions.search_count([('partner_id', '=', partner.id)])
+            for child in partner.child_ids:
+                count += subscriptions.search_count([('partner_id', '=', child.id)])
+            partner.subscriptions_count = count
+
+    subscriptions_count = fields.Integer(compute='_count_subscriptions',
+                                         string='Subscriptions')
