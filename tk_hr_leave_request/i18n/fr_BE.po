@@ -119,12 +119,6 @@ msgstr "\n"
 "            "
 
 #. module: tk_hr_leave_request
-#: code:addons/tk_hr_leave_request/models/hr_leave_request.py:124
-#, python-format
-msgid "Accepted"
-msgstr "Accepté"
-
-#. module: tk_hr_leave_request
 #: view:website:tk_hr_leave_request.leave_request_not_found
 msgid "It seems that the leave request does not\n"
 "                                exists in our system!"
@@ -166,12 +160,6 @@ msgstr "Demande de congé refusé"
 #: view:website:tk_hr_leave_request.leave_request_not_found
 msgid "Not Found"
 msgstr "Pas trouvé."
-
-#. module: tk_hr_leave_request
-#: code:addons/tk_hr_leave_request/models/hr_leave_request.py:126
-#, python-format
-msgid "Refused"
-msgstr "Refusé"
 
 #. module: tk_hr_leave_request
 #: model:ir.actions.act_window,name:tk_hr_leave_request.action_request_submit_holidays
