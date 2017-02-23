@@ -68,6 +68,22 @@ class HrHolidays(models.Model):
         self.number_of_days_temp = 0
         return
 
+    @api.model
+    def create(self, values):
+        if self.env.context.get('default_type', False) == 'add':
+            values['date_from'] = False
+            values['date_to'] = False
+        res = super(HrHolidays, self).create(values)
+        return res
+
+    @api.multi
+    def write(self, values):
+        if self.env.context.get('default_type', False) == 'add':
+            values['date_from'] = False
+            values['date_to'] = False
+        res = super(HrHolidays, self).write(values)
+        return res
+
     date_from = fields.Datetime(
         string='Start Date',
         default=lambda self: datetime.today().replace(
