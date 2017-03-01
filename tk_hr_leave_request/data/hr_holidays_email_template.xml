@@ -1,7 +1,7 @@
 <openerp>
-    <data>
+    <data noupdate="1">
         <!-- Mail request -->
-        <record id="tk_hr_leave_request_email_template" model="email.template">
+        <record id="hr_holidays_email_template" model="email.template">
             <field name="name">Leave request - Mail Approbation</field>
             <field name="email_from">${object.employee_id.work_email}</field>
             <field name="subject">Leave request for ${object.employee_id.name} need approbation.</field>
@@ -25,7 +25,7 @@
         </record>
 
         <!-- Mail response -->
-        <record id="tk_hr_response_email_template" model="email.template">
+        <record id="hr_holidays_response_email_template" model="email.template">
             <field name="name">Leave request - Mail Response</field>
             <field name="email_from">noreply@yourcompany.com</field>
             <field name="subject">Leave allocation / Leave request status</field>
