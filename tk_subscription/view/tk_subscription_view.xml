@@ -10,21 +10,27 @@
                     <field name="interval_number" position="attributes">
                         <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
                     </field>
+
                     <field name="interval_type" position="attributes">
                         <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
                     </field>
+
                     <field name="exec_init" position="attributes">
                         <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
                     </field>
+
                     <field name="date_init" position="attributes">
                         <attribute name="attrs">{'readonly': [('state', '!=', 'draft')]}</attribute>
                     </field>
-                    <field name="date_init" position="after">
-                        <field name="invoice_only"/>
-                    </field>
+
                     <xpath expr="//page[@string='Subsription Data']//group[@col='4']" position="attributes">
                         <attribute name="col">2</attribute>
                     </xpath>
+
+                    <field name="date_init" position="after">
+                        <field name="invoice_only"/>
+                    </field>
+
                     <field name="doc_source" position="replace">
                         <field name="invoice_id" attrs="{'invisible': [('invoice_only', '=', False)]}" domain="[('partner_id', '=', partner_id)]"/>
                         <field name="doc_source" widget="reference" attrs="{'invisible': [('invoice_only', '=', True)]}"/>

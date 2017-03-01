@@ -33,20 +33,14 @@ from openerp import api, exceptions, fields, models, _
 class SubscriptionSubscription(models.Model):
     _inherit = 'subscription.subscription'
 
-    @property
-    def ret_invoice_only(self):
-        return self.invoice_only
+    @api.onchange('invoice_id')
+    def onchange_invoice_id(self):
+        """
+        Set the 'doc_source' field with the value 'account.invoice,<id>'
+        :return: True
+        """
+        if self.invoice_id:
+            self.doc_source = 'account.invoice,{}'.format(self.invoice_id.id)
 
-    @api.onchange('partner_id')
-    def partner_id_filter(self):
-        if not self.ret_invoice_only:
-            return
-
-        return {'domain': {'invoice_id': [('partner_id', '=', self.partner_id.id)]}} if self.invoice_only else False
-
-    invoice_id = fields.Many2one('account.invoice',
-                                 string='Invoice')
-
-    invoice_only = fields.Boolean(string='Invoice only ?',
-                                  default=False,
-                                  help="")
+    invoice_id = fields.Many2one('account.invoice', 'Invoice')
+    invoice_only = fields.Boolean('Invoice only ?', default=False)
