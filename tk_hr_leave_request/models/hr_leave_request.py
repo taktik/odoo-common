@@ -49,12 +49,12 @@ class HrHoliday(models.Model):
     _inherit = 'hr.holidays'
 
     state = fields.Selection(
-        [('draft', 'To Submit'),
-         ('cancel', 'Cancelled'),
-         ('confirm', 'To Approve'),
-         ('refuse', 'Refused'),
-         ('validate1', 'Second Approval'),
-         ('validate', 'Approved')],
+        [('draft', _('To Submit')),
+         ('cancel', _('Cancelled')),
+         ('confirm', _('To Approve')),
+         ('refuse', _('Refused')),
+         ('validate1', _('Second Approval')),
+         ('validate', _('Approved'))],
         'Status',
         readonly=True,
         track_visibility='onchange',
@@ -77,8 +77,6 @@ class HrHoliday(models.Model):
 
         menu_id = self.env.ref('hr_holidays.menu_open_ask_holidays_new').id
 
-        accept = 'leave_request/accept/%s' % self.token
-        decline = 'leave_request/refuse/%s' % self.token
         leave_request = 'web#id=%s&view_type=form&model=hr.holidays&menu_id=%s&action=%s' % (
             str(hr_holidays_id),
             str(menu_id),
@@ -89,44 +87,7 @@ class HrHoliday(models.Model):
         mail_body_html = mail_values.get('body_html', '')
 
         rdict = {
-            '_URL_ACCEPT_': accept,
-            '_URL_DECLINE_': decline,
             '_URL_LEAVE_REQUEST_': leave_request,
-        }
-
-        robj = re.compile('|'.join(rdict.keys()))
-        result_body = robj.sub(
-            lambda m: rdict[m.group(0)],
-            mail_body
-        )
-        result_body_html = robj.sub(
-            lambda m: rdict[m.group(0)],
-            mail_body_html
-        )
-
-        mail_values.update({
-            'body': result_body,
-            'body_html': result_body_html
-        })
-
-        return mail_values
-
-    @api.multi
-    def replace_links_body_response(self, mail_values):
-        """
-        Replace the value in the email sent to the employee
-
-        """
-        mail_body = mail_values.get('body', '')
-        mail_body_html = mail_values.get('body_html', '')
-
-        if self.state == 'validate':
-            val = u'Accepted'
-        if self.state == 'refuse':
-            val = u'Refused'
-
-        rdict = {
-            '_RESPONSE_': val
         }
 
         robj = re.compile('|'.join(rdict.keys()))
@@ -192,17 +153,24 @@ class HrHoliday(models.Model):
                 ctx.update({'lang': recipient.lang})
                 mail_values = template_id.with_context(ctx).generate_email(template_id.id, holiday.id)
                 mail_values['recipient_ids'] = [(4, recipient.id)]
-                mail_values = holiday.replace_links_body_response(mail_values)
                 msg_id = mail_obj.create(mail_values)
 
-    def format_date(self, date):
-        if date:
-            return datetime.strptime(
-                date,
-                DEFAULT_SERVER_DATETIME_FORMAT
-            ).strftime("%H:%M:%S %d-%m-%Y")
+    def get_state_lang(self):
+        res = ""
+        state = self.state
+        if state == 'validate':
+            if self.employee_id.user_id.lang == 'fr_BE':
+                res = u'Approuvé'
+            else:
+                res = u'Validate'
+        elif state == 'refuse':
+            if self.employee_id.user_id.lang == 'fr_BE':
+                res = u'Refusé'
+            else:
+                res = u'Refused'
         else:
-            return ''
+            res = u'Other'
+        return res
 
     token = fields.Char(
         string="Token",
