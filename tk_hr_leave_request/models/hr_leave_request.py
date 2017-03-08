@@ -122,7 +122,7 @@ class HrHoliday(models.Model):
     def send_request_by_mail(self):
         mail_obj = self.env['mail.mail']
         template_id = self.env.ref(
-            'tk_hr_leave_request.tk_hr_leave_request_email_template'
+            'tk_hr_leave_request.hr_holidays_email_template'
         )
         # if the employee has a manager it sends a email
         # otherwise we assume the employee has the access right to approve
@@ -144,7 +144,7 @@ class HrHoliday(models.Model):
     def send_response_by_mail(self):
         mail_obj = self.env['mail.mail']
         template_id = self.env.ref(
-            'tk_hr_leave_request.tk_hr_response_email_template'
+            'tk_hr_leave_request.hr_holidays_response_email_template'
         )
         for holiday in self:
             if holiday.state == 'validate' or holiday.state == 'refuse':
