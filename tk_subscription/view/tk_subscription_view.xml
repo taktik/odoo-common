@@ -32,7 +32,7 @@
                     </field>
 
                     <field name="doc_source" position="replace">
-                        <field name="invoice_id" attrs="{'invisible': [('invoice_only', '=', False)]}" domain="[('partner_id', '=', partner_id)]"/>
+                        <field name="invoice_id" attrs="{'invisible': [('invoice_only', '=', False)], 'required': [('invoice_only', '=', True)]}" domain="[('partner_id', '=', partner_id)]"/>
                         <field name="doc_source" widget="reference" attrs="{'invisible': [('invoice_only', '=', True)]}"/>
                     </field>
                 </data>

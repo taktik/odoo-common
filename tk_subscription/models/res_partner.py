@@ -61,9 +61,9 @@ class ResPartner(models.Model):
         """
         for partner in self:
             subscriptions = self.env['subscription.subscription']
-            count = subscriptions.search_count([('partner_id', '=', partner.id)])
+            count = subscriptions.sudo().search_count([('partner_id', '=', partner.id)])
             for child in partner.child_ids:
-                count += subscriptions.search_count([('partner_id', '=', child.id)])
+                count += subscriptions.sudo().search_count([('partner_id', '=', child.id)])
             partner.subscriptions_count = count
 
     subscriptions_count = fields.Integer(compute='_count_subscriptions',
