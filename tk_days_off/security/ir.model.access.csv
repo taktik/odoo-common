@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_training_holidays_category_user,Training Holidays Category user,tk_days_off.model_training_holidays_category,base.group_user,1,0,0,0
-access_training_holidays_category_manager,Training Holidays Category manager,tk_days_off.model_training_holidays_category,base.group_hr_manager,1,1,1,1
-access_training_holiday_period_user,Training Holiday Period user,tk_days_off.model_training_holiday_period,base.group_user,1,0,0,0
-access_training_holiday_period_manager,Training Holiday Period manager,tk_days_off.model_training_holiday_period,base.group_hr_manager,1,1,1,1
-access_training_holiday_year_user,Training Holiday Year user,tk_days_off.model_training_holiday_year,base.group_user,1,0,0,0
-access_training_holiday_year_manager,Training Holiday Year manager,tk_days_off.model_training_holiday_year,base.group_hr_manager,1,1,1,1

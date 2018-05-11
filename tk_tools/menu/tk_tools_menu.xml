@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<openerp>
-	<data>
-		<menuitem name="Taktik Tools" id="tk_tools_menu_base" groups="base.group_system" sequence="800" />
-	</data>
-</openerp>

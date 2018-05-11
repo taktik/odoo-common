@@ -1,6 +1,0 @@
-By default, the server will be launched when needed (from jasper_report.py, launching JasperReports/JasperServer.py).
-But when using a multi-threading environment, like gunicorn, this can be dangerous, and sometimes doesn't even work.
-So you can copy the content of java in /usr/local/bin/openerp-jasper for instance.
-Then, copy the openERP-jasper script in /etc/init.d.
-You need to compile jasper using compile.sh.
-You can then launch the server with /etc/init.d/openerp-jasper start.
