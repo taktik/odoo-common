@@ -1,0 +1,32 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* tk_notify_mail_compose
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-12 12:01+0000\n"
+"PO-Revision-Date: 2016-12-12 12:01+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: tk_notify_mail_compose
+#: model:ir.model,name:tk_notify_mail_compose.model_mail_compose_message
+msgid "Email composition wizard"
+msgstr "Assistant de composition de courriel"
+
+#. module: tk_notify_mail_compose
+#: model:ir.model,name:tk_notify_mail_compose.model_mail_notification
+msgid "Notifications"
+msgstr "Notifications"
+
+#. module: tk_notify_mail_compose
+#: model:ir.model,name:tk_notify_mail_compose.model_res_partner
+msgid "Partner"
+msgstr "Partenaire"
+
