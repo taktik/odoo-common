@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Author: Taktik S.A.
@@ -39,4 +39,4 @@ class MailComposeMessage(models.TransientModel):
         Add from_mail_compose in the context.
         """
         self = self.with_context(from_mail_compose=True)
-        super(MailComposeMessage, self).send_mail(auto_commit=auto_commit)
+        return super(MailComposeMessage, self).send_mail(auto_commit=auto_commit)

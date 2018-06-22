@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    Author: Taktik S.A.
@@ -28,25 +28,13 @@
 #############################################################################
 {
     "name": "Taktik Notify Mail Compose",
-    "version": "10.0.0.0",
+    "version": "10.0.0.0.0",
     "author": "Taktik S.A.",
     "category": "Taktik",
     "website": "http://www.taktik.io",
     "depends": [
         'mail'
     ],
-    "description": """
-Taktik Notify Mail Compose
-============================
-
-This module adds an option in the partner for
-"Receive Inbox Notifications by Email": "Never Except Manual Send By Mail",
-allowing a partner to receive only mails sent using the
-mail.compose.message wizard.
-
-This wizard can be found in the Sales Orders and the Invoices (button
-Send by Email).
-        """,
     "demo": [],
     "test": [],
     "active": False,
