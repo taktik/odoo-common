@@ -34,7 +34,10 @@ class ResPartner(models.Model):
     _name = "res.partner"
     _inherit = ['res.partner', 'mail.thread']
 
-    notify_email = fields.Selection(selection_add=[('never_except_mail_compose', 'Never Except Manual Send By Mail')])
+    notify_email = fields.Selection(
+        selection_add=[('never_except_mail_compose', 'Never Except Manual Send By Mail')],
+        default='never_except_mail_compose'
+    )
 
     @api.multi
     def _notify(self, message, force_send=False, send_after_commit=True, user_signature=True):
