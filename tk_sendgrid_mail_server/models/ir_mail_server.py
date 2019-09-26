@@ -33,7 +33,7 @@ class IrMailServer(models.Model):
     """
     IR Mail Server
     """
-    _inherit = 'ir.mail.server'
+    _inherit = 'ir.mail_server'
 
     stmp_pass = fields.Char('Password', size=256, help="Optional password for SMTP authentication")
 
