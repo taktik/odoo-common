@@ -35,4 +35,4 @@ class IrMailServer(models.Model):
     """
     _inherit = 'ir.mail_server'
 
-    smtp_pass = fields.Char(string='Password Test', size=256, help="Optional password for SMTP authentication")
+    smtp_pass = fields.Char(string='Password', size=256, help="Optional password for SMTP authentication")
